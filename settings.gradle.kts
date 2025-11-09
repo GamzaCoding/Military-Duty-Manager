@@ -1,0 +1,1 @@
+rootProject.name = "openMission-Military-Duty-Management"
