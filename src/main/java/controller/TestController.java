@@ -2,32 +2,31 @@ package controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import repository.reader.ExcelFileReader;
 import repository.writer.ExcelFileWriterForTest;
 import repository.writer.ResultFileLocation;
-import service.model.Person;
+import service.model.person.Persons;
 
 public class TestController {
 
     public static void main(String[] args) throws IOException {
-        List<Person> people = readeProcess();
-        writeProcess(people);
+        Persons persons = readeProcess();
+        writeProcess(persons);
 
     }
 
-    private static void writeProcess(List<Person> people) throws IOException {
-        ExcelFileWriterForTest excelFileWriter = ExcelFileWriterForTest.of(people);
+    private static void writeProcess(Persons persons) throws IOException {
+        ExcelFileWriterForTest excelFileWriter = ExcelFileWriterForTest.of(persons.getPersons());
         ResultFileLocation resultFileLocation = new ResultFileLocation();
         excelFileWriter.write(resultFileLocation.getLocation());
     }
 
-    private static List<Person> readeProcess() {
+    private static Persons readeProcess() {
         ExcelFileReader excelFileReader = new ExcelFileReader();
         String filePath = "/Users/seok/openMission/당직자 순서(입력 데이터).xlsx";
         File file = new File(filePath);
-        List<Person> soldiers = excelFileReader.readPersons(file);
-        soldiers.forEach(System.out::println);
-        return soldiers;
+        Persons persons = excelFileReader.readWeekdayPersons(file);
+        persons.getPersons().forEach(System.out::println);
+        return persons;
     }
 }

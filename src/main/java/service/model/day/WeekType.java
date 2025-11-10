@@ -1,13 +1,16 @@
 package service.model.day;
 
+import java.time.DayOfWeek;
+
 public enum WeekType {
-    Monday("월"),
-    Tuesday("화"),
-    Wednesday("수"),
-    Thursday("목"),
-    Friday("금"),
-    Saturday("토"),
-    Sunday("일");
+    MONDAY("월"),
+    TUESDAY("화"),
+    WEDNESDAY("수"),
+    THURSDAY("목"),
+    FRIDAY("금"),
+    SATURDAY("토"),
+    SUNDAY("일")
+    ;
 
     private final String weekName;
 
@@ -15,6 +18,17 @@ public enum WeekType {
         this.weekName = weekName;
     }
 
+    public static WeekType from(DayOfWeek dayOfWeek) {
+        return switch (dayOfWeek) {
+            case MONDAY -> MONDAY;
+            case TUESDAY -> TUESDAY;
+            case WEDNESDAY -> WEDNESDAY;
+            case THURSDAY -> THURSDAY;
+            case FRIDAY -> FRIDAY;
+            case SATURDAY -> SATURDAY;
+            case SUNDAY -> SUNDAY;
+        };
+    }
     public String getWeekName() {
         return weekName;
     }

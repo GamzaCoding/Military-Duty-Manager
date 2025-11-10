@@ -16,8 +16,8 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import service.model.Duty;
-import service.model.Person;
+import service.model.duty.Duty;
+import service.model.person.Person;
 import service.model.day.Day;
 
 public class DutyResultWriter implements ExcelFileWriter {
@@ -41,9 +41,9 @@ public class DutyResultWriter implements ExcelFileWriter {
             Sheet sheet = workbook.createSheet("당직표 결과");
 
             // 스타일 정의
-            CellStyle headerStyle = createHeaderStyle(workbook);
-            CellStyle centerStyle = createCenterStyle(workbook);
-            CellStyle weekendStyle = createWeekendStyle(workbook);
+            CellStyle headerStyle = createWeekDayStyle(workbook);
+            CellStyle centerStyle = creatPersonStyle(workbook);
+            CellStyle weekendStyle = createHolidayStyle(workbook);
 
             int maxCount = Math.min(duties.size(), 30); // 최대 30개까지만 출력
             int rowIndex = 0;
@@ -100,8 +100,8 @@ public class DutyResultWriter implements ExcelFileWriter {
         }
     }
 
-    // 헤더용 스타일 (파란색 배경 + 굵은 글씨 + 중앙 정렬)
-    private CellStyle createHeaderStyle(Workbook workbook) {
+    // 날짜용(평일) 스타일 (하얀 배경 + 중앙 정렬)
+    private CellStyle createWeekDayStyle(Workbook workbook) {
         CellStyle style = workbook.createCellStyle();
         style.setAlignment(HorizontalAlignment.CENTER);
         style.setVerticalAlignment(VerticalAlignment.CENTER);
@@ -110,22 +110,14 @@ public class DutyResultWriter implements ExcelFileWriter {
         setThinBorder(style);
 
         Font font = workbook.createFont();
-        font.setBold(true);
+        font.setFontName("굴림");
+        font.setFontHeightInPoints((short) 15);
         style.setFont(font);
         return style;
     }
 
-    // 일반 중앙정렬 스타일 (테두리만 있음)
-    private CellStyle createCenterStyle(Workbook workbook) {
-        CellStyle style = workbook.createCellStyle();
-        style.setAlignment(HorizontalAlignment.CENTER);
-        style.setVerticalAlignment(VerticalAlignment.CENTER);
-        setThinBorder(style);
-        return style;
-    }
-
-    // 주말(토, 일) 스타일 — 붉은 톤 배경
-    private CellStyle createWeekendStyle(Workbook workbook) {
+    // 날짜용(휴일) 스타일 — 붉은 톤 배경
+    private CellStyle createHolidayStyle(Workbook workbook) {
         CellStyle style = workbook.createCellStyle();
         style.setAlignment(HorizontalAlignment.CENTER);
         style.setVerticalAlignment(VerticalAlignment.CENTER);
@@ -134,7 +126,22 @@ public class DutyResultWriter implements ExcelFileWriter {
         setThinBorder(style);
 
         Font font = workbook.createFont();
-        font.setBold(true);
+        font.setFontName("굴림");
+        font.setFontHeightInPoints((short) 15);
+        style.setFont(font);
+        return style;
+    }
+
+    // 계급 이름 스타일 (중앙 정렬)
+    private CellStyle creatPersonStyle(Workbook workbook) {
+        CellStyle style = workbook.createCellStyle();
+        style.setAlignment(HorizontalAlignment.CENTER);
+        style.setVerticalAlignment(VerticalAlignment.CENTER);
+        setThinBorder(style);
+
+        Font font = workbook.createFont();
+        font.setFontName("굴림");
+        font.setFontHeightInPoints((short) 15);
         style.setFont(font);
         return style;
     }

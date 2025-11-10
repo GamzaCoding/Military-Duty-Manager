@@ -14,36 +14,45 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import service.model.Person;
+import service.model.person.Person;
+import service.model.person.Persons;
 
 public class ExcelFileReader {
 
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    public static final int FIRST_DATA_ROW_INDEX = 1;
-    public static final int POSITION_INDEX = 0;
-    public static final int RANK_INDEX = 1;
-    public static final int NAME_INDEX = 2;
-    public static final int MOVE_IN_INDEX = 3;
-    public static final int MOVE_OUT_INDEX = 4;
+    private static final int FIRST_DATA_ROW_INDEX = 1;
+    private static final int POSITION_INDEX = 0;
+    private static final int RANK_INDEX = 1;
+    private static final int NAME_INDEX = 2;
+    private static final int MOVE_IN_INDEX = 3;
+    private static final int MOVE_OUT_INDEX = 4;
+    private static final String WEEKDAY_SHEET_NAME = "당직자 순서(평일)";
+    private static final String HOLIDAY_SHEET_NAME = "당직자 순서(휴일)";
 
-    public List<Person> readPersons(File excelFile) {
-        return handleIOExceptionDuringRead(excelFile, this::readPersonsFromExcel);
+    public Persons readWeekdayPersons(File excelFile) {
+        return handleIOExceptionDuringRead(excelFile, file -> readPersonsFromExcel(excelFile, WEEKDAY_SHEET_NAME));
     }
 
-    private List<Person> readPersonsFromExcel(File file) throws IOException {
-        List<Person> persons = new ArrayList<>();
-        try (FileInputStream fis = new FileInputStream(file);
-             Workbook workbook = new XSSFWorkbook(fis)) {
+    public Persons readHolidayPersons(File excelFile) {
+        return handleIOExceptionDuringRead(excelFile, file -> readPersonsFromExcel(excelFile, HOLIDAY_SHEET_NAME));
+    }
+
+    private Persons readPersonsFromExcel(File excelFile, String sheetName) throws IOException {
+        List<Person> people = new ArrayList<>();
+
+        try (FileInputStream fis = new FileInputStream(excelFile);
+             Workbook workbook = new XSSFWorkbook(fis)) { // 메모리 누수 문제로 try()로 감싸줌
+
             for (Sheet sheet : workbook) {
-                if (sheet.getSheetName().contains("당직자 순서(평일)") || sheet.getSheetName().contains("당직자 순서(휴일)")) {
-                    readSheetData(sheet, persons);
+                if (sheet.getSheetName().contains(sheetName)) {
+                    readSheetData(sheet, people);
                 }
             }
         }
-        return persons;
+        return Persons.of(people);
     }
 
-    private void readSheetData(Sheet sheet, List<Person> persons) {
+    private void readSheetData(Sheet sheet, List<Person> people) {
         for (int i = FIRST_DATA_ROW_INDEX; i <= sheet.getLastRowNum(); i++) {
             Row row = sheet.getRow(i);
 
@@ -57,7 +66,7 @@ public class ExcelFileReader {
             LocalDate moveInDate = parseDate(row.getCell(MOVE_IN_INDEX));
             LocalDate moveOutDate = parseDate(row.getCell(MOVE_OUT_INDEX));
 
-            persons.add(Person.from(position, rank, name, moveInDate, moveOutDate));
+            people.add(Person.from(position, rank, name, moveInDate, moveOutDate));
         }
     }
 

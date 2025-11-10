@@ -8,14 +8,18 @@ public class Day {
     private final WeekType weekTypeName;
     private final DayType dayType;
 
-    public Day(LocalDate localDate, WeekType weekTypeName, DayType dayType) {
+    private Day(LocalDate localDate, WeekType weekTypeName, DayType dayType) {
         this.localDate = localDate;
         this.weekTypeName = weekTypeName;
         this.dayType = dayType;
     }
 
+    public static Day of(LocalDate localDate, WeekType weekTypeName, DayType dayType) {
+        return new Day(localDate, weekTypeName, dayType);
+    }
+
     public boolean isHoliDay() {
-        return dayType == DayType.HoliDay;
+        return dayType == DayType.HOLIDAY;
     }
 
     @Override
