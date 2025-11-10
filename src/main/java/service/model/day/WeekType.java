@@ -1,6 +1,6 @@
 package service.model.day;
 
-public enum Week {
+public enum WeekType {
     Monday("월"),
     Tuesday("화"),
     Wednesday("수"),
@@ -11,7 +11,7 @@ public enum Week {
 
     private final String weekName;
 
-    Week(String weekName) {
+    WeekType(String weekName) {
         this.weekName = weekName;
     }
 

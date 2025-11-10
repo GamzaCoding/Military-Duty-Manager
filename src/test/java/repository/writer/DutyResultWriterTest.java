@@ -10,7 +10,7 @@ import service.model.Duty;
 import service.model.Person;
 import service.model.day.Day;
 import service.model.day.DayType;
-import service.model.day.Week;
+import service.model.day.WeekType;
 
 class DutyResultWriterTest {
 
@@ -25,13 +25,13 @@ class DutyResultWriterTest {
         Person person5 = Person.from(null, "소령", "최소령", null, null);
         Person person6 = Person.from(null, "준위", "최준위", null, null);
 
-        Day day0 = new Day(LocalDate.of(2025, 11, 1), Week.Monday, DayType.WeekDay);
-        Day day1 = new Day(LocalDate.of(2025, 11, 2), Week.Tuesday, DayType.WeekDay);
-        Day day2 = new Day(LocalDate.of(2025, 11, 3), Week.Wednesday, DayType.WeekDay);
-        Day day3 = new Day(LocalDate.of(2025, 11, 4), Week.Thursday, DayType.WeekDay);
-        Day day4 = new Day(LocalDate.of(2025, 11, 5), Week.Friday, DayType.WeekDay);
-        Day day5 = new Day(LocalDate.of(2025, 11, 6), Week.Saturday, DayType.WeekDay);
-        Day day6 = new Day(LocalDate.of(2025, 11, 7), Week.Sunday, DayType.WeekDay);
+        Day day0 = new Day(LocalDate.of(2025, 11, 1), WeekType.Monday, DayType.WeekDay);
+        Day day1 = new Day(LocalDate.of(2025, 11, 2), WeekType.Tuesday, DayType.WeekDay);
+        Day day2 = new Day(LocalDate.of(2025, 11, 3), WeekType.Wednesday, DayType.WeekDay);
+        Day day3 = new Day(LocalDate.of(2025, 11, 4), WeekType.Thursday, DayType.WeekDay);
+        Day day4 = new Day(LocalDate.of(2025, 11, 5), WeekType.Friday, DayType.WeekDay);
+        Day day5 = new Day(LocalDate.of(2025, 11, 6), WeekType.Saturday, DayType.WeekDay);
+        Day day6 = new Day(LocalDate.of(2025, 11, 7), WeekType.Sunday, DayType.WeekDay);
 
         List<Duty> duties = List.of(new Duty(day0, person0),
                 new Duty(day1, person1),

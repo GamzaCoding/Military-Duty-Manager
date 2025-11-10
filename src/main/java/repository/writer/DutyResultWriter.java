@@ -23,12 +23,10 @@ public class DutyResultWriter implements ExcelFileWriter {
 
     @Override
     public void write(File outputFile) {
-        handleIOExceptionDuringWrite(outputFile, file -> {
-            writeDutiesToExcel(file, duties);
-        });
+        handleIOExceptionDuringWrite(outputFile, this::writeDutiesToExcel);
     }
 
-    private void writeDutiesToExcel(File file, List<Duty> dutys) throws IOException {
+    private void writeDutiesToExcel(File file) throws IOException {
         try (Workbook workbook = new XSSFWorkbook()) {
             Sheet sheet = workbook.createSheet("당직표 결과");
 
