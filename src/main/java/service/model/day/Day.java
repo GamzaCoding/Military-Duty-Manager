@@ -4,13 +4,13 @@ import java.time.LocalDate;
 
 public class Day {
     private final LocalDate localDate;
-    private final DayType dayType;
     private final Week weekName;
+    private final DayType dayType;
 
-    public Day(LocalDate localDate, DayType dayType, Week weekName) {
+    public Day(LocalDate localDate, Week weekName, DayType dayType) {
         this.localDate = localDate;
-        this.dayType = dayType;
         this.weekName = weekName;
+        this.dayType = dayType;
     }
 
     public boolean isHoliDay() {
@@ -19,6 +19,6 @@ public class Day {
 
     @Override
     public String toString() {
-        return localDate + "(" + weekName + ")";
+        return localDate + "(" + weekName.getWeekName() + ")";
     }
 }

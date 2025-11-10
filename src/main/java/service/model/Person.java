@@ -27,6 +27,11 @@ public class Person {
     public LocalDate moveInDate() { return moveInDate; }
     public LocalDate moveOutDate() { return moveOutDate; }
 
+
+    public String getRankAndName() {
+        return rank +" "+ name;
+    }
+
     @Override
     public String toString() {
         return String.format("순위: %d, 계급: %s, 이름: %s, 전입일: %s, 전출일: %s", position, rank, name, moveInDate, moveOutDate);

@@ -2,28 +2,24 @@ package controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import repository.reader.ExcelFileReader;
-import repository.writer.ExcelFileWriter;
+import repository.writer.ExcelFileWriterForTest;
 import repository.writer.ResultFileLocation;
 import service.model.Person;
 
 public class TestController {
 
     public static void main(String[] args) throws IOException {
-
         List<Person> people = readeProcess();
         writeProcess(people);
 
     }
 
     private static void writeProcess(List<Person> people) throws IOException {
-        ExcelFileWriter excelFileWriter = new ExcelFileWriter();
+        ExcelFileWriterForTest excelFileWriter = ExcelFileWriterForTest.of(people);
         ResultFileLocation resultFileLocation = new ResultFileLocation();
-        excelFileWriter.writePersons(resultFileLocation.getLocation(), people);
+        excelFileWriter.write(resultFileLocation.getLocation());
     }
 
     private static List<Person> readeProcess() {
