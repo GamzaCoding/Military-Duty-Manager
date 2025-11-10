@@ -1,6 +1,9 @@
 package repository.writer;
 
 
+import static service.model.day.DayType.*;
+import static service.model.day.WeekType.*;
+
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -9,8 +12,6 @@ import org.junit.jupiter.api.Test;
 import service.model.Duty;
 import service.model.Person;
 import service.model.day.Day;
-import service.model.day.DayType;
-import service.model.day.WeekType;
 
 class DutyResultWriterTest {
 
@@ -25,15 +26,87 @@ class DutyResultWriterTest {
         Person person5 = Person.from(null, "소령", "최소령", null, null);
         Person person6 = Person.from(null, "준위", "최준위", null, null);
 
-        Day day0 = new Day(LocalDate.of(2025, 11, 1), WeekType.Monday, DayType.WeekDay);
-        Day day1 = new Day(LocalDate.of(2025, 11, 2), WeekType.Tuesday, DayType.WeekDay);
-        Day day2 = new Day(LocalDate.of(2025, 11, 3), WeekType.Wednesday, DayType.WeekDay);
-        Day day3 = new Day(LocalDate.of(2025, 11, 4), WeekType.Thursday, DayType.WeekDay);
-        Day day4 = new Day(LocalDate.of(2025, 11, 5), WeekType.Friday, DayType.WeekDay);
-        Day day5 = new Day(LocalDate.of(2025, 11, 6), WeekType.Saturday, DayType.WeekDay);
-        Day day6 = new Day(LocalDate.of(2025, 11, 7), WeekType.Sunday, DayType.WeekDay);
+        Day day0 = new Day(LocalDate.of(2025, 11, 1), Monday, WeekDay);
+        Day day1 = new Day(LocalDate.of(2025, 11, 2), Tuesday, WeekDay);
+        Day day2 = new Day(LocalDate.of(2025, 3, 3), Wednesday, WeekDay);
+        Day day3 = new Day(LocalDate.of(2025, 11, 4), Thursday, WeekDay);
+        Day day4 = new Day(LocalDate.of(2025, 11, 30), Friday, WeekDay);
+        Day day5 = new Day(LocalDate.of(2025, 7, 31), Saturday, HoliDay);
+        Day day6 = new Day(LocalDate.of(2025, 11, 11), Sunday, HoliDay);
 
         List<Duty> duties = List.of(new Duty(day0, person0),
+                new Duty(day1, person1),
+                new Duty(day2, person2),
+                new Duty(day3, person3),
+                new Duty(day4, person4),
+                new Duty(day5, person5),
+                new Duty(day6, person6),
+                new Duty(day1, person1),
+                new Duty(day2, person2),
+                new Duty(day3, person3),
+                new Duty(day4, person4),
+                new Duty(day5, person5),
+                new Duty(day6, person6),
+                new Duty(day1, person1),
+                new Duty(day2, person2),
+                new Duty(day3, person3),
+                new Duty(day4, person4),
+                new Duty(day5, person5),
+                new Duty(day6, person6),
+                new Duty(day1, person1),
+                new Duty(day2, person2),
+                new Duty(day3, person3),
+                new Duty(day4, person4),
+                new Duty(day5, person5),
+                new Duty(day6, person6),
+                new Duty(day1, person1),
+                new Duty(day2, person2),
+                new Duty(day3, person3),
+                new Duty(day4, person4),
+                new Duty(day5, person5),
+                new Duty(day6, person6),
+                new Duty(day1, person1),
+                new Duty(day2, person2),
+                new Duty(day3, person3),
+                new Duty(day4, person4),
+                new Duty(day5, person5),
+                new Duty(day6, person6),
+                new Duty(day1, person1),
+                new Duty(day2, person2),
+                new Duty(day3, person3),
+                new Duty(day4, person4),
+                new Duty(day5, person5),
+                new Duty(day6, person6),
+                new Duty(day1, person1),
+                new Duty(day2, person2),
+                new Duty(day3, person3),
+                new Duty(day4, person4),
+                new Duty(day5, person5),
+                new Duty(day6, person6),
+                new Duty(day1, person1),
+                new Duty(day2, person2),
+                new Duty(day3, person3),
+                new Duty(day4, person4),
+                new Duty(day5, person5),
+                new Duty(day6, person6),
+                new Duty(day1, person1),
+                new Duty(day2, person2),
+                new Duty(day3, person3),
+                new Duty(day4, person4),
+                new Duty(day5, person5),
+                new Duty(day6, person6),
+                new Duty(day1, person1),
+                new Duty(day2, person2),
+                new Duty(day3, person3),
+                new Duty(day4, person4),
+                new Duty(day5, person5),
+                new Duty(day6, person6),
+                new Duty(day1, person1),
+                new Duty(day2, person2),
+                new Duty(day3, person3),
+                new Duty(day4, person4),
+                new Duty(day5, person5),
+                new Duty(day6, person6),
                 new Duty(day1, person1),
                 new Duty(day2, person2),
                 new Duty(day3, person3),
