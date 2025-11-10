@@ -1,8 +1,8 @@
-package repository;
+package repository.reader;
 
 import java.io.IOException;
 
 @FunctionalInterface
-public interface IOFunction<T, R> {
+public interface IOFunctionForRead<T, R> {
     R apply(T t) throws IOException;
 }

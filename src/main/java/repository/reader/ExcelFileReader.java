@@ -1,4 +1,4 @@
-package repository;
+package repository.reader;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -27,7 +27,7 @@ public class ExcelFileReader {
     public static final int MOVE_OUT_INDEX = 4;
 
     public List<Person> readPersons(File excelFile) {
-        return handleIOException(excelFile, this::readPersonsFromExcel);
+        return handleIOExceptionDuringRead(excelFile, this::readPersonsFromExcel);
     }
 
     private List<Person> readPersonsFromExcel(File file) throws IOException {
@@ -97,11 +97,11 @@ public class ExcelFileReader {
         return 0;
     }
 
-    private <T, R> R handleIOException(T input, IOFunction<T, R> ioFunction) {
+    private <T, R> R handleIOExceptionDuringRead(T input, IOFunctionForRead<T, R> ioFunction) {
         try {
             return ioFunction.apply(input);
         } catch (IOException e) {
-            throw new IllegalStateException("엑셀 파일을 처리하는 중 오류가 발생했습니다: " + e.getMessage(), e);
+            throw new IllegalStateException("엑셀 파일을 읽는 도중 오류가 발생했습니다: " + e.getMessage(), e);
         }
     }
 }

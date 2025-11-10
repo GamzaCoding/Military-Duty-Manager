@@ -21,10 +21,11 @@ public class Person {
         return new Person(position, rank, name, moveInDate, moveOutDate);
     }
 
-    public String getName() { return name; }
-    public LocalDate getJoinDate() { return moveInDate; }
-    public LocalDate getLeaveDate() { return moveOutDate; }
-    public Integer getPosition() { return position; }
+    public Integer position() { return position; }
+    public String rank() { return rank; }
+    public String name() { return name; }
+    public LocalDate moveInDate() { return moveInDate; }
+    public LocalDate moveOutDate() { return moveOutDate; }
 
     @Override
     public String toString() {
