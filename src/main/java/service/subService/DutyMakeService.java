@@ -1,14 +1,10 @@
 package service.subService;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 import service.model.day.Day;
-import service.model.day.DayType;
-import service.model.day.WeekType;
 import service.model.duty.Duties;
 import service.model.duty.Duty;
 import service.model.person.Person;
@@ -23,33 +19,28 @@ public class DutyMakeService {
 
     // 시작 날짜, 종료 날짜를 입력하면 persons의 순서에 맞게 당직 객체를 생성해주는 서비스
     public Duties makeDuties(LocalDate startDate, LocalDate endDate) {
-            List<Person> personList = persons.getPersons();
-        if (personList.isEmpty()) {
+
+        if (persons.isEmpty()) {
             throw new IllegalStateException("당직자 목록이 비어 있습니다.");
         }
 
         List<Duty> duties = Stream
-                .iterate(startDate, current -> !current.isAfter(endDate), date -> date.plusDays(1))
-                .map(current -> {
-                    DayOfWeek dayOfWeek = current.getDayOfWeek();
-                    WeekType weekType = WeekType.from(dayOfWeek);
-                    DayType dayType = distinguishDayType(dayOfWeek);
-                    Day day = Day.of(current, weekType, dayType);
-
-                    int personIndex = (int) ChronoUnit.DAYS.between(startDate, current) % personList.size();
-                    Person person = personList.get(personIndex);
-
-                    return Duty.of(day, person);
-                })
+                .iterate(startDate, current -> !current.isAfter(endDate), current -> current.plusDays(1))
+                .map(current -> makeDuty(startDate, current, persons))
                 .toList();
 
         return Duties.of(duties);
     }
 
-    private DayType distinguishDayType(DayOfWeek dayOfWeek) {
-        if (dayOfWeek == DayOfWeek.SUNDAY || dayOfWeek == DayOfWeek.SATURDAY) {
-            return DayType.HOLIDAY;
-        }
-        return DayType.WEEKDAY;
+    private Duty makeDuty(LocalDate startDate, LocalDate current, Persons persons) {
+        Day day = Day.makeDay(current);
+        int dutyOrderIndex = calculateDutyOrderIndex(startDate, current, persons);
+        Person person = persons.getPerson(dutyOrderIndex);
+
+        return Duty.of(day, person);
+    }
+
+    private int calculateDutyOrderIndex(LocalDate startDate, LocalDate current, Persons persons) {
+        return (int) ChronoUnit.DAYS.between(startDate, current) % persons.size();
     }
 }

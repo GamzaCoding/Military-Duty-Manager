@@ -13,7 +13,15 @@ public class Persons {
         return new Persons(persons);
     }
 
-    public List<Person> getPersons() {
-        return persons;
+    public Person getPerson(int index) {
+        return persons.get(index);
+    }
+
+    public int size() {
+        return persons.size();
+    }
+
+    public boolean isEmpty() {
+        return persons.isEmpty();
     }
 }

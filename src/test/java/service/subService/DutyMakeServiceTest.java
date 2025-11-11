@@ -35,5 +35,4 @@ class DutyMakeServiceTest {
         dutyResultWriter.write(outputFile);
         // then
     }
-
 }
