@@ -3,7 +3,7 @@ package controller;
 import java.io.File;
 import java.io.IOException;
 import repository.reader.ExcelFileReader;
-import repository.writer.ExcelFileWriterForTest;
+import repository.writer.ExcelFileWriterFor;
 import repository.writer.ResultFileLocation;
 import service.model.person.Persons;
 
@@ -16,7 +16,7 @@ public class TestController {
     }
 
     private static void writeProcess(Persons persons) throws IOException {
-        ExcelFileWriterForTest excelFileWriter = ExcelFileWriterForTest.of(persons);
+        ExcelFileWriterFor excelFileWriter = ExcelFileWriterFor.of(persons);
         ResultFileLocation resultFileLocation = new ResultFileLocation();
         excelFileWriter.write(resultFileLocation.getLocation());
     }

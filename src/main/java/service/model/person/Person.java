@@ -27,6 +27,21 @@ public class Person {
     public LocalDate moveInDate() { return moveInDate; }
     public LocalDate moveOutDate() { return moveOutDate; }
 
+    public String getMoveInDateByMilitaryFormat() {
+        int year = moveInDate.getYear() % 100;
+        int month = moveInDate.getMonthValue();
+        int day = moveInDate.getDayOfMonth();
+
+        return String.format("%02d.%2d.%2d.", year, month, day);
+    }
+
+    public String getMoveOutDateByMilitaryFormat() {
+        int year = moveOutDate.getYear() % 100;
+        int month = moveOutDate.getMonthValue();
+        int day = moveOutDate.getDayOfMonth();
+
+        return String.format("%02d.%2d.%2d.", year, month, day);
+    }
 
     public String getRankAndName() {
         return rank +" "+ name;
