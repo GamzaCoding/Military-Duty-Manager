@@ -24,4 +24,7 @@ public class Persons {
     public boolean isEmpty() {
         return persons.isEmpty();
     }
+    public List<Person> getPersons() {
+        return persons;
+    }
 }

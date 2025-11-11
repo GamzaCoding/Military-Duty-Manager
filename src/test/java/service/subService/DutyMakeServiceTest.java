@@ -21,12 +21,11 @@ class DutyMakeServiceTest {
         File file = new File(filePath);
         Persons persons = excelFileReader.readHolidayPersons(file);
 
-        DutyMakeService dutyMakeService = new DutyMakeService(persons);
         LocalDate startDate = LocalDate.of(2025,11,1);
         LocalDate endDate = LocalDate.of(2025,11,30);
 
         // when
-        Duties duties = dutyMakeService.makeDuties(startDate, endDate);
+        Duties duties = Duties.makeDuties(startDate, endDate, persons);
         System.out.println(duties.toString());
 
         DutyResultWriter dutyResultWriter = DutyResultWriter.of(duties.getDuties());

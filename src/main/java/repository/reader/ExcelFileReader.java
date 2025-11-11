@@ -29,10 +29,11 @@ public class ExcelFileReader {
     private static final String WEEKDAY_SHEET_NAME = "당직자 순서(평일)";
     private static final String HOLIDAY_SHEET_NAME = "당직자 순서(휴일)";
 
+    // 엑셀에서 평일 당직 시트를 읽어오는 메서드
     public Persons readWeekdayPersons(File excelFile) {
         return handleIOExceptionDuringRead(excelFile, file -> readPersonsFromExcel(excelFile, WEEKDAY_SHEET_NAME));
     }
-
+    // 엑셀에서 휴일 당직 시트를 읽어오는 메서드
     public Persons readHolidayPersons(File excelFile) {
         return handleIOExceptionDuringRead(excelFile, file -> readPersonsFromExcel(excelFile, HOLIDAY_SHEET_NAME));
     }

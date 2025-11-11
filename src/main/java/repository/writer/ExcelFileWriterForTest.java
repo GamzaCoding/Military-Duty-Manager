@@ -10,17 +10,18 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import service.model.person.Person;
+import service.model.person.Persons;
 
 public class ExcelFileWriterForTest implements ExcelFileWriter {
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    private final List<Person> persons;
+    private final Persons persons;
 
-    private ExcelFileWriterForTest(List<Person> persons) {
+    private ExcelFileWriterForTest(Persons persons) {
         this.persons = persons;
     }
 
-    public static ExcelFileWriterForTest of(List<Person> persons) {
+    public static ExcelFileWriterForTest of(Persons persons) {
         return new ExcelFileWriterForTest(persons);
     }
 
@@ -31,7 +32,7 @@ public class ExcelFileWriterForTest implements ExcelFileWriter {
         });
     }
 
-    private void writePersonsToExcel(File file, List<Person> persons) throws IOException {
+    private void writePersonsToExcel(File file, Persons persons) throws IOException {
         try (Workbook workbook = new XSSFWorkbook()) {
             Sheet sheet = workbook.createSheet("당직자 목록");
 
@@ -43,7 +44,7 @@ public class ExcelFileWriterForTest implements ExcelFileWriter {
             header.createCell(4).setCellValue("전출일");
 
             int rowIndex = 1;
-            for (Person person : persons) {
+            for (Person person : persons.getPersons()) {
                 Row row = sheet.createRow(rowIndex++);
                 row.createCell(0).setCellValue(person.position());
                 row.createCell(1).setCellValue(person.rank());

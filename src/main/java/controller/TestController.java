@@ -16,7 +16,7 @@ public class TestController {
     }
 
     private static void writeProcess(Persons persons) throws IOException {
-        ExcelFileWriterForTest excelFileWriter = ExcelFileWriterForTest.of(persons.getPersons());
+        ExcelFileWriterForTest excelFileWriter = ExcelFileWriterForTest.of(persons);
         ResultFileLocation resultFileLocation = new ResultFileLocation();
         excelFileWriter.write(resultFileLocation.getLocation());
     }
