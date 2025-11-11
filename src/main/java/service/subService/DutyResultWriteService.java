@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
 import repository.writer.DutyResultWriter;
+import repository.writer.FinalWriter;
 import service.model.day.Day;
 import service.model.duty.Duties;
 import service.model.duty.Duty;
@@ -25,6 +26,12 @@ public class DutyResultWriteService {
         DutyResultWriter dutyResultWriter = DutyResultWriter.of(duties.getDuties());
         dutyResultWriter.write(ouputFile);
 
+    }
+
+    public void writeFinalResult(LocalDate startDate, LocalDate endDate, Persons weekPersons, Persons holidayPersons) {
+        Duties duties = makeResultDuty(startDate, endDate, weekPersons, holidayPersons);
+        FinalWriter finalWriter = new FinalWriter(weekPersons, holidayPersons, duties);
+        finalWriter.write(ouputFile);
     }
 
     public static Duties makeResultDuty(LocalDate startDate, LocalDate endDate, Persons weekPersons, Persons holidayPersons) {

@@ -3,6 +3,7 @@ package repository.writer;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
@@ -36,7 +37,7 @@ public class DutyResultWriter implements ExcelFileWriter {
         handleIOExceptionDuringWrite(outputFile, this::writeDutiesToExcel);
     }
 
-    private void writeDutiesToExcel(File file) throws IOException {
+    private void writeDutiesToExcel(File ouputFile) throws IOException {
         try (Workbook workbook = new XSSFWorkbook()) {
             Sheet sheet = workbook.createSheet("당직표 결과");
 
@@ -94,7 +95,7 @@ public class DutyResultWriter implements ExcelFileWriter {
                 row.setHeightInPoints(40);
             }
 
-            try (FileOutputStream fos = new FileOutputStream(file)) {
+            try (FileOutputStream fos = new FileOutputStream(ouputFile)) {
                 workbook.write(fos);
             }
         }
@@ -156,7 +157,7 @@ public class DutyResultWriter implements ExcelFileWriter {
 
     // duties를 7개씩 잘라서 주차별 그룹으로 나눈다.
     private List<SevenDuties> groupByWeek(List<Duty> list) {
-        List<SevenDuties> groups = new java.util.ArrayList<>();
+        List<SevenDuties> groups = new ArrayList<>();
         for (int i = 0; i < list.size(); i += 7) {
             int end = Math.min(i + 7, list.size());
             groups.add(new SevenDuties(list.subList(i, end)));
@@ -179,5 +180,5 @@ public class DutyResultWriter implements ExcelFileWriter {
         public int size() {
                 return duties.size();
             }
-        }
+    }
 }

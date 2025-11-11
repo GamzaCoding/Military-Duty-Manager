@@ -2,7 +2,6 @@ package service.model.duty;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.Comparator;
 import java.util.List;
 import service.model.day.Day;
 import service.model.person.Person;
@@ -41,6 +40,10 @@ public class Duties {
 
     public List<Duty> getDuties() {
         return duties;
+    }
+
+    public int size() {
+        return duties.size();
     }
 
     @Override

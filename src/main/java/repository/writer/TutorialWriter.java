@@ -183,7 +183,7 @@ public class TutorialWriter implements ExcelFileWriter {
         style.setDataFormat(format.getFormat("yy-MM-dd"));
 
         Font font = workbook.createFont();
-        font.setFontHeightInPoints((short) 14);
+        font.setFontHeightInPoints((short) 15);
         font.setFontName("굴림");
         style.setFont(font);
 

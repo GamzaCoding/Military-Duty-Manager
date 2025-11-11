@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import repository.reader.ExcelFileReader;
 import repository.writer.ExcelFileWriterFor;
-import repository.writer.ResultFileLocation;
+import repository.writer.location.ResultFileLocation;
 import service.model.person.Persons;
 
 public class TestController {
