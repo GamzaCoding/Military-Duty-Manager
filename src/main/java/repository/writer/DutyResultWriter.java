@@ -45,7 +45,7 @@ public class DutyResultWriter implements ExcelFileWriter {
             CellStyle centerStyle = creatPersonStyle(workbook);
             CellStyle weekendStyle = createHolidayStyle(workbook);
 
-            int maxCount = Math.min(duties.size(), 30); // 최대 30개까지만 출력
+            int maxCount = Math.min(duties.size(), 10000); // 최대 10000개까지만 출력
             int rowIndex = 0;
 
             // duties를 7개씩 잘라서 처리
@@ -61,7 +61,7 @@ public class DutyResultWriter implements ExcelFileWriter {
                     cell.setCellValue(day.toString());
 
                     // 평일, 휴일 색상 구분
-                    if (day.isHoliDay()) {
+                    if (day.isHoliday()) {
                         cell.setCellStyle(weekendStyle);
                     } else {
                         cell.setCellStyle(headerStyle);

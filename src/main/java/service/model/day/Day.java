@@ -22,20 +22,20 @@ public class Day {
         return Day.of(current, weekType, dayType);
     }
 
-    // 이거 private로 닫을 생각도 해야한다. 아니면 없애던가
-    public static Day of(LocalDate localDate, WeekType weekTypeName, DayType dayType) {
-        return new Day(localDate, weekTypeName, dayType);
-    }
-
-    public boolean isHoliDay() {
-        return dayType == DayType.HOLIDAY;
-    }
-
     private static DayType distinguishDayType(DayOfWeek dayOfWeek) {
         if (dayOfWeek == DayOfWeek.SUNDAY || dayOfWeek == DayOfWeek.SATURDAY) {
             return DayType.HOLIDAY;
         }
         return DayType.WEEKDAY;
+    }
+
+    // 이거 private로 닫을 생각도 해야한다. 아니면 없애던가
+    public static Day of(LocalDate localDate, WeekType weekTypeName, DayType dayType) {
+        return new Day(localDate, weekTypeName, dayType);
+    }
+
+    public boolean isHoliday() {
+        return dayType == DayType.HOLIDAY;
     }
 
     @Override

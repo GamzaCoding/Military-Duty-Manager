@@ -19,14 +19,14 @@ class DutyMakeServiceTest {
         ExcelFileReader excelFileReader = new ExcelFileReader();
         String filePath = "/Users/seok/openMission/당직자 순서(입력 데이터).xlsx";
         File file = new File(filePath);
-        Persons persons = excelFileReader.readHolidayPersons(file);
+        Persons holidayPersons = excelFileReader.readHolidayPersons(file);
+        Persons weekdayPersons = excelFileReader.readWeekdayPersons(file);
 
-        LocalDate startDate = LocalDate.of(2025,11,1);
-        LocalDate endDate = LocalDate.of(2025,11,30);
+        LocalDate startDate = LocalDate.of(2025, 11, 1);
+        LocalDate endDate = LocalDate.of(2026, 10, 20);
 
         // when
-        Duties duties = Duties.makeDuties(startDate, endDate, persons);
-        System.out.println(duties.toString());
+        Duties duties = Duties.makeResultDuty(startDate, endDate, weekdayPersons, holidayPersons);
 
         DutyResultWriter dutyResultWriter = DutyResultWriter.of(duties.getDuties());
         ResultFileLocation resultFileLocation = new ResultFileLocation();

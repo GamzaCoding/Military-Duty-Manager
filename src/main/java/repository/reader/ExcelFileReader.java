@@ -54,14 +54,18 @@ public class ExcelFileReader {
     }
 
     private void readSheetData(Sheet sheet, List<Person> people) {
-        for (int i = FIRST_DATA_ROW_INDEX; i <= sheet.getLastRowNum(); i++) {
+        for (int i = FIRST_DATA_ROW_INDEX; i <= sheet.getPhysicalNumberOfRows(); i++) {
             Row row = sheet.getRow(i);
+            int physicalNumberOfRows = sheet.getPhysicalNumberOfRows();
 
             if (row == null) {
                 continue; // 빈 행은 건너뛰기
             }
 
             Integer position = getNumber(row.getCell(POSITION_INDEX));
+            if (position == 0) { // 엑셀 행에 아무 데이터 없는데 그냥 셀이 존재할 경우 걸러내는 조건
+                continue;
+            }
             String rank = getStringValue(row.getCell(RANK_INDEX));
             String name = getStringValue(row.getCell(NAME_INDEX));
             LocalDate moveInDate = parseDate(row.getCell(MOVE_IN_INDEX));
