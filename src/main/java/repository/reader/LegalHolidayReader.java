@@ -3,6 +3,7 @@ package repository.reader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -14,46 +15,37 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import service.model.person.Person;
-import service.model.person.Persons;
+import service.model.day.Day;
+import service.model.day.DayType;
+import service.model.day.Days;
+import service.model.day.WeekType;
 
-public class ExcelFileReader {
+public class LegalHolidayReader {
 
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final int FIRST_DATA_ROW_INDEX = 1;
-    private static final int POSITION_INDEX = 0;
-    private static final int RANK_INDEX = 1;
-    private static final int NAME_INDEX = 2;
-    private static final int MOVE_IN_INDEX = 3;
-    private static final int MOVE_OUT_INDEX = 4;
-    private static final String WEEKDAY_SHEET_NAME = "당직자 순서(평일)";
-    private static final String HOLIDAY_SHEET_NAME = "당직자 순서(휴일)";
+    private static final int LOCAL_DATE_INDEX = 0;
 
-    // 엑셀에서 평일 당직 시트를 읽어오는 메서드
-    public Persons readWeekdayPersons(File excelFile) {
-        return handleIOExceptionDuringRead(excelFile, file -> readPersonsFromExcel(excelFile, WEEKDAY_SHEET_NAME));
-    }
-    // 엑셀에서 휴일 당직 시트를 읽어오는 메서드
-    public Persons readHolidayPersons(File excelFile) {
-        return handleIOExceptionDuringRead(excelFile, file -> readPersonsFromExcel(excelFile, HOLIDAY_SHEET_NAME));
+    public Days readLegalHolidays(File excelFile, String sheetName) {
+        return handleIOExceptionDuringRead(excelFile, file -> readHolidaysFromExcel(excelFile, sheetName));
     }
 
-    private Persons readPersonsFromExcel(File excelFile, String sheetName) throws IOException {
-        List<Person> people = new ArrayList<>();
+    private Days readHolidaysFromExcel(File excelFile, String sheetName) throws IOException {
+        List<Day> holidays = new ArrayList<>();
 
         try (FileInputStream fis = new FileInputStream(excelFile);
              Workbook workbook = new XSSFWorkbook(fis)) { // 메모리 누수 문제로 try()로 감싸줌
 
             for (Sheet sheet : workbook) {
                 if (sheet.getSheetName().contains(sheetName)) {
-                    readSheetData(sheet, people);
+                    readSheetData(sheet, holidays);
                 }
             }
         }
-        return Persons.of(people);
+        return Days.of(holidays);
     }
 
-    private void readSheetData(Sheet sheet, List<Person> people) {
+    private void readSheetData(Sheet sheet, List<Day> holidays) {
         for (int i = FIRST_DATA_ROW_INDEX; i <= sheet.getPhysicalNumberOfRows(); i++) {
             Row row = sheet.getRow(i);
 
@@ -61,20 +53,17 @@ public class ExcelFileReader {
                 continue; // 빈 행은 건너뛰기
             }
 
-            Integer position = getNumber(row.getCell(POSITION_INDEX));
-            if (position == 0) { // 엑셀 행에 아무 데이터 없는데 그냥 셀이 존재할 경우 걸러내는 조건
+            LocalDate localDate = getLocalDate(row.getCell(LOCAL_DATE_INDEX));
+            if (localDate == null) { // 엑셀 행에 아무 데이터 없는데 그냥 셀이 존재할 경우 걸러내는 조건
                 continue;
             }
-            String rank = getStringValue(row.getCell(RANK_INDEX));
-            String name = getStringValue(row.getCell(NAME_INDEX));
-            LocalDate moveInDate = parseDate(row.getCell(MOVE_IN_INDEX));
-            LocalDate moveOutDate = parseDate(row.getCell(MOVE_OUT_INDEX));
+            WeekType weekType = WeekType.from(localDate.getDayOfWeek());
 
-            people.add(Person.from(position, rank, name, moveInDate, moveOutDate));
+            holidays.add(Day.of(localDate, weekType, DayType.HOLIDAY));
         }
     }
 
-    private LocalDate parseDate(Cell cell) {
+    private LocalDate getLocalDate(Cell cell) {
         if (cell == null) {
             return null;
         }
@@ -98,16 +87,6 @@ public class ExcelFileReader {
             return cell.getStringCellValue().trim();
         }
         return "";
-    }
-
-    private Integer getNumber(Cell cell) {
-        if (cell == null) {
-            return 0;
-        }
-        if (cell.getCellType() == CellType.NUMERIC) {
-            return (int) cell.getNumericCellValue();
-        }
-        return 0;
     }
 
     private <T, R> R handleIOExceptionDuringRead(T input, IOFunctionForRead<T, R> ioFunction) {

@@ -32,11 +32,11 @@ public class MainWriter implements ExcelFileWriter{
     private void writeExcelFile(File outputFile) throws IOException {
         try (Workbook workbook = new XSSFWorkbook()) {
             DutyOrderWriter dutyOrderWriter = new DutyOrderWriter(workbook);
-            DutyTableWriter dutyResultWriter2 = new DutyTableWriter(workbook);
+            DutyTableWriter dutyTableWriter = new DutyTableWriter(workbook);
 
+            dutyTableWriter.writeDutyTable("당직표 결과", duties);
             dutyOrderWriter.createDutyOrderSheet("당직자 순서(평일)",weekPersons, DayType.WEEKDAY);
             dutyOrderWriter.createDutyOrderSheet("당직자 순서(휴일)",holidayPersons, DayType.HOLIDAY);
-            dutyResultWriter2.writeDutyTable("당직표 결과", duties);
 
             saveWorkbook(workbook, outputFile);
         }

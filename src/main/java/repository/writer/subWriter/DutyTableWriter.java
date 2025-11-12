@@ -63,7 +63,12 @@ public class DutyTableWriter {
             Day day = duty.getDay();
             Cell cell = row.createCell(i);
             cell.setCellValue(day.toString());
-            cell.setCellStyle(day.isHoliday() ? holidayStyle : weekdayStyle);
+
+            if (day.isHoliday()) {
+                cell.setCellStyle(holidayStyle);
+            } else {
+                cell.setCellStyle(weekdayStyle);
+            }
         }
     }
 
