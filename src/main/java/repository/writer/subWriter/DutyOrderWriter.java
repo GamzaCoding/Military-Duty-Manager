@@ -1,5 +1,8 @@
-package repository.writer;
+package repository.writer.subWriter;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
@@ -33,6 +36,13 @@ public class DutyOrderWriter {
         adjustLayout(sheet);
     }
 
+    // DutyOrderWriter 테스트를 위한 메서드
+    public void saveWorkbook(File outputFile) throws IOException {
+        try (FileOutputStream fos = new FileOutputStream(outputFile)) {
+            workbook.write(fos);
+        }
+    }
+
     private void adjustLayout(Sheet sheet) {
         for (int i = 0; i < HEADER_LENGTH; i++) {
             sheet.autoSizeColumn(i);
@@ -44,7 +54,7 @@ public class DutyOrderWriter {
 
     private void createHeader(Sheet sheet, CellStyle headerStyle) {
         Row headerRow = sheet.createRow(0);
-        List<String> headerTitles = List.of("당직순번", "계급", "이름", "전입일자", "전출일자");
+        List<String> headerTitles = List.of("당직순번", "계급", "이름", "전입일자(예정일 포함)", "전출일자(에정일 포함)");
         // 이거 stream으로 변경할 수  없나?
         for (int i = 0; i < headerTitles.size(); i++) {
             Cell cell = headerRow.createCell(i);

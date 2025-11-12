@@ -5,16 +5,18 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import repository.writer.subWriter.DutyOrderWriter;
+import repository.writer.subWriter.DutyTableWriter;
 import service.model.day.DayType;
 import service.model.duty.Duties;
 import service.model.person.Persons;
 
-public class FinalWriter implements ExcelFileWriter{
+public class MainWriter implements ExcelFileWriter{
     private final Persons weekPersons;
     private final Persons holidayPersons;
     private final Duties duties;
 
-    public FinalWriter(Persons weekPersons, Persons holidayPersons, Duties duties) {
+    public MainWriter(Persons weekPersons, Persons holidayPersons, Duties duties) {
         this.weekPersons = weekPersons;
         this.holidayPersons = holidayPersons;
         this.duties = duties;
@@ -30,11 +32,11 @@ public class FinalWriter implements ExcelFileWriter{
     private void writeExcelFile(File outputFile) throws IOException {
         try (Workbook workbook = new XSSFWorkbook()) {
             DutyOrderWriter dutyOrderWriter = new DutyOrderWriter(workbook);
-            DutyResultWriter2 dutyResultWriter2 = new DutyResultWriter2(workbook);
+            DutyTableWriter dutyResultWriter2 = new DutyTableWriter(workbook);
 
             dutyOrderWriter.createDutyOrderSheet("당직자 순서(평일)",weekPersons, DayType.WEEKDAY);
             dutyOrderWriter.createDutyOrderSheet("당직자 순서(휴일)",holidayPersons, DayType.HOLIDAY);
-            dutyResultWriter2.writeResultSheet("당직표 결과", duties);
+            dutyResultWriter2.writeDutyTable("당직표 결과", duties);
 
             saveWorkbook(workbook, outputFile);
         }

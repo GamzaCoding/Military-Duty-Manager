@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -69,11 +70,11 @@ public class TutorialWriter implements ExcelFileWriter {
 
         // 헤더 작성
         Row header = sheet.createRow(0);
-        String[] headers = {"순번", "계급", "이름", "전입일(예정일 포함)", "전출일(예정일 포함)"};
+        List<String> headers = List.of("순번", "계급", "이름", "전입일(예정일 포함)", "전출일(예정일 포함)") ;
 
-        for (int i = 0; i < headers.length; i++) {
+        for (int i = 0; i < headers.size(); i++) {
             Cell cell = header.createCell(i);
-            cell.setCellValue(headers[i]);
+            cell.setCellValue(headers.get(i));
             cell.setCellStyle(headerStyle);
         }
 
@@ -89,7 +90,7 @@ public class TutorialWriter implements ExcelFileWriter {
         }
 
         // 셀 크기 및 행 높이 조정
-        for (int i = 0; i < headers.length; i++) {
+        for (int i = 0; i < headers.size(); i++) {
             sheet.autoSizeColumn(i);
             int currentWidth = sheet.getColumnWidth(i);
             sheet.setColumnWidth(i, (int) (currentWidth * 1.3));

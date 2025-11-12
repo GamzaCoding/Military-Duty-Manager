@@ -4,20 +4,23 @@ package repository.writer;
 import static service.model.day.DayType.*;
 import static service.model.day.WeekType.*;
 
-import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.jupiter.api.Test;
 import repository.writer.location.ResultFileLocation;
+import repository.writer.subWriter.DutyTableWriter;
+import service.model.duty.Duties;
 import service.model.duty.Duty;
 import service.model.person.Person;
 import service.model.day.Day;
 
-class DutyResultWriterTest {
+class DutyTableWriterTest {
 
     @Test
-    void 당직표_7개_입력_테스트() throws IOException {
+    void 당직표_정상_출력_테스트() throws IOException {
         // given
         Person person0 = Person.from(null, "대위", "최대위", null, null);
         Person person1 = Person.from(null, "중위", "최중위", null, null);
@@ -79,15 +82,16 @@ class DutyResultWriterTest {
                 Duty.of(day6, person6)
         );
 
-        ExcelFileWriter dutyResultWriter = DutyResultWriter.of(duties);
-        ResultFileLocation resultFileLocation = new ResultFileLocation();
-        File outputFile = resultFileLocation.getLocation();
+        Duties dutiesReal = Duties.of(duties);
 
-        // when
+        // when, then
+        try (Workbook workbook = new XSSFWorkbook()) {
+            DutyTableWriter dutyTableWriter = new DutyTableWriter(workbook);
+            ResultFileLocation resultFileLocation = new ResultFileLocation();
 
-        dutyResultWriter.write(outputFile);
-
-        // then
+            dutyTableWriter.writeDutyTable("당직표", dutiesReal);
+            dutyTableWriter.saveWorkbook(resultFileLocation.getLocation());
+        }
     }
 
 }

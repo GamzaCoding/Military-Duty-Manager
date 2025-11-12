@@ -1,5 +1,7 @@
-package repository.writer;
+package repository.writer.subWriter;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,15 +21,16 @@ import service.model.duty.Duties;
 import service.model.duty.Duty;
 import service.model.person.Person;
 
-public class DutyResultWriter2 {
+public class DutyTableWriter {
     public static final int WEEK_SIZE = 7;
+
     private final Workbook workbook;
 
-    public DutyResultWriter2(Workbook workbook) {
+    public DutyTableWriter(Workbook workbook) {
         this.workbook = workbook;
     }
 
-    public void writeResultSheet(String sheetName, Duties duties) throws IOException {
+    public void writeDutyTable(String sheetName, Duties duties) {
         Sheet sheet = workbook.createSheet(sheetName);
 
         CellStyle weekdayStyle = createWeekdayStyle(workbook);
@@ -43,10 +46,15 @@ public class DutyResultWriter2 {
 
             Row personRow = sheet.createRow(rowIndex++);
             writePersonRow(personRow, sevenDuties, personStyle);
-
-//            rowIndex++;
         }
         adjustSheetLayout(sheet);
+    }
+
+    // DutyTableWriter 테스트를 위한 메서드
+    public void saveWorkbook(File outputFile) throws IOException {
+        try (FileOutputStream fos = new FileOutputStream(outputFile)) {
+            workbook.write(fos);
+        }
     }
 
     private void writeDateRow(Row row, SevenDuties sevenDuties, CellStyle weekdayStyle, CellStyle holidayStyle) {
@@ -81,6 +89,7 @@ public class DutyResultWriter2 {
         style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         return style;
     }
+
     private CellStyle createPersonStyle(Workbook workbook) {
         return baseCenterStyle(workbook);
     }
@@ -129,6 +138,7 @@ public class DutyResultWriter2 {
         public Duty get(int index) {
             return duties.get(index);
         }
+
         public int size() {
             return duties.size();
         }
