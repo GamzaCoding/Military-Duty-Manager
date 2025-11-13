@@ -10,7 +10,7 @@ import service.model.duty.Duty;
 import service.model.person.Person;
 import service.model.person.Persons;
 
-public class DutyOrderWriteService {
+public class DutyOrderService {
 
     // 평일, 휴일에 대한 당직 순서를 받아서 엑셀 파일에 하나의 당직표를 작성하는 서비스
     public static Duties makeResultDuty(LocalDate startDate, LocalDate endDate, Persons weekPersons, Persons holidayPersons) {

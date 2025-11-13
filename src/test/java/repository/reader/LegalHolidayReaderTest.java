@@ -15,7 +15,7 @@ class LegalHolidayReaderTest {
         LegalHolidayFileLocation location = new LegalHolidayFileLocation();
 
         // when
-        Days days = legalHolidayReader.readLegalHolidays(location.getLocation(), "2025년");
+        Days days = legalHolidayReader.readLegalHolidays(location.getLocation(), "2025");
 
         // then
         days.getDays().stream()

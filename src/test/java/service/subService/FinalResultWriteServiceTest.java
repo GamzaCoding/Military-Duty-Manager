@@ -27,7 +27,7 @@ class FinalResultWriteServiceTest {
         File location = resultFileLocation.getLocation();
 
         // when
-        FinalResultWriterService finalResultWriterService = new FinalResultWriterService(location);
+        FinalResultService finalResultWriterService = new FinalResultService(location);
         finalResultWriterService.writeFinalResult(startDate, endDate, weekdayPersons, holidayPersons);
         // then
     }

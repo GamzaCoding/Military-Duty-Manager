@@ -7,7 +7,7 @@ public class Day {
 
     private final LocalDate localDate;
     private final WeekType weekTypeName;
-    private final DayType dayType;
+    private DayType dayType;
     private String description = "설명 없음(기본값)";
 
     private Day(LocalDate localDate, WeekType weekTypeName, DayType dayType) {
@@ -59,6 +59,10 @@ public class Day {
         return String.valueOf(localDate.getYear());
     }
 
+    public boolean isSameDate(Day otherDay) {
+        return localDate.equals(otherDay.getLocalDate());
+    }
+
     @Override
     public String toString() {
         int year = localDate.getYear() % 100;
@@ -67,5 +71,9 @@ public class Day {
 
         String formatted = String.format("'%02d.%2d.%2d.", year, month, day);
         return formatted + "(" + weekTypeName.weekName() + ")";
+    }
+
+    public void changeDayType(DayType dayType) {
+        this.dayType = dayType;
     }
 }
