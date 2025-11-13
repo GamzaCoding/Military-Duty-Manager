@@ -7,16 +7,19 @@ import java.time.format.DateTimeFormatter;
 
 public class TutorialFileLocation {
     private static final DateTimeFormatter FILE_FORMATTER = DateTimeFormatter.ofPattern("yyyy년_MM월_dd일_HH시_mm분");
+    private static final String SUB_FOLDER_NAME = "tutorial";
+    private static final String PATH = "/";
+    private static final String FILE_NAME_HEADER = "당직자 순서(양식)_";
+    private static final String FILE_EXTENSION = ".xlsx";
 
     public TutorialFileLocation() {
     }
 
     public File getLocation() throws IOException {
-        String subFolder = "tutorial/";
-        File directory = new File(subFolder);
+        File directory = new File(SUB_FOLDER_NAME + PATH);
         Files.createDirectories(directory.toPath());
 
-        String fileName = "당직자 순서(양식)_" + FILE_FORMATTER.format(java.time.LocalDateTime.now()) + ".xlsx";
+        String fileName = FILE_NAME_HEADER + FILE_FORMATTER.format(java.time.LocalDateTime.now()) + FILE_EXTENSION;
 
         return new File(directory, fileName);
     }

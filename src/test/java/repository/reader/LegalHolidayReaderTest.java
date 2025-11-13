@@ -1,6 +1,5 @@
 package repository.reader;
 
-
 import java.io.File;
 import org.junit.jupiter.api.Test;
 import repository.reader.location.LegalHolidayLocation;

@@ -8,6 +8,7 @@ public class Day {
     private final LocalDate localDate;
     private final WeekType weekTypeName;
     private final DayType dayType;
+    private String description = "설명 없음(기본값)";
 
     private Day(LocalDate localDate, WeekType weekTypeName, DayType dayType) {
         this.localDate = localDate;
@@ -38,6 +39,26 @@ public class Day {
         return dayType == DayType.HOLIDAY;
     }
 
+    public LocalDate getLocalDate() {
+        return localDate;
+    }
+
+    public WeekType getWeekTypeName() {
+        return weekTypeName;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getYear() {
+        return String.valueOf(localDate.getYear());
+    }
+
     @Override
     public String toString() {
         int year = localDate.getYear() % 100;
@@ -45,6 +66,6 @@ public class Day {
         int day = localDate.getDayOfMonth();
 
         String formatted = String.format("'%02d.%2d.%2d.", year, month, day);
-        return formatted + "(" + weekTypeName.getWeekName() + ")";
+        return formatted + "(" + weekTypeName.name() + ")";
     }
 }

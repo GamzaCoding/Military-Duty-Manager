@@ -29,7 +29,8 @@ public enum WeekType {
             case SUNDAY -> SUNDAY;
         };
     }
-    public String getWeekName() {
+
+    public String weekName() {
         return weekName;
     }
 }
