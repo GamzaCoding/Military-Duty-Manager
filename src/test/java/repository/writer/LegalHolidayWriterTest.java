@@ -1,7 +1,5 @@
 package repository.writer;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -14,7 +12,7 @@ import service.model.day.WeekType;
 class LegalHolidayWriterTest {
 
     @Test
-    void holiday_파일에_휴일_추가_기능_테스트() throws IOException {
+    void 휴일_추가_기능() throws IOException {
         // given
         LegalHolidayLocation legalHolidayLocation = new LegalHolidayLocation();
         File location = legalHolidayLocation.getLocation();
@@ -24,5 +22,17 @@ class LegalHolidayWriterTest {
 
         // when, then
         legalHolidayWriter.write(location, day);
+    }
+
+    @Test
+    void 휴일_삭제_기능() throws IOException {
+        // given
+        LegalHolidayLocation legalHolidayLocation = new LegalHolidayLocation();
+        File location = legalHolidayLocation.getLocation();
+        Day day = Day.of(LocalDate.of(2025, 3,1), WeekType.SATURDAY, DayType.HOLIDAY);
+        LegalHolidayWriter legalHolidayWriter = new LegalHolidayWriter();
+
+        // when, then
+        legalHolidayWriter.remove(location, day);
     }
 }

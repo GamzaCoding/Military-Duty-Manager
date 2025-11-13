@@ -16,6 +16,7 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
     implementation("org.apache.poi:poi-ooxml:5.4.1")
+    implementation("org.apache.logging.log4j:log4j-core:2.24.1")
 }
 
 tasks.test {

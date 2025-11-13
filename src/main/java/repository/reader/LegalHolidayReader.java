@@ -33,7 +33,7 @@ public class LegalHolidayReader {
         List<Day> holidays = new ArrayList<>();
 
         try (FileInputStream fis = new FileInputStream(excelFile);
-             Workbook workbook = new XSSFWorkbook(fis)) { // 메모리 누수 문제로 try()로 감싸줌
+             Workbook workbook = new XSSFWorkbook(fis)) {
 
             for (Sheet sheet : workbook) {
                 if (sheet.getSheetName().contains(sheetName)) {
@@ -44,48 +44,45 @@ public class LegalHolidayReader {
         return Days.of(holidays);
     }
 
+    // List<Day> holidays 이부분을 리팩터링 해야 할거 같음
     private void readSheetData(Sheet sheet, List<Day> holidays) {
         for (int i = FIRST_DATA_ROW_INDEX; i <= sheet.getPhysicalNumberOfRows(); i++) {
             Row row = sheet.getRow(i);
-
-            if (row == null) {
-                continue; // 빈 행은 건너뛰기
+            if (isBlankRow(row)) {
+                continue;
             }
-
             LocalDate localDate = getLocalDate(row.getCell(LOCAL_DATE_INDEX));
-            if (localDate == null) { // 엑셀 행에 아무 데이터 없는데 그냥 셀이 존재할 경우 걸러내는 조건
+            if (isBlankLocalDate(localDate)) {
                 continue;
             }
             WeekType weekType = WeekType.from(localDate.getDayOfWeek());
-
             holidays.add(Day.of(localDate, weekType, DayType.HOLIDAY));
         }
     }
 
+    // else 안쓰고 싶은데
     private LocalDate getLocalDate(Cell cell) {
-        if (cell == null) {
-            return null;
-        }
-
-        if (cell.getCellType() == CellType.NUMERIC && DateUtil.isCellDateFormatted(cell)) {
+        if (isLocalDateFormatOnNumericType(cell)) {
             return cell.getLocalDateTimeCellValue().toLocalDate();
         } else {
-            String value = getStringValue(cell);
-            if (value.isBlank()) {
-                return null;
-            }
-            return LocalDate.parse(value, DATE_FORMATTER);
+            return LocalDate.parse(getStringValue(cell), DATE_FORMATTER);
         }
     }
 
     private String getStringValue(Cell cell) {
-        if (cell == null) {
-            return "";
-        }
-        if (cell.getCellType() == CellType.STRING) {
-            return cell.getStringCellValue().trim();
-        }
-        return "";
+        return cell.getStringCellValue().trim();
+    }
+
+    private boolean isLocalDateFormatOnNumericType(Cell cell) {
+        return cell.getCellType() == CellType.NUMERIC && DateUtil.isCellDateFormatted(cell);
+    }
+
+    private boolean isBlankRow(Row row) {
+        return row == null;
+    }
+
+    private boolean isBlankLocalDate(LocalDate localDate) {
+        return localDate == null;
     }
 
     private <T, R> R handleIOExceptionDuringRead(T input, IOFunctionForRead<T, R> ioFunction) {
