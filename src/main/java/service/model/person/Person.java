@@ -1,6 +1,7 @@
 package service.model.person;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Person {
     private final Integer position;
@@ -50,5 +51,22 @@ public class Person {
     @Override
     public String toString() {
         return String.format("순위: %d, 계급: %s, 이름: %s, 전입일: %s, 전출일: %s", position, rank, name, moveInDate, moveOutDate);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Person person = (Person) o;
+        return Objects.equals(rank, person.rank)
+                && Objects.equals(name, person.name)
+                && Objects.equals(moveInDate, person.moveInDate)
+                && Objects.equals(moveOutDate, person.moveOutDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(rank, name, moveInDate, moveOutDate);
     }
 }

@@ -26,14 +26,6 @@ public class Persons {
         return persons.isEmpty();
     }
 
-    // 이거 반드시 수정해야 하는 로직임... 일단 이정도만 하자.
-    public int indexOf(Person targetPerson) {
-        if (persons.contains(targetPerson)) {
-            return persons.indexOf(targetPerson);
-        }
-        return 0;
-    }
-
     public List<Person> getPersons() {
         return persons;
     }
