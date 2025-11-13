@@ -66,6 +66,6 @@ public class Day {
         int day = localDate.getDayOfMonth();
 
         String formatted = String.format("'%02d.%2d.%2d.", year, month, day);
-        return formatted + "(" + weekTypeName.name() + ")";
+        return formatted + "(" + weekTypeName.weekName() + ")";
     }
 }

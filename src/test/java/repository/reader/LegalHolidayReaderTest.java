@@ -16,7 +16,7 @@ class LegalHolidayReaderTest {
         File file = new File(location);
 
         // when
-        Days days = legalHolidayReader.readLegalHolidays(file, "2026년");
+        Days days = legalHolidayReader.readLegalHolidays(file, "2025년");
 
         // then
         days.getDays().stream()
