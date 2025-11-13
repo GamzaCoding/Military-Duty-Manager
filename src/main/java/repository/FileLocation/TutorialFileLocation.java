@@ -15,7 +15,7 @@ public class TutorialFileLocation {
     public TutorialFileLocation() {
     }
 
-    public File getLocation() throws IOException {
+    public File getFile() throws IOException {
         File directory = new File(SUB_FOLDER_NAME + PATH);
         Files.createDirectories(directory.toPath());
 

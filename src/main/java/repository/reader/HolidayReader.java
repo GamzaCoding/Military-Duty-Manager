@@ -19,13 +19,13 @@ import service.model.day.DayType;
 import service.model.day.Days;
 import service.model.day.WeekType;
 
-public class LegalHolidayReader {
+public class HolidayReader {
 
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final int FIRST_DATA_ROW_INDEX = 1;
     private static final int LOCAL_DATE_INDEX = 0;
 
-    public Days readLegalHolidays(File excelFile, String sheetName) {
+    public Days readHolidays(File excelFile, String sheetName) {
         return handleIOExceptionDuringRead(excelFile, file -> readHolidaysFromExcel(excelFile, sheetName));
     }
 

@@ -24,12 +24,11 @@ class FinalResultWriteServiceTest {
 
 
         ResultFileLocation resultFileLocation = new ResultFileLocation();
-        File location = resultFileLocation.getLocation();
+        File location = resultFileLocation.getFile();
 
         // when
         FinalResultService finalResultWriterService = new FinalResultService(location);
         finalResultWriterService.writeFinalResult(startDate, endDate, weekdayPersons, holidayPersons);
         // then
     }
-
 }

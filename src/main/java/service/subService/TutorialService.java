@@ -33,7 +33,7 @@ public class TutorialService {
 
         TutorialWriter tutorialWriter = TutorialWriter.of(weekdayPersons, holidayPersons);
         TutorialFileLocation tutorialFileLocation = new TutorialFileLocation();
-        File location = tutorialFileLocation.getLocation();
+        File location = tutorialFileLocation.getFile();
         tutorialWriter.write(location);
     }
 }

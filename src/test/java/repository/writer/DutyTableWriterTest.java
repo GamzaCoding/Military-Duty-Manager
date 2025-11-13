@@ -90,7 +90,7 @@ class DutyTableWriterTest {
             ResultFileLocation resultFileLocation = new ResultFileLocation();
 
             dutyTableWriter.writeDutyTable("당직표", dutiesReal);
-            dutyTableWriter.saveWorkbook(resultFileLocation.getLocation());
+            dutyTableWriter.saveWorkbook(resultFileLocation.getFile());
         }
     }
 

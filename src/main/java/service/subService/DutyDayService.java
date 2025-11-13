@@ -4,19 +4,19 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Stream;
-import repository.FileLocation.LegalHolidayFileLocation;
-import repository.reader.LegalHolidayReader;
+import repository.FileLocation.HolidayFileLocation;
+import repository.reader.HolidayReader;
 import service.model.day.Day;
 import service.model.day.DayType;
 import service.model.day.Days;
 
 public class DutyDayService {
-    private final LegalHolidayReader holidayReader;
-    private final LegalHolidayFileLocation location;
+    private final HolidayReader holidayReader;
+    private final HolidayFileLocation location;
 
     public DutyDayService() {
-        this.holidayReader = new LegalHolidayReader();
-        this.location = new LegalHolidayFileLocation();
+        this.holidayReader = new HolidayReader();
+        this.location = new HolidayFileLocation();
     }
 
     /**
@@ -41,13 +41,13 @@ public class DutyDayService {
 
     private Days findHolidayFromTo(LocalDate startDate, LocalDate endDate) throws IOException {
         if (isTwoYears(startDate, endDate)) {
-            Days StartDateYearHolidays = holidayReader.readLegalHolidays(location.getLocation(),
+            Days StartDateYearHolidays = holidayReader.readHolidays(location.getFile(),
                     String.valueOf(startDate.getYear()));
-            Days endDateYearHolidays = holidayReader.readLegalHolidays(location.getLocation(),
+            Days endDateYearHolidays = holidayReader.readHolidays(location.getFile(),
                     String.valueOf(endDate.getYear()));
             return StartDateYearHolidays.merge(endDateYearHolidays);
         }
-        return holidayReader.readLegalHolidays(location.getLocation(), String.valueOf(startDate.getYear()));
+        return holidayReader.readHolidays(location.getFile(), String.valueOf(startDate.getYear()));
     }
 
     private boolean isTwoYears(LocalDate startDate, LocalDate endDate) {

@@ -13,7 +13,7 @@ public class ResultFileLocation {
     public ResultFileLocation() {
     }
 
-    public File getLocation() throws IOException {
+    public File getFile() throws IOException {
         LocalDate now = LocalDate.now();
         String subFolder = "output/" + FOLDER_FORMATTER.format(now);
         File directory = new File(subFolder);
