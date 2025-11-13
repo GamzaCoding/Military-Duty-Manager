@@ -21,7 +21,7 @@ class LegalHolidayWriterTest {
         LegalHolidayWriter legalHolidayWriter = new LegalHolidayWriter();
 
         // when, then
-        legalHolidayWriter.write(location, day);
+        legalHolidayWriter.add(location, day);
     }
 
     @Test

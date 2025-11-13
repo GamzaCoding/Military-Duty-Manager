@@ -23,16 +23,19 @@ import service.model.day.Day;
 public class LegalHolidayWriter {
 
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    public static final String FONT_TYPE = "굴림";
     private static final int FIRST_DATA_ROW_INDEX = 1;
     public static final int CELL_COUNT = 3;
     public static final int DAY_DATA_INDEX = 0;
+    public static final int LOCAL_DATE_INDEX = 0;
+    public static final int WEEK_TYPE_INDEX = 1;
+    public static final int DAY_DESCRIPTION_INDEX = 2;
+    public static final int FONT_SIZE = 15;
 
-    // 공휴일 엑셀 파일에 휴일 데이터를 추가
-    public void write(File outFile, Day day) {
+    public void add(File outFile, Day day) {
         handleExcelOperation(outFile, day, (sheet, workbook) -> addDayToFile(day, sheet, workbook));
     }
 
-    // 공휴일 엑셀 파일에서 휴일 데이터를 삭제
     public void remove(File outFile, Day day) {
         handleExcelOperation(outFile, day, (sheet, workbook) -> removeDayFromFile(day, sheet));
     }
@@ -52,11 +55,11 @@ public class LegalHolidayWriter {
     }
 
     private void addDayToFile(Day day, Sheet sheet, Workbook workbook) {
-        int nextRowIndex = sheet.getLastRowNum() + 1;
-        Row row = sheet.createRow(nextRowIndex);
-        row.createCell(0).setCellValue(day.getLocalDate().format(FORMATTER));
-        row.createCell(1).setCellValue(day.getWeekTypeName().weekName());
-        row.createCell(2).setCellValue(day.getDescription());
+        int bottomRowIndex = sheet.getLastRowNum() + 1;
+        Row row = sheet.createRow(bottomRowIndex);
+        row.createCell(LOCAL_DATE_INDEX).setCellValue(day.getLocalDate().format(FORMATTER));
+        row.createCell(WEEK_TYPE_INDEX).setCellValue(day.getWeekTypeName().weekName());
+        row.createCell(DAY_DESCRIPTION_INDEX).setCellValue(day.getDescription());
 
         CellStyle basicStyle = createBasicStyle(workbook);
         applyStyleToRowCells(row, basicStyle);
@@ -73,8 +76,8 @@ public class LegalHolidayWriter {
         style.setAlignment(HorizontalAlignment.CENTER);
         style.setVerticalAlignment(VerticalAlignment.CENTER);
         Font font = workbook.createFont();
-        font.setFontHeightInPoints((short) 15);
-        font.setFontName("굴림");
+        font.setFontHeightInPoints((short) FONT_SIZE);
+        font.setFontName(FONT_TYPE);
         style.setFont(font);
 
         return style;
@@ -82,10 +85,9 @@ public class LegalHolidayWriter {
 
     private void removeDayFromFile(Day day, Sheet sheet) {
         LocalDate targetDate = day.getLocalDate();
-
         for (int i = FIRST_DATA_ROW_INDEX; i <= sheet.getLastRowNum(); i++) {
             Row row = sheet.getRow(i);
-            if (row == null) {
+            if (isBlankRow(row)) {
                 continue;
             }
             Cell cell = row.getCell(DAY_DATA_INDEX);
@@ -97,30 +99,21 @@ public class LegalHolidayWriter {
         }
     }
 
-    private LocalDate parseCellDate(Cell cell) {
-        if (cell == null) {
-            return null;
-        }
+    private static boolean isBlankRow(Row row) {
+        return row == null;
+    }
 
-        // 셀이 날짜 포맷일 경우 (엑셀 내부는 숫자 기반)
+    private LocalDate parseCellDate(Cell cell) {
         if (isLocalDateFormatOnNumericType(cell)) {
             return cell.getLocalDateTimeCellValue().toLocalDate();
         }
-
-        // 셀이 문자열인 경우
         if (cell.getCellType() == CellType.STRING) {
             String value = cell.getStringCellValue().trim();
-            if (value.isEmpty()) {
-                return null;
-            }
             return LocalDate.parse(value, FORMATTER);
         }
-
-        // 포맷 불명확할 경우 안전하게 숫자 기반 처리
         if (cell.getCellType() == CellType.NUMERIC) {
             return cell.getLocalDateTimeCellValue().toLocalDate();
         }
-
         throw new IllegalStateException("셀 타입이 날짜나 문자열이 아닙니다: " + cell.getCellType());
     }
 
