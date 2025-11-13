@@ -1,10 +1,10 @@
-package repository.writer.location;
+package repository.FileLocation;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
-public class LegalHolidayLocation {
+public class LegalHolidayFileLocation {
     private static final String SUB_FOLDER_NAME = "holiday";
     private static final String FILE_NAME = "holidays";
     private static final String PATH = "/";

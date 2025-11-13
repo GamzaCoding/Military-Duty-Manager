@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
-import repository.writer.location.TutorialFileLocation;
+import repository.FileLocation.TutorialFileLocation;
 import repository.writer.TutorialWriter;
 import service.model.person.Person;
 import service.model.person.Persons;

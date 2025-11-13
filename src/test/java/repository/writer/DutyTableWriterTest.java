@@ -10,7 +10,7 @@ import java.util.List;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.jupiter.api.Test;
-import repository.writer.location.ResultFileLocation;
+import repository.FileLocation.ResultFileLocation;
 import repository.writer.subWriter.DutyTableWriter;
 import service.model.duty.Duties;
 import service.model.duty.Duty;

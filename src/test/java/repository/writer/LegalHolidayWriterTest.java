@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
-import repository.writer.location.LegalHolidayLocation;
+import repository.FileLocation.LegalHolidayFileLocation;
 import service.model.day.Day;
 import service.model.day.DayType;
 import service.model.day.WeekType;
@@ -14,7 +14,7 @@ class LegalHolidayWriterTest {
     @Test
     void 휴일_추가_기능() throws IOException {
         // given
-        LegalHolidayLocation legalHolidayLocation = new LegalHolidayLocation();
+        LegalHolidayFileLocation legalHolidayLocation = new LegalHolidayFileLocation();
         File location = legalHolidayLocation.getLocation();
         Day day = Day.of(LocalDate.of(2025, 11,11), WeekType.TUESDAY, DayType.HOLIDAY);
         day.setDescription("전투휴무");
@@ -27,7 +27,7 @@ class LegalHolidayWriterTest {
     @Test
     void 휴일_삭제_기능() throws IOException {
         // given
-        LegalHolidayLocation legalHolidayLocation = new LegalHolidayLocation();
+        LegalHolidayFileLocation legalHolidayLocation = new LegalHolidayFileLocation();
         File location = legalHolidayLocation.getLocation();
         Day day = Day.of(LocalDate.of(2025, 3,1), WeekType.SATURDAY, DayType.HOLIDAY);
         LegalHolidayWriter legalHolidayWriter = new LegalHolidayWriter();

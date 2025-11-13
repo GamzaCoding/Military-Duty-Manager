@@ -1,4 +1,4 @@
-package repository.writer.location;
+package repository.FileLocation;
 
 import java.io.File;
 import java.io.IOException;

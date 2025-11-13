@@ -1,22 +1,21 @@
 package repository.reader;
 
-import java.io.File;
+import java.io.IOException;
 import org.junit.jupiter.api.Test;
-import repository.reader.location.LegalHolidayLocation;
+import repository.FileLocation.LegalHolidayFileLocation;
 import service.model.day.Day;
 import service.model.day.Days;
 
 class LegalHolidayReaderTest {
 
     @Test
-    void 법정공휴일_데이터_엑셀파일을_읽어오는_기능() {
+    void 법정공휴일_데이터_엑셀파일을_읽어오는_기능() throws IOException {
         // given
         LegalHolidayReader legalHolidayReader = new LegalHolidayReader();
-        String location = LegalHolidayLocation.LOCATION;
-        File file = new File(location);
+        LegalHolidayFileLocation location = new LegalHolidayFileLocation();
 
         // when
-        Days days = legalHolidayReader.readLegalHolidays(file, "2025년");
+        Days days = legalHolidayReader.readLegalHolidays(location.getLocation(), "2025년");
 
         // then
         days.getDays().stream()
