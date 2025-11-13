@@ -46,7 +46,8 @@ public class LegalHolidayReader {
 
     // List<Day> holidays 이부분을 리팩터링 해야 할거 같음
     private void readSheetData(Sheet sheet, List<Day> holidays) {
-        for (int i = FIRST_DATA_ROW_INDEX; i <= sheet.getPhysicalNumberOfRows(); i++) {
+        compressRows(sheet);
+        for (int i = FIRST_DATA_ROW_INDEX; i <= sheet.getLastRowNum(); i++) {
             Row row = sheet.getRow(i);
             if (isBlankRow(row)) {
                 continue;
@@ -60,13 +61,52 @@ public class LegalHolidayReader {
         }
     }
 
-    // else 안쓰고 싶은데
     private LocalDate getLocalDate(Cell cell) {
         if (isLocalDateFormatOnNumericType(cell)) {
             return cell.getLocalDateTimeCellValue().toLocalDate();
-        } else {
-            return LocalDate.parse(getStringValue(cell), DATE_FORMATTER);
         }
+        return LocalDate.parse(getStringValue(cell), DATE_FORMATTER);
+    }
+
+    private void compressRows(Sheet sheet) {
+        int lastRow = sheet.getLastRowNum();
+
+        for (int rowIndex = FIRST_DATA_ROW_INDEX; rowIndex <= lastRow; rowIndex++) {
+            if (isCompletelyBlankRow(sheet.getRow(rowIndex))) {
+                removeShift(sheet, rowIndex);
+                lastRow--;
+                rowIndex--;
+            }
+        }
+    }
+
+    private void removeShift(Sheet sheet, int rowIndex) {
+        int lastRow = sheet.getLastRowNum();
+        sheet.shiftRows(rowIndex + 1, lastRow, -1);
+
+        removeTemporarilyRow(sheet, lastRow);
+    }
+
+    private void removeTemporarilyRow(Sheet sheet, int lastRow) {
+        Row temporarilyRow = sheet.getRow(lastRow);
+        if (temporarilyRow != null) {
+            sheet.removeRow(temporarilyRow);
+        }
+    }
+
+    private boolean isCompletelyBlankRow(Row row) {
+        if (row == null) {
+            return true;
+        }
+
+        int lastCell = row.getLastCellNum();
+        for (int cellIndex = 0; cellIndex < lastCell; cellIndex++) {
+            Cell cell = row.getCell(cellIndex);
+            if (cell != null && !cell.toString().trim().isEmpty()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private String getStringValue(Cell cell) {
