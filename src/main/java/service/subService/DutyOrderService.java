@@ -1,10 +1,8 @@
 package service.subService;
 
-import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Stream;
-import service.model.day.Day;
+import service.model.day.Days;
 import service.model.duty.Duties;
 import service.model.duty.Duty;
 import service.model.person.Person;
@@ -13,7 +11,7 @@ import service.model.person.Persons;
 public class DutyOrderService {
 
     // 평일, 휴일에 대한 당직 순서를 받아서 엑셀 파일에 하나의 당직표를 작성하는 서비스
-    public static Duties makeResultDuty(LocalDate startDate, LocalDate endDate, Persons weekPersons, Persons holidayPersons) {
+    public static Duties makeResultDuty(Days days, Persons weekPersons, Persons holidayPersons) {
         if (weekPersons.isEmpty() || holidayPersons.isEmpty()) {
             throw new IllegalStateException("평일 또는 휴일 당직자 목록이 비었습니다.");
         }
@@ -33,10 +31,8 @@ public class DutyOrderService {
         int[] weekIndex = {0};
         int[] holidayIndex = {0};
 
-        List<Duty> dutiesResult = Stream
-                .iterate(startDate, date -> !date.isAfter(endDate), date -> date.plusDays(1))
-                .map(date -> {
-                    Day day = Day.makeDay(date);
+        List<Duty> dutiesResult = days.getDays().stream()
+                .map(day -> {
                     Person dutyPerson;
 
                     if (day.isHoliday()) {
