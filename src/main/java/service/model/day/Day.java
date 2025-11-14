@@ -2,6 +2,7 @@ package service.model.day;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Day {
 
@@ -39,6 +40,10 @@ public class Day {
         return dayType == DayType.HOLIDAY;
     }
 
+    public DayType getDayType () {
+        return dayType;
+    }
+
     public LocalDate getLocalDate() {
         return localDate;
     }
@@ -61,6 +66,21 @@ public class Day {
 
     public boolean isSameDate(Day otherDay) {
         return localDate.equals(otherDay.getLocalDate());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Day day = (Day) o;
+        return Objects.equals(localDate, day.localDate) && weekTypeName == day.weekTypeName
+                && dayType == day.dayType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(localDate, weekTypeName, dayType);
     }
 
     @Override

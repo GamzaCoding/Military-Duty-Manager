@@ -1,11 +1,12 @@
 package service.model.duty;
 
+import java.util.Objects;
 import service.model.day.Day;
 import service.model.person.Person;
 
 public class Duty {
     private final Day day;
-    private final Person person;
+    private Person person;
 
     private Duty(Day day, Person person) {
         this.day = day;
@@ -22,6 +23,24 @@ public class Duty {
 
     public Person getPerson() {
         return person;
+    }
+
+    public void setPerson(Person other) {
+        person = other;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Duty duty = (Duty) o;
+        return Objects.equals(day, duty.day) && Objects.equals(person, duty.person);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(day, person);
     }
 
     @Override

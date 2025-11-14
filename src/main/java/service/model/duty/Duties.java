@@ -16,7 +16,7 @@ public class Duties {
 
     // 이 메서드 없앨 생각도 해야한다.
     public static Duties of(List<Duty> duties) {
-         return new Duties(duties);
+        return new Duties(duties);
     }
 
     // 이거 duty안으로 옮겨볼까?
@@ -44,6 +44,11 @@ public class Duties {
 
     public int size() {
         return duties.size();
+    }
+
+    public Duty findDuty(Duty targetDuty) {
+        int index = duties.indexOf(targetDuty);
+        return duties.get(index);
     }
 
     @Override
