@@ -14,7 +14,7 @@ class FinalResultWriteServiceTest {
     void 평일_휴일_당직순서_플러스_당직결과_한_엑셀에_출력() throws IOException {
         // given
         ExcelFileReader excelFileReader = new ExcelFileReader();
-        String filePath = "/Users/seok/openMission/당직자 순서(입력 데이터).xlsx";
+        String filePath = "/Users/seok/Desktop/당직자 순서(입력 데이터).xlsx";
         File file = new File(filePath);
         Persons holidayPersons = excelFileReader.readHolidayPersons(file);
         Persons weekdayPersons = excelFileReader.readWeekdayPersons(file);

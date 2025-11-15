@@ -26,7 +26,7 @@ public class DutyDayService {
         Days holidays = findHolidayFromTo(startDate, endDate);
         List<Day> dutyDays = Stream.iterate(startDate, date -> !date.isAfter(endDate), date -> date.plusDays(1))
                 .map(date -> {
-                    Day day = Day.makeDay(date);
+                    Day day = Day.from(date);
                     if (holidays.isContain(day)) {
                         day.changeDayType(DayType.HOLIDAY);
                     }

@@ -21,7 +21,7 @@ public class Duties {
 
     // 이거 duty안으로 옮겨볼까?
     private static Duty makeDuty(LocalDate startDate, LocalDate current, Persons weekPersons, Persons holidayPersons) {
-        Day day = Day.makeDay(current);
+        Day day = Day.from(current);
 
         if (day.isHoliday()) {
             int dutyOrderIndex = calculateDutyOrderIndex(startDate, current, holidayPersons);

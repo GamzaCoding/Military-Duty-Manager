@@ -21,7 +21,7 @@ public class Days {
     // 이거 리팩터링 가능할거 같은데
     public boolean isContain(Day otherDay){
         for (Day day : days) {
-            if (day.isSameDate(otherDay)) {
+            if (day.equals(otherDay)) {
                 return true;
             }
         }

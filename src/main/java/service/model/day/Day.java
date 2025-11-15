@@ -17,11 +17,22 @@ public class Day {
         this.dayType = dayType;
     }
 
-    public static Day makeDay(LocalDate current) {
+    public static Day from(LocalDate current) {
         DayOfWeek dayOfWeek = current.getDayOfWeek();
         WeekType weekType = WeekType.from(dayOfWeek);
         DayType dayType = distinguishDayType(dayOfWeek);
         return Day.of(current, weekType, dayType);
+    }
+    public static Day of(LocalDate localDate, WeekType weekTypeName, DayType dayType) {
+        return new Day(localDate, weekTypeName, dayType);
+    }
+    // setter와 같은 역할
+    public void changeDayType(DayType dayType) {
+        this.dayType = dayType;
+    }
+    // setter와 같은 역할
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     private static DayType distinguishDayType(DayOfWeek dayOfWeek) {
@@ -29,11 +40,6 @@ public class Day {
             return DayType.HOLIDAY;
         }
         return DayType.WEEKDAY;
-    }
-
-    // 이거 private로 닫을 생각도 해야한다. 아니면 없애던가
-    public static Day of(LocalDate localDate, WeekType weekTypeName, DayType dayType) {
-        return new Day(localDate, weekTypeName, dayType);
     }
 
     public boolean isHoliday() {
@@ -52,20 +58,12 @@ public class Day {
         return weekTypeName;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public String getDescription() {
         return description;
     }
 
     public String getYear() {
         return String.valueOf(localDate.getYear());
-    }
-
-    public boolean isSameDate(Day otherDay) {
-        return localDate.equals(otherDay.getLocalDate());
     }
 
     @Override
@@ -91,9 +89,5 @@ public class Day {
 
         String formatted = String.format("'%02d.%2d.%2d.", year, month, day);
         return formatted + "(" + weekTypeName.weekName() + ")";
-    }
-
-    public void changeDayType(DayType dayType) {
-        this.dayType = dayType;
     }
 }

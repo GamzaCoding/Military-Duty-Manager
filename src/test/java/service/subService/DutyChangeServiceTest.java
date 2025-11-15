@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.*;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import service.model.day.Day;
 import service.model.day.Days;
@@ -41,12 +40,12 @@ class DutyChangeServiceTest {
         Duties duties = DutyOrderService.makeResultDuty(days, weekPersons, holiPersons);
 
         Duty dutyTo = Duty.of(
-                Day.makeDay(LocalDate.of(2025,11,1)),
+                Day.from(LocalDate.of(2025,11,1)),
                 Person.from(1, "gold", "Faker", null, null)
         );
 
         Duty dutyFrom = Duty.of(
-                Day.makeDay(LocalDate.of(2025,11,2)),
+                Day.from(LocalDate.of(2025,11,2)),
                 Person.from(2, "silver", "Oner", null, null)
         );
 
@@ -85,7 +84,7 @@ class DutyChangeServiceTest {
         Duties duties = DutyOrderService.makeResultDuty(days, weekPersons, holiPersons);
 
         Duty dutyTo = Duty.of(
-                Day.makeDay(LocalDate.of(2025,11,1)),
+                Day.from(LocalDate.of(2025,11,1)),
                 Person.from(1, "gold", "Faker", null, null)
         );
 
@@ -126,12 +125,12 @@ class DutyChangeServiceTest {
         Duties duties = DutyOrderService.makeResultDuty(days, weekPersons, holiPersons);
 
         Duty dutyTo = Duty.of(
-                Day.makeDay(LocalDate.of(2025,11,1)),
+                Day.from(LocalDate.of(2025,11,1)),
                 Person.from(1, "gold", "Faker", null, null)
         );
 
         Duty dutyFrom = Duty.of(
-                Day.makeDay(LocalDate.of(2025,11,3)),
+                Day.from(LocalDate.of(2025,11,3)),
                 Person.from(1, "대령", "태조", null, null)
         );
 
