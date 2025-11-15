@@ -15,12 +15,10 @@ public class ResultFileLocation {
 
     public File getFile() throws IOException {
         LocalDate now = LocalDate.now();
-        String subFolder = "output/" + FOLDER_FORMATTER.format(now);
+        String subFolder = "/Users/seok/Desktop/당직결과/" + FOLDER_FORMATTER.format(now);
         File directory = new File(subFolder);
         Files.createDirectories(directory.toPath());
-
         String fileName = "당직표_" + FILE_FORMATTER.format(java.time.LocalDateTime.now()) + ".xlsx";
-
         return new File(directory, fileName);
     }
 }
