@@ -15,7 +15,8 @@ public class TutorialFileLocation {
     }
 
     public File getFile() throws IOException {
-        File directory = new File("/Users/seok/Desktop/당직결과" + PATH);
+        String home = System.getProperty("user.home");
+        File directory = new File( home + "/Desktop/당직결과" + PATH);
         Files.createDirectories(directory.toPath());
         String fileName = FILE_NAME_HEADER + FILE_FORMATTER.format(java.time.LocalDateTime.now()) + FILE_EXTENSION;
 

@@ -15,7 +15,8 @@ public class ResultFileLocation {
 
     public File getFile() throws IOException {
         LocalDate now = LocalDate.now();
-        String subFolder = "/Users/seok/Desktop/당직결과/" + FOLDER_FORMATTER.format(now);
+        String home = System.getProperty("user.home");
+        String subFolder = home + "/Desktop/당직결과/" + FOLDER_FORMATTER.format(now);
         File directory = new File(subFolder);
         Files.createDirectories(directory.toPath());
         String fileName = "당직표_" + FILE_FORMATTER.format(java.time.LocalDateTime.now()) + ".xlsx";

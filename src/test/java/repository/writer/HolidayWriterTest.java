@@ -22,6 +22,7 @@ class HolidayWriterTest {
 
         // when, then
         legalHolidayWriter.add(location, day);
+        legalHolidayWriter.remove(location, day);
     }
 
     @Test
@@ -34,5 +35,6 @@ class HolidayWriterTest {
 
         // when, then
         legalHolidayWriter.remove(location, day);
+        legalHolidayWriter.add(location, day);
     }
 }

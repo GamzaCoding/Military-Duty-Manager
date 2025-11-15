@@ -91,7 +91,10 @@ public class HolidayWriter {
                 continue;
             }
             Cell cell = row.getCell(DAY_DATA_INDEX);
-            if (cell != null && targetDate.equals(parseCellDate(cell))) {
+            if (cell.getCellType() == CellType.BLANK) {
+                continue;
+            }
+            if (targetDate.equals(parseCellDate(cell))) {
                 sheet.removeRow(row);
                 shiftRowsUp(sheet, i);
                 break;
