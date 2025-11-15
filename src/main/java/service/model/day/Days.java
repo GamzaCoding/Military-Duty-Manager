@@ -18,14 +18,9 @@ public class Days {
         return days;
     }
 
-    // 이거 리팩터링 가능할거 같은데
     public boolean isContain(Day otherDay){
-        for (Day day : days) {
-            if (day.equals(otherDay)) {
-                return true;
-            }
-        }
-        return false;
+        return days.stream()
+                .anyMatch(day -> day.equals(otherDay));
     }
 
     public Days merge(Days other) {
