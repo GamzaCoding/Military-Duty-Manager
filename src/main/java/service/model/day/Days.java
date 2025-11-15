@@ -14,13 +14,13 @@ public class Days {
         return new Days(days);
     }
 
-    public List<Day> getDays() {
-        return days;
-    }
-
     public boolean isContain(Day otherDay){
         return days.stream()
                 .anyMatch(day -> day.equals(otherDay));
+    }
+
+    public List<Day> getDays() {
+        return List.copyOf(days);
     }
 
     public Days merge(Days other) {

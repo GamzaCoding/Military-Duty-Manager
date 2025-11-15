@@ -1,11 +1,6 @@
 package service.model.duty;
 
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
-import service.model.day.Day;
-import service.model.person.Person;
-import service.model.person.Persons;
 
 public class Duties {
     private final List<Duty> duties;
@@ -19,27 +14,8 @@ public class Duties {
         return new Duties(duties);
     }
 
-    // 이거 duty안으로 옮겨볼까?
-    private static Duty makeDuty(LocalDate startDate, LocalDate current, Persons weekPersons, Persons holidayPersons) {
-        Day day = Day.from(current);
-
-        if (day.isHoliday()) {
-            int dutyOrderIndex = calculateDutyOrderIndex(startDate, current, holidayPersons);
-            Person holidayPerson = holidayPersons.getPerson(dutyOrderIndex);
-            return Duty.of(day, holidayPerson);
-        }
-
-        int dutyOrderIndex = calculateDutyOrderIndex(startDate, current, weekPersons);
-        Person weekPerson = weekPersons.getPerson(dutyOrderIndex);
-        return Duty.of(day, weekPerson);
-    }
-
-    private static int calculateDutyOrderIndex(LocalDate startDate, LocalDate current, Persons persons) {
-        return (int) ChronoUnit.DAYS.between(startDate, current) % persons.size();
-    }
-
     public List<Duty> getDuties() {
-        return duties;
+        return List.copyOf(duties);
     }
 
     public int size() {
@@ -54,9 +30,7 @@ public class Duties {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-
         duties.forEach(duty -> sb.append(duty.toString()));
-
         return sb.toString();
     }
 }

@@ -14,10 +14,6 @@ public class Persons {
         return new Persons(persons);
     }
 
-    public Person getPerson(int index) {
-        return persons.get(index);
-    }
-
     public int size() {
         return persons.size();
     }
@@ -26,8 +22,12 @@ public class Persons {
         return persons.isEmpty();
     }
 
+    public Person getPerson(int index) {
+        return persons.get(index);
+    }
+
     public List<Person> getPersons() {
-        return persons;
+        return List.copyOf(persons);
     }
 
     public Persons gerSortedPersons() {

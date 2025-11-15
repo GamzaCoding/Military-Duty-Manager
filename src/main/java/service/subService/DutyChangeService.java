@@ -5,7 +5,6 @@ import service.model.duty.Duty;
 import service.model.person.Person;
 
 public class DutyChangeService {
-
     // 상호 당직 변경 기능
     public Duties changeDutyBothSides(Duties targetDuties, Duty dutyTo, Duty dutyFrom) {
         validateSameDayType(dutyTo, dutyFrom);
