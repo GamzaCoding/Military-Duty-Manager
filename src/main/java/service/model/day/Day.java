@@ -9,37 +9,36 @@ public class Day {
     public static final String DEFAULT_DESCRIPTION = "설명 없음(기본값)";
 
     private final LocalDate localDate;
-    private final WeekType weekName;
+    private final DayOfWeek dayOfWeek;
     private final DayType dayType;
     private final String description;
 
-    private Day(LocalDate localDate, WeekType weekTypeName, DayType dayType, String description) {
+    private Day(LocalDate localDate, DayType dayType, String description) {
         this.localDate = localDate;
-        this.weekName = weekTypeName;
+        this.dayOfWeek = localDate.getDayOfWeek();
         this.dayType = dayType;
         this.description = description;
     }
 
     public static Day from(LocalDate current) {
         DayOfWeek dayOfWeek = current.getDayOfWeek();
-        WeekType weekType = WeekType.from(dayOfWeek);
         DayType dayType = distinguishBasicDayType(dayOfWeek);
-        return Day.of(current, weekType, dayType);
+        return Day.of(current, dayType);
     }
-    public static Day of(LocalDate localDate, WeekType weekTypeName, DayType dayType) {
-        return new Day(localDate, weekTypeName, dayType, DEFAULT_DESCRIPTION);
+    public static Day of(LocalDate localDate, DayType dayType) {
+        return new Day(localDate, dayType, DEFAULT_DESCRIPTION);
     }
 
-    public static Day of(LocalDate localDate, WeekType weekTypeName, DayType dayType, String description) {
-        return new Day(localDate, weekTypeName, dayType, description);
+    public static Day of(LocalDate localDate, DayType dayType, String description) {
+        return new Day(localDate, dayType, description);
     }
 
     public Day convertHoliday() {
-        return Day.of(localDate, weekName, DayType.HOLIDAY);
+        return Day.of(localDate, DayType.HOLIDAY);
     }
 
     public Day settingDescription(String description) {
-        return Day.of(localDate, weekName, dayType, description);
+        return Day.of(localDate, dayType, description);
     }
 
     private static DayType distinguishBasicDayType(DayOfWeek dayOfWeek) {
@@ -61,18 +60,25 @@ public class Day {
         return localDate;
     }
 
-    public WeekType getWeekName() {
-        return weekName;
-    }
-
     public String getDescription() {
         return description;
+    }
+
+    public String getDayOfWeekName() {
+        return switch (dayOfWeek) {
+            case MONDAY -> "월";
+            case TUESDAY -> "화";
+            case WEDNESDAY -> "수";
+            case THURSDAY -> "목";
+            case FRIDAY -> "금";
+            case SATURDAY -> "토";
+            case SUNDAY -> "일";
+        };
     }
 
     public int getYear() {
         return localDate.getYear();
     }
-
     @Override
     public boolean equals(Object o) {
         if(o == this) {
@@ -82,13 +88,13 @@ public class Day {
             return false;
         }
         Day day = (Day) o;
-        return Objects.equals(localDate, day.localDate) && weekName == day.weekName
+        return Objects.equals(localDate, day.localDate) && dayOfWeek == day.dayOfWeek
                 && dayType == day.dayType;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(localDate, weekName, dayType);
+        return Objects.hash(localDate, dayOfWeek, dayType);
     }
 
     @Override
@@ -98,6 +104,6 @@ public class Day {
         int day = localDate.getDayOfMonth();
 
         String formatted = String.format("'%02d.%2d.%2d.", year, month, day);
-        return formatted + "(" + weekName.weekName() + ")";
+        return formatted + "(" + getDayOfWeekName() + ")";
     }
 }

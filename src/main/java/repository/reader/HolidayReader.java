@@ -17,7 +17,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import service.model.day.Day;
 import service.model.day.DayType;
 import service.model.day.Days;
-import service.model.day.WeekType;
 
 public class HolidayReader {
 
@@ -59,8 +58,7 @@ public class HolidayReader {
             if (isBlankLocalDate(localDate)) {
                 continue;
             }
-            WeekType weekType = WeekType.from(localDate.getDayOfWeek());
-            holidays.add(Day.of(localDate, weekType, DayType.HOLIDAY));
+            holidays.add(Day.of(localDate, DayType.HOLIDAY));
         }
     }
 

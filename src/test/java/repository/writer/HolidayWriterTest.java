@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import repository.FileLocation.HolidayFileLocation;
 import service.model.day.Day;
 import service.model.day.DayType;
-import service.model.day.WeekType;
 
 class HolidayWriterTest {
 
@@ -16,7 +15,7 @@ class HolidayWriterTest {
         // given
         HolidayFileLocation legalHolidayLocation = new HolidayFileLocation();
         File location = legalHolidayLocation.getFile();
-        Day day = Day.of(LocalDate.of(2025, 11,11), WeekType.TUESDAY, DayType.HOLIDAY, "전투휴무");
+        Day day = Day.of(LocalDate.of(2025, 11,11), DayType.HOLIDAY, "전투휴무");
         HolidayWriter legalHolidayWriter = new HolidayWriter();
 
         // when, then
@@ -29,7 +28,7 @@ class HolidayWriterTest {
         // given
         HolidayFileLocation legalHolidayLocation = new HolidayFileLocation();
         File location = legalHolidayLocation.getFile();
-        Day day = Day.of(LocalDate.of(2025, 3,1), WeekType.SATURDAY, DayType.HOLIDAY);
+        Day day = Day.of(LocalDate.of(2025, 3,1), DayType.HOLIDAY);
         HolidayWriter legalHolidayWriter = new HolidayWriter();
 
         // when, then

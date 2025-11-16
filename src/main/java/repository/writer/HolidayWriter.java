@@ -24,7 +24,6 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import service.model.day.Day;
 import service.model.day.DayType;
-import service.model.day.WeekType;
 
 public class HolidayWriter implements ExcelFileWriter {
 
@@ -61,7 +60,7 @@ public class HolidayWriter implements ExcelFileWriter {
     private void writeBasicBody(Workbook workbook, String sheetName, CellStyle bodyStyle) {
         Sheet sheet = workbook.getSheet(sheetName);
 
-        Day sampleDay = Day.of(LocalDate.of(2025, 1, 1), WeekType.WEDNESDAY, DayType.HOLIDAY, "새해 첫날");
+        Day sampleDay = Day.of(LocalDate.of(2025, 1, 1), DayType.HOLIDAY, "새해 첫날");
         addDayToFile(sampleDay, sheet, workbook);
 
         for(int i = 0; i < 3; i++) {
@@ -154,7 +153,7 @@ public class HolidayWriter implements ExcelFileWriter {
         int bottomRowIndex = sheet.getLastRowNum() + 1;
         Row row = sheet.createRow(bottomRowIndex);
         row.createCell(LOCAL_DATE_INDEX).setCellValue(day.getLocalDate().format(FORMATTER));
-        row.createCell(WEEK_TYPE_INDEX).setCellValue(day.getWeekName().weekName());
+        row.createCell(WEEK_TYPE_INDEX).setCellValue(day.getDayOfWeekName());
         row.createCell(DAY_DESCRIPTION_INDEX).setCellValue(day.getDescription());
 
         CellStyle basicStyle = createBasicStyle(workbook);

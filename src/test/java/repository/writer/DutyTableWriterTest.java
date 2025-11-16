@@ -2,7 +2,6 @@ package repository.writer;
 
 
 import static service.model.day.DayType.*;
-import static service.model.day.WeekType.*;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -30,13 +29,13 @@ class DutyTableWriterTest {
         Person person5 = Person.from(null, "소령", "최소령", null, null);
         Person person6 = Person.from(null, "준위", "최준위", null, null);
 
-        Day day0 = Day.of(LocalDate.of(2025, 11, 1), MONDAY, WEEKDAY);
-        Day day1 = Day.of(LocalDate.of(2025, 11, 2), TUESDAY, WEEKDAY);
-        Day day2 = Day.of(LocalDate.of(2025, 3, 3), WEDNESDAY, WEEKDAY);
-        Day day3 = Day.of(LocalDate.of(2025, 11, 4), THURSDAY, WEEKDAY);
-        Day day4 = Day.of(LocalDate.of(2025, 11, 30), FRIDAY, WEEKDAY);
-        Day day5 = Day.of(LocalDate.of(2025, 7, 31), SATURDAY, HOLIDAY);
-        Day day6 = Day.of(LocalDate.of(2025, 11, 11), SUNDAY, HOLIDAY);
+        Day day0 = Day.of(LocalDate.of(2025, 11, 1), WEEKDAY);
+        Day day1 = Day.of(LocalDate.of(2025, 11, 2), WEEKDAY);
+        Day day2 = Day.of(LocalDate.of(2025, 3, 3), WEEKDAY);
+        Day day3 = Day.of(LocalDate.of(2025, 11, 4), WEEKDAY);
+        Day day4 = Day.of(LocalDate.of(2025, 11, 30), WEEKDAY);
+        Day day5 = Day.of(LocalDate.of(2025, 7, 31), HOLIDAY);
+        Day day6 = Day.of(LocalDate.of(2025, 11, 11), HOLIDAY);
 
         List<Duty> duties = List.of(
                 Duty.of(day0, person0),
