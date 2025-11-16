@@ -45,16 +45,12 @@ public class TutorialWriter implements ExcelFileWriter {
 
     private void writePersonsToExcel(File file, Persons weekPersons, Persons holidayPersons) throws IOException {
         try (Workbook workbook = new XSSFWorkbook()) {
-            // 셀 스타일 정의
             CellStyle headerStyleOfWeekday = createHeaderStyleOfWeekday(workbook);
             CellStyle headerStyleOfHoliday = createHeaderStyleOfHoliday(workbook);
             CellStyle bodyStyle = createBodyStyle(workbook);
             CellStyle dateStyle = createDateStyle(workbook);
 
-            // 평일 시트 작성
             writePersonSheet(workbook, "당직자 순서(평일)", weekPersons, headerStyleOfWeekday, bodyStyle, dateStyle);
-
-            // 휴일 시트 작성
             writePersonSheet(workbook, "당직자 순서(휴일)", holidayPersons, headerStyleOfHoliday, bodyStyle, dateStyle);
 
             try (FileOutputStream fos = new FileOutputStream(file)) {
@@ -69,11 +65,11 @@ public class TutorialWriter implements ExcelFileWriter {
         Sheet sheet = workbook.createSheet(sheetName);
 
         // 헤더 작성
-        Row header = sheet.createRow(0);
+        Row headerRow = sheet.createRow(0);
         List<String> headers = List.of("순번", "계급", "이름", "전입일(예정일 포함)", "전출일(예정일 포함)") ;
 
         for (int i = 0; i < headers.size(); i++) {
-            Cell cell = header.createCell(i);
+            Cell cell = headerRow.createCell(i);
             cell.setCellValue(headers.get(i));
             cell.setCellStyle(headerStyle);
         }

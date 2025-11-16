@@ -22,7 +22,6 @@ public class DutyOrderService {
 
         for (Day day : days.getDays()) {
             Person resultPerson = assignPersonForDay(day, weekPicker, holidayPicker, prevPerson);
-
             result.add(Duty.of(day, resultPerson));
             prevPerson = resultPerson;
         }

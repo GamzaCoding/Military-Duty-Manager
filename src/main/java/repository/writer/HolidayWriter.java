@@ -6,21 +6,27 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.function.BiConsumer;
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DateUtil;
+import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import service.model.day.Day;
+import service.model.day.DayType;
+import service.model.day.WeekType;
 
-public class HolidayWriter {
+public class HolidayWriter implements ExcelFileWriter {
 
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     public static final String FONT_TYPE = "굴림";
@@ -31,6 +37,97 @@ public class HolidayWriter {
     public static final int WEEK_TYPE_INDEX = 1;
     public static final int DAY_DESCRIPTION_INDEX = 2;
     public static final int FONT_SIZE = 15;
+
+    @Override
+    public void write(File outFile) {
+        handleIOExceptionDuringWrite(outFile, this::writeBasicHolidayForm);
+    }
+
+    private void writeBasicHolidayForm(File file) throws IOException {
+        try (Workbook workbook = new XSSFWorkbook()) {
+
+            CellStyle headerStyle = createHeaderStyle(workbook);
+            CellStyle bodyStyle = createBasicStyle(workbook);
+
+            writeHeader(workbook, "2025년", headerStyle);
+            writeBasicBody(workbook, "2025년", bodyStyle);
+
+            try (FileOutputStream fos = new FileOutputStream(file)) {
+                workbook.write(fos);
+            }
+        }
+    }
+
+    private void writeBasicBody(Workbook workbook, String sheetName, CellStyle bodyStyle) {
+        Sheet sheet = workbook.getSheet(sheetName);
+
+        Day sampleDay = Day.of(LocalDate.of(2025, 1, 1), WeekType.WEDNESDAY, DayType.HOLIDAY);
+        sampleDay.setDescription("새해 첫날");
+        addDayToFile(sampleDay, sheet, workbook);
+
+        for(int i = 0; i < 3; i++) {
+            sheet.autoSizeColumn(i);
+            int currentWidth = sheet.getColumnWidth(i);
+            sheet.setColumnWidth(i, (int) (currentWidth * 1.3));
+        }
+
+        for (Row row : sheet) {
+            row.setHeightInPoints(24);
+        }
+    }
+
+    private void writeHeader(Workbook workbook, String sheetName, CellStyle headerStyle) {
+        Sheet sheet = workbook.createSheet(sheetName);
+        Row headerRow = sheet.createRow(0);
+        List<String> headers = List.of("날짜", "요일", "명칭");
+
+        for(int i = 0; i < headers.size(); i++) {
+            Cell cell = headerRow.createCell(i);
+            cell.setCellValue(headers.get(i));
+            cell.setCellStyle(headerStyle);
+
+            sheet.autoSizeColumn(i);
+            int currentWidth = sheet.getColumnWidth(i);
+            sheet.setColumnWidth(i, (int) (currentWidth * 1.3));
+        }
+
+        for (Row row : sheet) {
+            row.setHeightInPoints(24);
+        }
+    }
+
+    private CellStyle createHeaderStyle(Workbook workbook) {
+        CellStyle style = workbook.createCellStyle();
+        style.setAlignment(HorizontalAlignment.CENTER);
+        style.setVerticalAlignment(VerticalAlignment.CENTER);
+        style.setFillForegroundColor(IndexedColors.LIGHT_CORNFLOWER_BLUE.getIndex());
+        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        setBorder(style);
+
+        Font font = workbook.createFont();
+        font.setBold(true);
+        font.setFontHeightInPoints((short) 16);
+        font.setFontName("굴림");
+        style.setFont(font);
+
+        return style;
+
+    }
+
+    private void setBorder(CellStyle style) {
+        style.setBorderTop(BorderStyle.THIN);
+        style.setBorderBottom(BorderStyle.THIN);
+        style.setBorderLeft(BorderStyle.THIN);
+        style.setBorderRight(BorderStyle.THIN);
+    }
+
+    private <T> void handleIOExceptionDuringWrite(T input, IOFunctionForWrite<T> ioFunction) {
+        try {
+            ioFunction.accept(input);
+        } catch (IOException e) {
+            throw new IllegalStateException("엑셀 파일을 작성하는 도중 오류가 발생했습니다: " + e.getMessage());
+        }
+    }
 
     public void add(File outFile, Day day) {
         handleExcelOperation(outFile, day, (sheet, workbook) -> addDayToFile(day, sheet, workbook));
