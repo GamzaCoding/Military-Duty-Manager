@@ -154,7 +154,7 @@ public class HolidayWriter implements ExcelFileWriter {
         int bottomRowIndex = sheet.getLastRowNum() + 1;
         Row row = sheet.createRow(bottomRowIndex);
         row.createCell(LOCAL_DATE_INDEX).setCellValue(day.getLocalDate().format(FORMATTER));
-        row.createCell(WEEK_TYPE_INDEX).setCellValue(day.getWeekTypeName().weekName());
+        row.createCell(WEEK_TYPE_INDEX).setCellValue(day.getWeekName().weekName());
         row.createCell(DAY_DESCRIPTION_INDEX).setCellValue(day.getDescription());
 
         CellStyle basicStyle = createBasicStyle(workbook);
