@@ -45,7 +45,7 @@ public class Person {
     }
 
     public String getRankAndName() {
-        return rank +" "+ name;
+        return String.format("%s %s", rank, name);
     }
 
     @Override
