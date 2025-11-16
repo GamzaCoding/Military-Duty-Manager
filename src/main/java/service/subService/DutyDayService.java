@@ -28,7 +28,7 @@ public class DutyDayService {
 
     private Day createDaysWithHolidayStatus(LocalDate localDate, Days holidays) {
         Day day = Day.from(localDate);
-        if (holidays.isContain(day)) {
+        if (holidays.contains(day)) {
             return day.convertHoliday();
         }
         return day;
@@ -36,16 +36,20 @@ public class DutyDayService {
 
     private Days findHolidayFromTo(LocalDate startDate, LocalDate endDate) throws IOException {
         if (isTwoYears(startDate, endDate)) {
-            Days StartDateYearHolidays = holidayReader.readHolidays(location.getFile(),
-                    String.valueOf(startDate.getYear()));
-            Days endDateYearHolidays = holidayReader.readHolidays(location.getFile(),
-                    String.valueOf(endDate.getYear()));
-            return StartDateYearHolidays.merge(endDateYearHolidays);
+            return mergeHolidays(startDate, endDate);
         }
         return holidayReader.readHolidays(location.getFile(), String.valueOf(startDate.getYear()));
     }
 
     private boolean isTwoYears(LocalDate startDate, LocalDate endDate) {
         return startDate.getYear() != endDate.getYear();
+    }
+
+    private Days mergeHolidays(LocalDate startDate, LocalDate endDate) throws IOException {
+        Days StartDateYearHolidays = holidayReader.readHolidays(location.getFile(),
+                String.valueOf(startDate.getYear()));
+        Days endDateYearHolidays = holidayReader.readHolidays(location.getFile(),
+                String.valueOf(endDate.getYear()));
+        return StartDateYearHolidays.merge(endDateYearHolidays);
     }
 }

@@ -11,10 +11,10 @@ public class Days {
     }
 
     public static Days of(List<Day> days) {
-        return new Days(days);
+        return new Days(List.copyOf(days));
     }
 
-    public boolean isContain(Day otherDay){
+    public boolean contains(Day otherDay){
         return days.stream()
                 .anyMatch(day -> day.equals(otherDay));
     }
