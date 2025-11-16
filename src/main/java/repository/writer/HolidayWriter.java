@@ -61,8 +61,7 @@ public class HolidayWriter implements ExcelFileWriter {
     private void writeBasicBody(Workbook workbook, String sheetName, CellStyle bodyStyle) {
         Sheet sheet = workbook.getSheet(sheetName);
 
-        Day sampleDay = Day.of(LocalDate.of(2025, 1, 1), WeekType.WEDNESDAY, DayType.HOLIDAY);
-        sampleDay.setDescription("새해 첫날");
+        Day sampleDay = Day.of(LocalDate.of(2025, 1, 1), WeekType.WEDNESDAY, DayType.HOLIDAY, "새해 첫날");
         addDayToFile(sampleDay, sheet, workbook);
 
         for(int i = 0; i < 3; i++) {

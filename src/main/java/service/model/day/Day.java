@@ -6,15 +6,18 @@ import java.util.Objects;
 
 public class Day {
 
+    public static final String DEFAULT_DESCRIPTION = "설명 없음(기본값)";
+
     private final LocalDate localDate;
     private final WeekType weekTypeName;
     private final DayType dayType;
-    private String description = "설명 없음(기본값)";
+    private final String description;
 
-    private Day(LocalDate localDate, WeekType weekTypeName, DayType dayType) {
+    private Day(LocalDate localDate, WeekType weekTypeName, DayType dayType, String description) {
         this.localDate = localDate;
         this.weekTypeName = weekTypeName;
         this.dayType = dayType;
+        this.description = description;
     }
 
     public static Day from(LocalDate current) {
@@ -24,16 +27,19 @@ public class Day {
         return Day.of(current, weekType, dayType);
     }
     public static Day of(LocalDate localDate, WeekType weekTypeName, DayType dayType) {
-        return new Day(localDate, weekTypeName, dayType);
+        return new Day(localDate, weekTypeName, dayType, DEFAULT_DESCRIPTION);
+    }
+
+    public static Day of(LocalDate localDate, WeekType weekTypeName, DayType dayType, String description) {
+        return new Day(localDate, weekTypeName, dayType, description);
     }
 
     public Day convertHoliday() {
         return Day.of(localDate, weekTypeName, DayType.HOLIDAY);
     }
 
-    // setter와 같은 역할
-    public void setDescription(String description) {
-        this.description = description;
+    public Day settingDescription(String description) {
+        return Day.of(localDate, weekTypeName, dayType, description);
     }
 
     private static DayType distinguishDayType(DayOfWeek dayOfWeek) {

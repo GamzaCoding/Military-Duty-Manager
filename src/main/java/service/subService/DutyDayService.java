@@ -7,7 +7,6 @@ import java.util.stream.Stream;
 import repository.FileLocation.HolidayFileLocation;
 import repository.reader.HolidayReader;
 import service.model.day.Day;
-import service.model.day.DayType;
 import service.model.day.Days;
 
 public class DutyDayService {
@@ -19,9 +18,6 @@ public class DutyDayService {
         this.location = new HolidayFileLocation();
     }
 
-    /**
-     * 원하는 기간(시작일, 마지막일)을 입력받아 휴일(법정공휴일, 전투휴무 등)을 고려하여 당직을 위한 Days 를 반환한다.
-     */
     public Days makeDutyDays(LocalDate startDate, LocalDate endDate) throws IOException {
         Days holidays = findHolidayFromTo(startDate, endDate);
         List<Day> dutyDays = Stream.iterate(startDate, date -> !date.isAfter(endDate), date -> date.plusDays(1))

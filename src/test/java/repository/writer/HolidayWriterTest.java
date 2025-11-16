@@ -16,8 +16,7 @@ class HolidayWriterTest {
         // given
         HolidayFileLocation legalHolidayLocation = new HolidayFileLocation();
         File location = legalHolidayLocation.getFile();
-        Day day = Day.of(LocalDate.of(2025, 11,11), WeekType.TUESDAY, DayType.HOLIDAY);
-        day.setDescription("전투휴무");
+        Day day = Day.of(LocalDate.of(2025, 11,11), WeekType.TUESDAY, DayType.HOLIDAY, "전투휴무");
         HolidayWriter legalHolidayWriter = new HolidayWriter();
 
         // when, then
