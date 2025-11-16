@@ -25,18 +25,18 @@ public class DutyDayService {
     public Days makeDutyDays(LocalDate startDate, LocalDate endDate) throws IOException {
         Days holidays = findHolidayFromTo(startDate, endDate);
         List<Day> dutyDays = Stream.iterate(startDate, date -> !date.isAfter(endDate), date -> date.plusDays(1))
-                .map(date -> {
-                    Day day = Day.from(date);
-                    if (holidays.isContain(day)) {
-                        day.changeDayType(DayType.HOLIDAY);
-                    }
-                    return day;
-                })
+                .map(localDate -> createDaysWithHolidayStatus(localDate, holidays))
                 .toList();
-
         return Days.of(dutyDays);
     }
 
+    private Day createDaysWithHolidayStatus(LocalDate localDate, Days holidays) {
+        Day day = Day.from(localDate);
+        if (holidays.isContain(day)) {
+            return day.convertHoliday();
+        }
+        return day;
+    }
 
     private Days findHolidayFromTo(LocalDate startDate, LocalDate endDate) throws IOException {
         if (isTwoYears(startDate, endDate)) {

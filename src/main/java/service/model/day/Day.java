@@ -8,7 +8,7 @@ public class Day {
 
     private final LocalDate localDate;
     private final WeekType weekTypeName;
-    private DayType dayType;
+    private final DayType dayType;
     private String description = "설명 없음(기본값)";
 
     private Day(LocalDate localDate, WeekType weekTypeName, DayType dayType) {
@@ -26,10 +26,11 @@ public class Day {
     public static Day of(LocalDate localDate, WeekType weekTypeName, DayType dayType) {
         return new Day(localDate, weekTypeName, dayType);
     }
-    // setter와 같은 역할
-    public void changeDayType(DayType dayType) {
-        this.dayType = dayType;
+
+    public Day convertHoliday() {
+        return Day.of(localDate, weekTypeName, DayType.HOLIDAY);
     }
+
     // setter와 같은 역할
     public void setDescription(String description) {
         this.description = description;
