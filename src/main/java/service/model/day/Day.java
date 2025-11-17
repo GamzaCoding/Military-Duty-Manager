@@ -94,8 +94,7 @@ public class Day implements Comparable<Day> {
             return false;
         }
         Day day = (Day) o;
-        return Objects.equals(localDate, day.localDate) && dayOfWeek == day.dayOfWeek
-                && dayType == day.dayType;
+        return Objects.equals(localDate, day.localDate) && dayOfWeek == day.dayOfWeek;
     }
 
     @Override
