@@ -37,8 +37,6 @@ public class DutyTableWriter {
         CellStyle holidayStyle = createHolidayStyle(workbook);
         CellStyle personStyle = createPersonStyle(workbook);
 
-        // duties를 날짜에 맞게 정렬해야한다.
-
         List<SevenDuties> weeklyGroups = groupByWeek(duties);
 
         int rowIndex = 0;

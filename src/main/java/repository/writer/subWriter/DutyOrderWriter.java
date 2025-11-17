@@ -1,8 +1,5 @@
 package repository.writer.subWriter;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.List;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
@@ -34,13 +31,6 @@ public class DutyOrderWriter {
         createHeader(sheet, headerStyle);
         createBody(sheet, persons, bodyStyle);
         adjustLayout(sheet);
-    }
-
-    // DutyOrderWriter 테스트를 위한 메서드
-    public void saveWorkbook(File outputFile) throws IOException {
-        try (FileOutputStream fos = new FileOutputStream(outputFile)) {
-            workbook.write(fos);
-        }
     }
 
     private void adjustLayout(Sheet sheet) {

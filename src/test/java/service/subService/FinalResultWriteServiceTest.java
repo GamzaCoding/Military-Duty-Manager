@@ -5,9 +5,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 import repository.reader.ExcelFileReader;
-import repository.FileLocation.ResultFileLocation;
 import service.MainService;
-import service.model.person.Persons;
 
 class FinalResultWriteServiceTest {
 
