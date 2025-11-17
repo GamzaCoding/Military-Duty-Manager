@@ -37,6 +37,8 @@ public class DutyTableWriter {
         CellStyle holidayStyle = createHolidayStyle(workbook);
         CellStyle personStyle = createPersonStyle(workbook);
 
+        // duties를 날짜에 맞게 정렬해야한다.
+
         List<SevenDuties> weeklyGroups = groupByWeek(duties);
 
         int rowIndex = 0;
@@ -103,7 +105,7 @@ public class DutyTableWriter {
         List<SevenDuties> groups = new ArrayList<>();
         for (int i = 0; i < duties.size(); i += 7) {
             int end = Math.min(i + 7, duties.size());
-            groups.add(new SevenDuties(duties.getDuties().subList(i, end)));
+            groups.add(new SevenDuties(duties.subList(i, end)));
         }
         return groups;
     }
@@ -143,7 +145,6 @@ public class DutyTableWriter {
         public Duty get(int index) {
             return duties.get(index);
         }
-
         public int size() {
             return duties.size();
         }

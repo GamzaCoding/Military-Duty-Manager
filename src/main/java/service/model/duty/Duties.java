@@ -1,12 +1,18 @@
 package service.model.duty;
 
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import service.model.day.Day;
+import service.model.person.Person;
 
 public class Duties {
-    private final List<Duty> duties;
+    private final Map<Day, Person> duties;
 
     private Duties(List<Duty> duties) {
-        this.duties = duties;
+        Map<Day, Person> result = new TreeMap<>();
+        duties.forEach(duty -> result.put(duty.getDay(), duty.getPerson()));
+        this.duties = result;
     }
 
     // 이 메서드 없앨 생각도 해야한다.
@@ -14,23 +20,25 @@ public class Duties {
         return new Duties(duties);
     }
 
+    public void removeDuty(Duty duty) {
+        duties.remove(duty.getDay());
+    }
+
+    public void addDuty(Duty duty) {
+        duties.put(duty.getDay(), duty.getPerson());
+    }
+
     public List<Duty> getDuties() {
-        return List.copyOf(duties);
+        return duties.entrySet().stream()
+                .map(entry -> Duty.of(entry.getKey(), entry.getValue()))
+                .toList();
+    }
+
+    public List<Duty> subList(int startIndex, int endIndex) {
+        return getDuties().subList(startIndex, endIndex);
     }
 
     public int size() {
         return duties.size();
-    }
-
-    public Duty findDuty(Duty targetDuty) {
-        int index = duties.indexOf(targetDuty);
-        return duties.get(index);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        duties.forEach(duty -> sb.append(duty.toString()));
-        return sb.toString();
     }
 }

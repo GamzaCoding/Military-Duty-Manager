@@ -7,11 +7,11 @@ public class Days {
     private final List<Day> days;
 
     private Days(List<Day> days) {
-        this.days = days;
+        this.days = List.copyOf(days);
     }
 
     public static Days of(List<Day> days) {
-        return new Days(List.copyOf(days));
+        return new Days(days);
     }
 
     public boolean contains(Day otherDay){

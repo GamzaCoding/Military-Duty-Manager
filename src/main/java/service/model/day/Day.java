@@ -4,15 +4,15 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class Day {
+public class Day implements Comparable<Day> {
 
     public static final String DEFAULT_DESCRIPTION = "설명 없음(기본값)";
 
     private final LocalDate localDate;
+
     private final DayOfWeek dayOfWeek;
     private final DayType dayType;
     private final String description;
-
     private Day(LocalDate localDate, DayType dayType, String description) {
         this.localDate = localDate;
         this.dayOfWeek = localDate.getDayOfWeek();
@@ -25,6 +25,7 @@ public class Day {
         DayType dayType = distinguishBasicDayType(dayOfWeek);
         return Day.of(current, dayType);
     }
+
     public static Day of(LocalDate localDate, DayType dayType) {
         return new Day(localDate, dayType, DEFAULT_DESCRIPTION);
     }
@@ -52,7 +53,7 @@ public class Day {
         return dayType == DayType.HOLIDAY;
     }
 
-    public DayType getDayType () {
+    public DayType getDayType() {
         return dayType;
     }
 
@@ -79,9 +80,10 @@ public class Day {
     public int getYear() {
         return localDate.getYear();
     }
+
     @Override
     public boolean equals(Object o) {
-        if(o == this) {
+        if (o == this) {
             return true;
         }
         if (o == null || getClass() != o.getClass()) {
@@ -105,5 +107,10 @@ public class Day {
 
         String formatted = String.format("'%02d.%2d.%2d.", year, month, day);
         return formatted + "(" + getDayOfWeekName() + ")";
+    }
+
+    @Override
+    public int compareTo(Day otherDay) {
+        return this.localDate.compareTo(otherDay.getLocalDate());
     }
 }

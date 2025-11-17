@@ -22,11 +22,25 @@ public class Person {
         return new Person(position, rank, name, moveInDate, moveOutDate);
     }
 
-    public Integer position() { return position; }
-    public String rank() { return rank; }
-    public String name() { return name; }
-    public LocalDate moveInDate() { return moveInDate; }
-    public LocalDate moveOutDate() { return moveOutDate; }
+    public Integer position() {
+        return position;
+    }
+
+    public String rank() {
+        return rank;
+    }
+
+    public String name() {
+        return name;
+    }
+
+    public LocalDate moveInDate() {
+        return moveInDate;
+    }
+
+    public LocalDate moveOutDate() {
+        return moveOutDate;
+    }
 
     public String getMoveInDateByMilitaryFormat() {
         int year = moveInDate.getYear() % 100;

@@ -7,7 +7,7 @@ public class Persons {
     private final List<Person> persons;
 
     private Persons(List<Person> persons) {
-        this.persons = persons;
+        this.persons = List.copyOf(persons);
     }
 
     public static Persons of(List<Person> persons) {

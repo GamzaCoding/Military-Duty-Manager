@@ -9,22 +9,22 @@ public class DutyChangeService {
     public Duties changeDutyBothSides(Duties targetDuties, Duty dutyTo, Duty dutyFrom) {
         validateSameDayType(dutyTo, dutyFrom);
 
-        Duty foundDutyTo = targetDuties.findDuty(dutyTo);
-        Duty foundDutyFrom = targetDuties.findDuty(dutyFrom);
+        Duty changedDutyTo = Duty.of(dutyTo.getDay(), dutyFrom.getPerson());
+        Duty changedDutyFrom = Duty.of(dutyFrom.getDay(), dutyTo.getPerson());
 
-        Person personTo = foundDutyTo.getPerson();
-        Person personFrom = foundDutyFrom.getPerson();
-
-        foundDutyTo.setPerson(personFrom);
-        foundDutyFrom.setPerson(personTo);
+        targetDuties.removeDuty(dutyTo);
+        targetDuties.removeDuty(dutyFrom);
+        targetDuties.addDuty(changedDutyTo);
+        targetDuties.addDuty(changedDutyFrom);
 
         return targetDuties;
     }
 
     // 단일 당직 변경 기능
     public Duties changeDutyOneSide(Duties targetDuties, Duty duty, Person person) {
-        Duty foundDuty = targetDuties.findDuty(duty);
-        foundDuty.setPerson(person);
+        Duty changedDuty = Duty.of(duty.getDay(), person);
+        targetDuties.removeDuty(duty);
+        targetDuties.addDuty(changedDuty);
 
         return targetDuties;
     }
