@@ -21,6 +21,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import repository.FileLocation.TutorialFileLocation;
 import service.model.person.Person;
 import service.model.person.Persons;
 
@@ -58,8 +59,8 @@ public class TutorialWriter implements ExcelFileWriter {
             }
         }
     }
-
     // 시트 생성 및 데이터 작성
+
     private void writePersonSheet(Workbook workbook, String sheetName, Persons persons,
                                   CellStyle headerStyle, CellStyle bodyStyle, CellStyle dateStyle) {
         Sheet sheet = workbook.createSheet(sheetName);
@@ -95,8 +96,8 @@ public class TutorialWriter implements ExcelFileWriter {
             row.setHeightInPoints(24);
         }
     }
-
     // 셀 생성 + 값 + 스타일 적용
+
     private void createNumericCell(Row row, int index, int value, CellStyle style) {
         Cell cell = row.createCell(index, CellType.NUMERIC);
         cell.setCellValue(value);
@@ -119,8 +120,8 @@ public class TutorialWriter implements ExcelFileWriter {
         }
         cell.setCellStyle(style);
     }
-
     // 헤더 스타일 — 하늘색 배경 + 중앙정렬 + Bold
+
     private CellStyle createHeaderStyleOfWeekday(Workbook workbook) {
         CellStyle style = workbook.createCellStyle();
         style.setAlignment(HorizontalAlignment.CENTER);
@@ -154,8 +155,8 @@ public class TutorialWriter implements ExcelFileWriter {
 
         return style;
     }
-
     // 본문 스타일 — 중앙정렬 + 얇은 테두리 + 기본 글꼴
+
     private CellStyle createBodyStyle(Workbook workbook) {
         CellStyle style = workbook.createCellStyle();
         style.setAlignment(HorizontalAlignment.CENTER);
@@ -186,8 +187,8 @@ public class TutorialWriter implements ExcelFileWriter {
 
         return style;
     }
-
     // 공통 테두리 설정
+
     private void setBorder(CellStyle style) {
         style.setBorderTop(BorderStyle.THIN);
         style.setBorderBottom(BorderStyle.THIN);

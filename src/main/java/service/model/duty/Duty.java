@@ -6,7 +6,7 @@ import service.model.person.Person;
 
 public class Duty {
     private final Day day;
-    private Person person;
+    private final Person person;
 
     private Duty(Day day, Person person) {
         this.day = day;
@@ -25,8 +25,8 @@ public class Duty {
         return person;
     }
 
-    public void setPerson(Person other) {
-        person = other;
+    public boolean isSameDayType(Duty duty) {
+        return day.isSameDayType(duty.getDay());
     }
 
     @Override

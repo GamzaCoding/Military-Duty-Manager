@@ -5,7 +5,10 @@ import service.model.duty.Duty;
 import service.model.person.Person;
 
 public class DutyChangeService {
-    // 상호 당직 변경 기능
+
+    public DutyChangeService() {
+    }
+
     public Duties changeDutyBothSides(Duties targetDuties, Duty dutyTo, Duty dutyFrom) {
         validateSameDayType(dutyTo, dutyFrom);
 
@@ -20,7 +23,6 @@ public class DutyChangeService {
         return targetDuties;
     }
 
-    // 단일 당직 변경 기능
     public Duties changeDutyOneSide(Duties targetDuties, Duty duty, Person person) {
         Duty changedDuty = Duty.of(duty.getDay(), person);
         targetDuties.removeDuty(duty);
@@ -30,8 +32,9 @@ public class DutyChangeService {
     }
 
     private static void validateSameDayType(Duty dutyTo, Duty dutyFrom) {
-        if (dutyTo.getDay().getDayType() != dutyFrom.getDay().getDayType()) {
-            throw new IllegalStateException("평일은 평일끼리, 휴일은 휴일끼리 교환이 가능합니다.");
+        if (dutyTo.isSameDayType(dutyFrom)) {
+            return;
         }
+        throw new IllegalStateException("평일은 평일끼리, 휴일은 휴일끼리 교환이 가능합니다.");
     }
 }

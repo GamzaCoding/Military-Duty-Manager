@@ -9,10 +9,10 @@ public class Day implements Comparable<Day> {
     public static final String DEFAULT_DESCRIPTION = "설명 없음(기본값)";
 
     private final LocalDate localDate;
-
     private final DayOfWeek dayOfWeek;
     private final DayType dayType;
     private final String description;
+
     private Day(LocalDate localDate, DayType dayType, String description) {
         this.localDate = localDate;
         this.dayOfWeek = localDate.getDayOfWeek();
@@ -53,7 +53,11 @@ public class Day implements Comparable<Day> {
         return dayType == DayType.HOLIDAY;
     }
 
-    public DayType getDayType() {
+    public boolean isSameDayType(Day otherDay) {
+        return dayType == otherDay.getDayType();
+    }
+
+    public DayType getDayType () {
         return dayType;
     }
 

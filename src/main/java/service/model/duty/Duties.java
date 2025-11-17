@@ -15,7 +15,6 @@ public class Duties {
         this.duties = result;
     }
 
-    // 이 메서드 없앨 생각도 해야한다.
     public static Duties of(List<Duty> duties) {
         return new Duties(duties);
     }
