@@ -7,8 +7,8 @@ import service.model.person.Persons;
 public class FileReadService {
     private final ExcelFileReader excelFileReader;
 
-    public FileReadService(ExcelFileReader excelFileReader) {
-        this.excelFileReader = excelFileReader;
+    public FileReadService() {
+        this.excelFileReader = new ExcelFileReader();
     }
 
     public Persons readWeekPersons(File orderFile) {

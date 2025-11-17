@@ -33,7 +33,8 @@ class DutyOrderServiceTest {
         Persons holiPersons = Persons.of(holiPeople);
 
         // when
-        Duties duties = DutyOrderService.makeResultDuty(days, weekPersons, holiPersons);
+        DutyOrderService dutyOrderService = new DutyOrderService();
+        Duties duties = dutyOrderService.makeResultDuty(days, weekPersons, holiPersons);
 
         // then
         duties.getDuties().stream()

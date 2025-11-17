@@ -11,12 +11,12 @@ import service.model.day.DayType;
 import service.model.duty.Duties;
 import service.model.person.Persons;
 
-public class MainWriter implements ExcelFileWriter{
+public class DutyResultWriter implements ExcelFileWriter{
     private final Persons weekPersons;
     private final Persons holidayPersons;
     private final Duties duties;
 
-    public MainWriter(Persons weekPersons, Persons holidayPersons, Duties duties) {
+    public DutyResultWriter(Persons weekPersons, Persons holidayPersons, Duties duties) {
         this.weekPersons = weekPersons;
         this.holidayPersons = holidayPersons;
         this.duties = duties;

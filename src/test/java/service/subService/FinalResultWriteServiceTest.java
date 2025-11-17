@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 import repository.reader.ExcelFileReader;
 import repository.FileLocation.ResultFileLocation;
+import service.MainService;
 import service.model.person.Persons;
 
 class FinalResultWriteServiceTest {
@@ -15,20 +16,15 @@ class FinalResultWriteServiceTest {
         // given
         ExcelFileReader excelFileReader = new ExcelFileReader();
         String filePath = "/Users/seok/Desktop/당직자 순서(입력 데이터).xlsx";
-        File file = new File(filePath);
-        Persons holidayPersons = excelFileReader.readHolidayPersons(file);
-        Persons weekdayPersons = excelFileReader.readWeekdayPersons(file);
+        File inputFile = new File(filePath);
 
         LocalDate startDate = LocalDate.of(2025, 11, 11); // 외부 입력 값
         LocalDate endDate = LocalDate.of(2026, 1, 30); // 외부 입력 값
 
 
-        ResultFileLocation resultFileLocation = new ResultFileLocation();
-        File location = resultFileLocation.getFile();
-
         // when
-        FinalResultService finalResultWriterService = new FinalResultService(location);
-        finalResultWriterService.writeFinalResult(startDate, endDate, weekdayPersons, holidayPersons);
+        MainService mainService = new MainService();
+        mainService.calculateResult(startDate, endDate, inputFile);
         // then
     }
 }

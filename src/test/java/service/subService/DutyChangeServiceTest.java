@@ -37,7 +37,8 @@ class DutyChangeServiceTest {
         Persons weekPersons = Persons.of(weekPeople);
         Persons holiPersons = Persons.of(holiPeople);
 
-        Duties duties = DutyOrderService.makeResultDuty(days, weekPersons, holiPersons);
+        DutyOrderService dutyOrderService = new DutyOrderService();
+        Duties duties = dutyOrderService.makeResultDuty(days, weekPersons, holiPersons);
 
         Duty dutyTo = Duty.of(
                 Day.from(LocalDate.of(2025,11,1)),
@@ -81,7 +82,8 @@ class DutyChangeServiceTest {
         Persons weekPersons = Persons.of(weekPeople);
         Persons holiPersons = Persons.of(holiPeople);
 
-        Duties duties = DutyOrderService.makeResultDuty(days, weekPersons, holiPersons);
+        DutyOrderService dutyOrderService = new DutyOrderService();
+        Duties duties = dutyOrderService.makeResultDuty(days, weekPersons, holiPersons);
 
         Duty dutyTo = Duty.of(
                 Day.from(LocalDate.of(2025,11,1)),
@@ -122,7 +124,8 @@ class DutyChangeServiceTest {
         Persons weekPersons = Persons.of(weekPeople);
         Persons holiPersons = Persons.of(holiPeople);
 
-        Duties duties = DutyOrderService.makeResultDuty(days, weekPersons, holiPersons);
+        DutyOrderService dutyOrderService = new DutyOrderService();
+        Duties duties = dutyOrderService.makeResultDuty(days, weekPersons, holiPersons);
 
         Duty dutyTo = Duty.of(
                 Day.from(LocalDate.of(2025,11,1)),
