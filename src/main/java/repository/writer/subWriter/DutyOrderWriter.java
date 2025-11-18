@@ -1,23 +1,31 @@
 package repository.writer.subWriter;
 
-import java.util.List;
-import org.apache.poi.ss.usermodel.BorderStyle;
+import static repository.writer.sampleData.Sample.*;
+import static repository.writer.util.CellSizeSetter.*;
+
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
+import java.util.Optional;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.FillPatternType;
-import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.HorizontalAlignment;
-import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
+import repository.writer.util.CellStyler;
 import service.model.day.DayType;
 import service.model.person.Person;
 import service.model.person.Persons;
 
 public class DutyOrderWriter {
-    public static final int HEADER_LENGTH = 5;
+    public static final int ORDER_INDEX = 0;
+    public static final int RANK_INDEX = 1;
+    public static final int NAME_INDEX = 2;
+    public static final int MOVE_IN_DATE_INDEX = 3;
+    public static final int MOVE_OUT_DATE_INDEX = 4;
+    public static final int HEADER_ROW_INDEX = 0;
+
     private final Workbook workbook;
 
     public DutyOrderWriter(Workbook workbook) {
@@ -26,85 +34,65 @@ public class DutyOrderWriter {
 
     public void createDutyOrderSheet(String sheetName, Persons persons, DayType dayType) {
         Sheet sheet = workbook.createSheet(sheetName);
-        CellStyle headerStyle = createHeaderStyleByDayType(dayType);
-        CellStyle bodyStyle = createBodyStyle(workbook);
-        createHeader(sheet, headerStyle);
-        createBody(sheet, persons, bodyStyle);
+        CellStyler cellStyler = new CellStyler(workbook);
+
+        writeHeader(sheet, cellStyler.getHeaderStyleByDayType(dayType));
+        writeBody(sheet, persons, cellStyler.personBodyStyle(), cellStyler.DateStyle());
         adjustLayout(sheet);
     }
 
     private void adjustLayout(Sheet sheet) {
-        for (int i = 0; i < HEADER_LENGTH; i++) {
-            sheet.autoSizeColumn(i);
-            int width = sheet.getColumnWidth(i);
-            sheet.setColumnWidth(i, (int) (width * 1.3));
+        for (int categoriIndex = 0; categoriIndex < DUTY_ORDER_CATEGORY.size(); categoriIndex++) {
+            applyBasicColumWidth(sheet, categoriIndex);
         }
-        for (Row row : sheet) row.setHeightInPoints(24);
+        applyBasicRowHeight(sheet);
     }
 
-    private void createHeader(Sheet sheet, CellStyle headerStyle) {
-        Row headerRow = sheet.createRow(0);
-        List<String> headerTitles = List.of("당직순번", "계급", "이름", "전입일자(예정일 포함)", "전출일자(에정일 포함)");
-        // 이거 stream으로 변경할 수  없나?
-        for (int i = 0; i < headerTitles.size(); i++) {
-            Cell cell = headerRow.createCell(i);
-            cell.setCellValue(headerTitles.get(i));
+    private void writeHeader(Sheet sheet, CellStyle headerStyle) {
+        Row headerRow = sheet.createRow(HEADER_ROW_INDEX);
+        for (int categoryIndex = 0; categoryIndex < DUTY_ORDER_CATEGORY.size(); categoryIndex++) {
+            Cell cell = headerRow.createCell(categoryIndex);
+            cell.setCellValue(DUTY_ORDER_CATEGORY.get(categoryIndex));
             cell.setCellStyle(headerStyle);
         }
     }
 
-    private CellStyle createHeaderStyleByDayType(DayType dayType) {
-        if (dayType == DayType.HOLIDAY) {
-            return createHeaderStyle(workbook, IndexedColors.LIGHT_CORNFLOWER_BLUE);
-        }
-        return createHeaderStyle(workbook, IndexedColors.LIGHT_GREEN);
-    }
-
-    private CellStyle createHeaderStyle(Workbook workbook, IndexedColors color) {
-        CellStyle style = baseCenterStyle(workbook);
-        style.setFillForegroundColor(color.getIndex());
-        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        Font font = workbook.createFont();
-        font.setBold(true);
-        font.setFontName("굴림");
-        font.setFontHeightInPoints((short) 15);
-        style.setFont(font);
-        return style;
-    }
-
-    private CellStyle createBodyStyle(Workbook workbook) {
-        CellStyle cellStyle = baseCenterStyle(workbook);
-        Font font = workbook.createFont();
-        font.setFontHeightInPoints((short) 15);
-        font.setFontName("굴림");
-        cellStyle.setFont(font);
-
-        return cellStyle;
-    }
-
-    private CellStyle baseCenterStyle(Workbook workbook) {
-        CellStyle style = workbook.createCellStyle();
-        style.setAlignment(HorizontalAlignment.CENTER);
-        style.setVerticalAlignment(VerticalAlignment.CENTER);
-        style.setBorderTop(BorderStyle.THIN);
-        style.setBorderBottom(BorderStyle.THIN);
-        style.setBorderLeft(BorderStyle.THIN);
-        style.setBorderRight(BorderStyle.THIN);
-        return style;
-    }
-
-    private void createBody(Sheet sheet, Persons persons, CellStyle bodyStyle) {
-        int rowIndex = 1;
+    private void writeBody(Sheet sheet, Persons persons, CellStyle bodyStyle, CellStyle dateStyle) {
+        int personDataRowIndex = 1;
         for (Person person : persons.getPersons()) {
-            Row row = sheet.createRow(rowIndex++);
-            row.createCell(0).setCellValue(person.order());
-            row.createCell(1).setCellValue(person.rank());
-            row.createCell(2).setCellValue(person.name());
-            row.createCell(3).setCellValue(person.getMoveInDateByMilitaryFormat());
-            row.createCell(4).setCellValue(person.getMoveOutDateByMilitaryFormat());
-            for (Cell cell : row) {
-                cell.setCellStyle(bodyStyle);
-            }
+            Row row = sheet.createRow(personDataRowIndex++);
+            createNumericCell(row, ORDER_INDEX, person.order(), bodyStyle);
+            createStringCell(row, RANK_INDEX, person.rank(), bodyStyle);
+            createStringCell(row, NAME_INDEX, person.name(), bodyStyle);
+            createDateCell(row, MOVE_IN_DATE_INDEX, person.moveInDate(), dateStyle);
+            createDateCell(row, MOVE_OUT_DATE_INDEX, person.moveOutDate(), dateStyle);
+        }
+    }
+
+    private void createNumericCell(Row row, int cellIndex, int value, CellStyle style) {
+        Cell cell = row.createCell(cellIndex, CellType.NUMERIC);
+        cell.setCellValue(value);
+        cell.setCellStyle(style);
+    }
+
+    private void createStringCell(Row row, int cellIndex, String value, CellStyle style) {
+        validateNull(value);
+        Cell cell = row.createCell(cellIndex);
+        cell.setCellValue(value);
+        cell.setCellStyle(style);
+    }
+
+    private void createDateCell(Row row, int cellIndex, LocalDate date, CellStyle style) {
+        Cell cell = row.createCell(cellIndex);
+        Optional.ofNullable(date)
+                .map(d -> Date.from(d.atStartOfDay(ZoneId.systemDefault()).toInstant()))
+                .ifPresentOrElse(cell::setCellValue, cell::setBlank);
+        cell.setCellStyle(style);
+    }
+
+    private void validateNull(String value) {
+        if (value == null) {
+            throw new IllegalStateException("계급 혹은 이름값이 없습니다.");
         }
     }
 }

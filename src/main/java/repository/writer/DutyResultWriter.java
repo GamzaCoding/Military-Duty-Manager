@@ -12,6 +12,10 @@ import service.model.duty.Duties;
 import service.model.person.Persons;
 
 public class DutyResultWriter implements ExcelFileWriter{
+    public static final String DUTY_RESULT_SHEET = "당직표 결과";
+    public static final String WEEKDAY_PERSON_ORDER_SHEET = "당직자 순서(평일)";
+    public static final String HOLIDAY_PERSON_ORDER_SHEET = "당직자 순서(휴일)";
+
     private final Persons weekPersons;
     private final Persons holidayPersons;
     private final Duties duties;
@@ -34,9 +38,9 @@ public class DutyResultWriter implements ExcelFileWriter{
             DutyOrderWriter dutyOrderWriter = new DutyOrderWriter(workbook);
             DutyTableWriter dutyTableWriter = new DutyTableWriter(workbook);
 
-            dutyTableWriter.writeDutyTable("당직표 결과", duties);
-            dutyOrderWriter.createDutyOrderSheet("당직자 순서(평일)",weekPersons, DayType.WEEKDAY);
-            dutyOrderWriter.createDutyOrderSheet("당직자 순서(휴일)",holidayPersons, DayType.HOLIDAY);
+            dutyTableWriter.writeDutyTable(DUTY_RESULT_SHEET, duties);
+            dutyOrderWriter.createDutyOrderSheet(WEEKDAY_PERSON_ORDER_SHEET,weekPersons, DayType.WEEKDAY);
+            dutyOrderWriter.createDutyOrderSheet(HOLIDAY_PERSON_ORDER_SHEET,holidayPersons, DayType.HOLIDAY);
 
             saveWorkbook(workbook, outputFile);
         }

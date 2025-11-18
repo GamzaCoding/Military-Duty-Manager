@@ -9,6 +9,7 @@ import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
+import service.model.day.DayType;
 
 public class CellStyler {
 
@@ -68,6 +69,13 @@ public class CellStyler {
                 .fontBold(15, "굴림")
                 .dateFormat()
                 .build();
+    }
+
+    public CellStyle getHeaderStyleByDayType(DayType dayType) {
+        if (dayType == DayType.HOLIDAY) {
+            return holidayHeaderStyle();
+        }
+        return weekdayPersonHeaderStyle();
     }
 
     private CellStyleBuilder style() {

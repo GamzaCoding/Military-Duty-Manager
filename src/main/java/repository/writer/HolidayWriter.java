@@ -18,20 +18,16 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import repository.writer.util.CellSizeSetter;
 import repository.writer.util.CellStyler;
 import service.model.day.Day;
 
 public class HolidayWriter implements ExcelFileWriter {
-
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final int FIRST_DATA_ROW_INDEX = 1;
     public static final int DAY_DATA_INDEX = 0;
     public static final int LOCAL_DATE_INDEX = 0;
     public static final int WEEK_TYPE_INDEX = 1;
     public static final int DAY_DESCRIPTION_INDEX = 2;
-    public static final double CORRECTION_VALUE = 1.3;
-    public static final int ROW_HEIGHT = 24;
 
     @Override
     public void write(File outFile) {
