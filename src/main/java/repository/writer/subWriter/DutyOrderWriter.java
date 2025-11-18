@@ -81,6 +81,7 @@ public class DutyOrderWriter {
 
         return cellStyle;
     }
+
     private CellStyle baseCenterStyle(Workbook workbook) {
         CellStyle style = workbook.createCellStyle();
         style.setAlignment(HorizontalAlignment.CENTER);
@@ -101,7 +102,9 @@ public class DutyOrderWriter {
             row.createCell(2).setCellValue(person.name());
             row.createCell(3).setCellValue(person.getMoveInDateByMilitaryFormat());
             row.createCell(4).setCellValue(person.getMoveOutDateByMilitaryFormat());
-            for (Cell cell : row) cell.setCellStyle(bodyStyle);
+            for (Cell cell : row) {
+                cell.setCellStyle(bodyStyle);
+            }
         }
     }
 }

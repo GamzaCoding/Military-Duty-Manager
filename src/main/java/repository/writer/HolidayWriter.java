@@ -1,130 +1,39 @@
 package repository.writer;
 
+import static repository.writer.sampleData.Sample.*;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.function.BiConsumer;
-import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DateUtil;
-import org.apache.poi.ss.usermodel.FillPatternType;
-import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.HorizontalAlignment;
-import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import repository.writer.util.CellStyler;
 import service.model.day.Day;
-import service.model.day.DayType;
 
 public class HolidayWriter implements ExcelFileWriter {
 
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    public static final String FONT_TYPE = "굴림";
     private static final int FIRST_DATA_ROW_INDEX = 1;
-    public static final int CELL_COUNT = 3;
     public static final int DAY_DATA_INDEX = 0;
     public static final int LOCAL_DATE_INDEX = 0;
     public static final int WEEK_TYPE_INDEX = 1;
     public static final int DAY_DESCRIPTION_INDEX = 2;
-    public static final int FONT_SIZE = 15;
+    public static final double CORRECTION_VALUE = 1.3;
+    public static final int ROW_HEIGHT = 24;
 
     @Override
     public void write(File outFile) {
-        handleIOExceptionDuringWrite(outFile, this::writeBasicHolidayForm);
-    }
-
-    private void writeBasicHolidayForm(File file) throws IOException {
-        try (Workbook workbook = new XSSFWorkbook()) {
-
-            CellStyle headerStyle = createHeaderStyle(workbook);
-            CellStyle bodyStyle = createBasicStyle(workbook);
-
-            writeHeader(workbook, "2025년", headerStyle);
-            writeBasicBody(workbook, "2025년", bodyStyle);
-
-            try (FileOutputStream fos = new FileOutputStream(file)) {
-                workbook.write(fos);
-            }
-        }
-    }
-
-    private void writeBasicBody(Workbook workbook, String sheetName, CellStyle bodyStyle) {
-        Sheet sheet = workbook.getSheet(sheetName);
-
-        Day sampleDay = Day.of(LocalDate.of(2025, 1, 1), DayType.HOLIDAY, "새해 첫날");
-        addDayToFile(sampleDay, sheet, workbook);
-
-        for(int i = 0; i < 3; i++) {
-            sheet.autoSizeColumn(i);
-            int currentWidth = sheet.getColumnWidth(i);
-            sheet.setColumnWidth(i, (int) (currentWidth * 1.3));
-        }
-
-        for (Row row : sheet) {
-            row.setHeightInPoints(24);
-        }
-    }
-
-    private void writeHeader(Workbook workbook, String sheetName, CellStyle headerStyle) {
-        Sheet sheet = workbook.createSheet(sheetName);
-        Row headerRow = sheet.createRow(0);
-        List<String> headers = List.of("날짜", "요일", "명칭");
-
-        for(int i = 0; i < headers.size(); i++) {
-            Cell cell = headerRow.createCell(i);
-            cell.setCellValue(headers.get(i));
-            cell.setCellStyle(headerStyle);
-
-            sheet.autoSizeColumn(i);
-            int currentWidth = sheet.getColumnWidth(i);
-            sheet.setColumnWidth(i, (int) (currentWidth * 1.3));
-        }
-
-        for (Row row : sheet) {
-            row.setHeightInPoints(24);
-        }
-    }
-
-    private CellStyle createHeaderStyle(Workbook workbook) {
-        CellStyle style = workbook.createCellStyle();
-        style.setAlignment(HorizontalAlignment.CENTER);
-        style.setVerticalAlignment(VerticalAlignment.CENTER);
-        style.setFillForegroundColor(IndexedColors.LIGHT_CORNFLOWER_BLUE.getIndex());
-        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        setBorder(style);
-
-        Font font = workbook.createFont();
-        font.setBold(true);
-        font.setFontHeightInPoints((short) 16);
-        font.setFontName("굴림");
-        style.setFont(font);
-
-        return style;
-
-    }
-
-    private void setBorder(CellStyle style) {
-        style.setBorderTop(BorderStyle.THIN);
-        style.setBorderBottom(BorderStyle.THIN);
-        style.setBorderLeft(BorderStyle.THIN);
-        style.setBorderRight(BorderStyle.THIN);
-    }
-
-    private <T> void handleIOExceptionDuringWrite(T input, IOFunctionForWrite<T> ioFunction) {
-        try {
-            ioFunction.accept(input);
-        } catch (IOException e) {
-            throw new IllegalStateException("엑셀 파일을 작성하는 도중 오류가 발생했습니다: " + e.getMessage());
-        }
+        handleIOExceptionDuringWrite(outFile, this::writeTutorialHolidayForm);
     }
 
     public void add(File outFile, Day day) {
@@ -135,17 +44,51 @@ public class HolidayWriter implements ExcelFileWriter {
         handleExcelOperation(outFile, day, (sheet, workbook) -> removeDayFromFile(day, sheet));
     }
 
-    private void handleExcelOperation(File outFile, Day day, BiConsumer<Sheet, Workbook> operation) {
-        try (Workbook workbook = getWorkbook(outFile)) {
-            Sheet sheet = workbook.getSheet(day.getYear() + "년");
+    private void writeTutorialHolidayForm(File file) throws IOException {
+        try (Workbook workbook = new XSSFWorkbook()) {
+            CellStyler cellStyler = new CellStyler(workbook);
+            writeHeader(workbook, cellStyler.holidayHeaderStyle());
+            writeBasicBody(workbook);
+            writeResult(file, workbook);
+        }
+    }
 
-            operation.accept(sheet, workbook);
+    private void writeResult(File file, Workbook workbook) throws IOException {
+        try (FileOutputStream fos = new FileOutputStream(file)) {
+            workbook.write(fos);
+        }
+    }
 
-            try (FileOutputStream fos = new FileOutputStream(outFile)) {
-                workbook.write(fos);
-            }
-        } catch (IOException e) {
-            throw new IllegalStateException("공휴일 데이터 처리 중 오류 발생: " + e.getMessage(), e);
+    private void writeHeader(Workbook workbook, CellStyle headerStyle) {
+        Sheet sheet = workbook.createSheet(SAMPLE_SHEET_NAME);
+        Row headerRow = sheet.createRow(0);
+        for (int i = 0; i < HOLIDAY_CATEGORY.size(); i++) {
+            Cell cell = headerRow.createCell(i);
+            cell.setCellValue(HOLIDAY_CATEGORY.get(i));
+            cell.setCellStyle(headerStyle);
+            applyBasicColumWidth(sheet, i);
+        }
+        applyBasicRowHeight(sheet);
+    }
+
+    private void writeBasicBody(Workbook workbook) {
+        Sheet sheet = workbook.getSheet(SAMPLE_SHEET_NAME);
+        addDayToFile(SAMPLE_HOLIDAY, sheet, workbook);
+        for (int i = 0; i < HOLIDAY_CATEGORY.size(); i++) {
+            applyBasicColumWidth(sheet, i);
+        }
+        applyBasicRowHeight(sheet);
+    }
+
+    private void applyBasicColumWidth(Sheet sheet, int columIndex) {
+        sheet.autoSizeColumn(columIndex);
+        int currentWidth = sheet.getColumnWidth(columIndex);
+        sheet.setColumnWidth(columIndex, (int) (currentWidth * CORRECTION_VALUE));
+    }
+
+    private void applyBasicRowHeight(Sheet sheet) {
+        for (Row row : sheet) {
+            row.setHeightInPoints(ROW_HEIGHT);
         }
     }
 
@@ -155,27 +98,10 @@ public class HolidayWriter implements ExcelFileWriter {
         row.createCell(LOCAL_DATE_INDEX).setCellValue(day.getLocalDate().format(FORMATTER));
         row.createCell(WEEK_TYPE_INDEX).setCellValue(day.getDayOfWeekName());
         row.createCell(DAY_DESCRIPTION_INDEX).setCellValue(day.getDescription());
-
-        CellStyle basicStyle = createBasicStyle(workbook);
-        applyStyleToRowCells(row, basicStyle);
-    }
-
-    private void applyStyleToRowCells(Row row, CellStyle style) {
-        for (int i = 0; i < CELL_COUNT; i++) {
-            row.getCell(i).setCellStyle(style);
+        CellStyle cellStyle = new CellStyler(workbook).holidayBodyStyle();
+        for (Cell cell : row) {
+            cell.setCellStyle(cellStyle);
         }
-    }
-
-    private CellStyle createBasicStyle(Workbook workbook) {
-        CellStyle style = workbook.createCellStyle();
-        style.setAlignment(HorizontalAlignment.CENTER);
-        style.setVerticalAlignment(VerticalAlignment.CENTER);
-        Font font = workbook.createFont();
-        font.setFontHeightInPoints((short) FONT_SIZE);
-        font.setFontName(FONT_TYPE);
-        style.setFont(font);
-
-        return style;
     }
 
     private void removeDayFromFile(Day day, Sheet sheet) {
@@ -186,7 +112,7 @@ public class HolidayWriter implements ExcelFileWriter {
                 continue;
             }
             Cell cell = row.getCell(DAY_DATA_INDEX);
-            if (cell.getCellType() == CellType.BLANK) {
+            if (isCellBlank(cell)) {
                 continue;
             }
             if (targetDate.equals(parseCellDate(cell))) {
@@ -197,7 +123,11 @@ public class HolidayWriter implements ExcelFileWriter {
         }
     }
 
-    private static boolean isBlankRow(Row row) {
+    private boolean isCellBlank(Cell cell) {
+        return cell.getCellType() == CellType.BLANK;
+    }
+
+    private boolean isBlankRow(Row row) {
         return row == null;
     }
 
@@ -215,7 +145,7 @@ public class HolidayWriter implements ExcelFileWriter {
         throw new IllegalStateException("셀 타입이 날짜나 문자열이 아닙니다: " + cell.getCellType());
     }
 
-    private static boolean isLocalDateFormatOnNumericType(Cell cell) {
+    private boolean isLocalDateFormatOnNumericType(Cell cell) {
         return cell.getCellType() == CellType.NUMERIC && DateUtil.isCellDateFormatted(cell);
     }
 
@@ -226,9 +156,29 @@ public class HolidayWriter implements ExcelFileWriter {
         }
     }
 
+    private void handleExcelOperation(File outFile, Day day, BiConsumer<Sheet, Workbook> operation) {
+        try (Workbook workbook = getWorkbook(outFile)) {
+            Sheet sheet = workbook.getSheet(day.getYear() + "년");
+
+            operation.accept(sheet, workbook);
+
+            writeResult(outFile, workbook);
+        } catch (IOException e) {
+            throw new IllegalStateException("공휴일 데이터 처리 중 오류 발생: " + e.getMessage(), e);
+        }
+    }
+
     private Workbook getWorkbook(File file) throws IOException {
         try (FileInputStream fis = new FileInputStream(file)) {
             return new XSSFWorkbook(fis);
+        }
+    }
+
+    private <T> void handleIOExceptionDuringWrite(T input, IOFunctionForWrite<T> ioFunction) {
+        try {
+            ioFunction.accept(input);
+        } catch (IOException e) {
+            throw new IllegalStateException("엑셀 파일을 작성하는 도중 오류가 발생했습니다: " + e.getMessage());
         }
     }
 }
