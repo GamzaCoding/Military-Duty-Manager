@@ -32,7 +32,7 @@ public class Persons {
 
     public Persons gerSortedPersons() {
         List<Person> sortedPersons = persons.stream()
-                .sorted(Comparator.comparingInt(Person::position))
+                .sorted(Comparator.comparingInt(Person::order))
                 .toList();
         return new Persons(sortedPersons);
     }

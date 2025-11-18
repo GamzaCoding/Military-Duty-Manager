@@ -1,32 +1,33 @@
 package repository.writer;
 
+import static repository.writer.sampleData.Sample.*;
+import static repository.writer.util.CellSizeSetter.*;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
-import java.util.List;
-import org.apache.poi.ss.usermodel.BorderStyle;
+import java.util.Optional;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.DataFormat;
-import org.apache.poi.ss.usermodel.FillPatternType;
-import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.HorizontalAlignment;
-import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import repository.FileLocation.TutorialFileLocation;
+import repository.writer.util.CellStyler;
 import service.model.person.Person;
 import service.model.person.Persons;
 
 public class TutorialWriter implements ExcelFileWriter {
-
+    public static final int ORDER_INDEX = 0;
+    public static final int RANK_INDEX = 1;
+    public static final int NAME_INDEX = 2;
+    public static final int MOVE_IN_DATE_INDEX = 3;
+    public static final int MOVE_OUT_DATE_INDEX = 4;
+    public static final int HEADER_ROW_INDEX = 0;
     private final Persons weekPersons;
     private final Persons holidayPersons;
 
@@ -46,154 +47,75 @@ public class TutorialWriter implements ExcelFileWriter {
 
     private void writePersonsToExcel(File file, Persons weekPersons, Persons holidayPersons) throws IOException {
         try (Workbook workbook = new XSSFWorkbook()) {
-            CellStyle headerStyleOfWeekday = createHeaderStyleOfWeekday(workbook);
-            CellStyle headerStyleOfHoliday = createHeaderStyleOfHoliday(workbook);
-            CellStyle bodyStyle = createBodyStyle(workbook);
-            CellStyle dateStyle = createDateStyle(workbook);
 
-            writePersonSheet(workbook, "당직자 순서(평일)", weekPersons, headerStyleOfWeekday, bodyStyle, dateStyle);
-            writePersonSheet(workbook, "당직자 순서(휴일)", holidayPersons, headerStyleOfHoliday, bodyStyle, dateStyle);
+            CellStyler cellStyler = new CellStyler(workbook);
+            writePersonSheet(workbook, WEEKDAY_DUTY_ORDER_SHEET, weekPersons, cellStyler.weekdayPersonHeaderStyle());
+            writePersonSheet(workbook, HOLIDAY_DUTY_ORDER_SHEET, holidayPersons, cellStyler.holidayPersonHeaderStyle());
 
             try (FileOutputStream fos = new FileOutputStream(file)) {
                 workbook.write(fos);
             }
         }
     }
-    // 시트 생성 및 데이터 작성
-
-    private void writePersonSheet(Workbook workbook, String sheetName, Persons persons,
-                                  CellStyle headerStyle, CellStyle bodyStyle, CellStyle dateStyle) {
+    private void writePersonSheet(Workbook workbook, String sheetName, Persons persons, CellStyle headerStyle) {
         Sheet sheet = workbook.createSheet(sheetName);
+        CellStyler cellStyler = new CellStyler(workbook);
 
-        // 헤더 작성
-        Row headerRow = sheet.createRow(0);
-        List<String> headers = List.of("순번", "계급", "이름", "전입일(예정일 포함)", "전출일(예정일 포함)") ;
+        writeHeader(headerStyle, sheet);
+        writeBody(sheet, persons, cellStyler.personBodyStyle(), cellStyler.DateStyle());
 
-        for (int i = 0; i < headers.size(); i++) {
-            Cell cell = headerRow.createCell(i);
-            cell.setCellValue(headers.get(i));
+        for (int categoryIndex = 0; categoryIndex < DUTY_ORDER_CATEGORY.size(); categoryIndex++) {
+            applyBasicColumWidth(sheet, categoryIndex);
+        }
+        applyBasicRowHeight(sheet);
+    }
+
+    private void writeHeader(CellStyle headerStyle, Sheet sheet) {
+        Row headerRow = sheet.createRow(HEADER_ROW_INDEX);
+        for (int categoryIndex = 0; categoryIndex < DUTY_ORDER_CATEGORY.size(); categoryIndex++) {
+            Cell cell = headerRow.createCell(categoryIndex);
+            cell.setCellValue(DUTY_ORDER_CATEGORY.get(categoryIndex));
             cell.setCellStyle(headerStyle);
         }
+    }
 
-        // 당직자 데이터 작성
-        int rowIndex = 1;
+    private void writeBody(Sheet sheet, Persons persons, CellStyle bodyStyle, CellStyle dateStyle) {
+        int personDataRowIndex = 1;
         for (Person person : persons.getPersons()) {
-            Row row = sheet.createRow(rowIndex++);
-            createNumericCell(row, 0, person.position(), bodyStyle);
-            createStringCell(row, 1, person.rank(), bodyStyle);
-            createStringCell(row, 2, person.name(), bodyStyle);
-            createDateCell(row, 3, person.moveInDate(), dateStyle);
-            createDateCell(row, 4, person.moveOutDate(), dateStyle);
-        }
-
-        // 셀 크기 및 행 높이 조정
-        for (int i = 0; i < headers.size(); i++) {
-            sheet.autoSizeColumn(i);
-            int currentWidth = sheet.getColumnWidth(i);
-            sheet.setColumnWidth(i, (int) (currentWidth * 1.3));
-        }
-        for (Row row : sheet) {
-            row.setHeightInPoints(24);
+            Row row = sheet.createRow(personDataRowIndex++);
+            createNumericCell(row, ORDER_INDEX, person.order(), bodyStyle);
+            createStringCell(row, RANK_INDEX, person.rank(), bodyStyle);
+            createStringCell(row, NAME_INDEX, person.name(), bodyStyle);
+            createDateCell(row, MOVE_IN_DATE_INDEX, person.moveInDate(), dateStyle);
+            createDateCell(row, MOVE_OUT_DATE_INDEX, person.moveOutDate(), dateStyle);
         }
     }
-    // 셀 생성 + 값 + 스타일 적용
 
-    private void createNumericCell(Row row, int index, int value, CellStyle style) {
-        Cell cell = row.createCell(index, CellType.NUMERIC);
+    private void createNumericCell(Row row, int cellIndex, int value, CellStyle style) {
+        Cell cell = row.createCell(cellIndex, CellType.NUMERIC);
         cell.setCellValue(value);
         cell.setCellStyle(style);
     }
 
-    private void createStringCell(Row row, int index, String value, CellStyle style) {
-        Cell cell = row.createCell(index);
-        cell.setCellValue(value != null ? value : "");
+    private void createStringCell(Row row, int cellIndex, String value, CellStyle style) {
+        validateNull(value);
+        Cell cell = row.createCell(cellIndex);
+        cell.setCellValue(value);
         cell.setCellStyle(style);
     }
 
-    private void createDateCell(Row row, int index, LocalDate date, CellStyle style) {
-        Cell cell = row.createCell(index);
-        if (date != null) {
-            Date javaDate = Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant());
-            cell.setCellValue(javaDate);
-        } else {
-            cell.setBlank();
+    private void createDateCell(Row row, int cellIndex, LocalDate date, CellStyle style) {
+        Cell cell = row.createCell(cellIndex);
+        Optional.ofNullable(date)
+                .map(d -> Date.from(d.atStartOfDay(ZoneId.systemDefault()).toInstant()))
+                .ifPresentOrElse(cell::setCellValue, cell::setBlank);
+        cell.setCellStyle(style);
+    }
+
+    private void validateNull(String value) {
+        if (value == null) {
+            throw new IllegalStateException("계급 혹은 이름값이 없습니다.");
         }
-        cell.setCellStyle(style);
-    }
-    // 헤더 스타일 — 하늘색 배경 + 중앙정렬 + Bold
-
-    private CellStyle createHeaderStyleOfWeekday(Workbook workbook) {
-        CellStyle style = workbook.createCellStyle();
-        style.setAlignment(HorizontalAlignment.CENTER);
-        style.setVerticalAlignment(VerticalAlignment.CENTER);
-        style.setFillForegroundColor(IndexedColors.LIGHT_CORNFLOWER_BLUE.getIndex());
-        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        setBorder(style);
-
-        Font font = workbook.createFont();
-        font.setBold(true);
-        font.setFontHeightInPoints((short) 16);
-        font.setFontName("굴림");
-        style.setFont(font);
-
-        return style;
-    }
-
-    private CellStyle createHeaderStyleOfHoliday(Workbook workbook) {
-        CellStyle style = workbook.createCellStyle();
-        style.setAlignment(HorizontalAlignment.CENTER);
-        style.setVerticalAlignment(VerticalAlignment.CENTER);
-        style.setFillForegroundColor(IndexedColors.LIGHT_GREEN.getIndex());
-        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        setBorder(style);
-
-        Font font = workbook.createFont();
-        font.setBold(true);
-        font.setFontHeightInPoints((short) 16);
-        font.setFontName("굴림");
-        style.setFont(font);
-
-        return style;
-    }
-    // 본문 스타일 — 중앙정렬 + 얇은 테두리 + 기본 글꼴
-
-    private CellStyle createBodyStyle(Workbook workbook) {
-        CellStyle style = workbook.createCellStyle();
-        style.setAlignment(HorizontalAlignment.CENTER);
-        style.setVerticalAlignment(VerticalAlignment.CENTER);
-        setBorder(style);
-
-        Font font = workbook.createFont();
-        font.setFontHeightInPoints((short) 15);
-        font.setFontName("굴림");
-        style.setFont(font);
-
-        return style;
-    }
-
-    private CellStyle createDateStyle(Workbook workbook) {
-        CellStyle style = workbook.createCellStyle();
-        style.setAlignment(HorizontalAlignment.CENTER);
-        style.setVerticalAlignment(VerticalAlignment.CENTER);
-        setBorder(style);
-
-        DataFormat format = workbook.createDataFormat();
-        style.setDataFormat(format.getFormat("yy-MM-dd"));
-
-        Font font = workbook.createFont();
-        font.setFontHeightInPoints((short) 15);
-        font.setFontName("굴림");
-        style.setFont(font);
-
-        return style;
-    }
-    // 공통 테두리 설정
-
-    private void setBorder(CellStyle style) {
-        style.setBorderTop(BorderStyle.THIN);
-        style.setBorderBottom(BorderStyle.THIN);
-        style.setBorderLeft(BorderStyle.THIN);
-        style.setBorderRight(BorderStyle.THIN);
     }
 
     private <T> void handleIOExceptionDuringWrite(T input, IOFunctionForWrite<T> ioFunction) {

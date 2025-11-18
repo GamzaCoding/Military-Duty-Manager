@@ -2,6 +2,7 @@ package repository.writer.util;
 
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.DataFormat;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
@@ -34,6 +35,41 @@ public class CellStyler {
                 .build();
     }
 
+    public CellStyle weekdayPersonHeaderStyle() {
+        return style()
+                .background(IndexedColors.LIGHT_CORNFLOWER_BLUE)
+                .alignCenter()
+                .borderThin()
+                .fontBold(16, "굴림")
+                .build();
+    }
+
+    public CellStyle holidayPersonHeaderStyle() {
+        return style()
+                .background(IndexedColors.LIGHT_GREEN)
+                .alignCenter()
+                .borderThin()
+                .fontBold(16, "굴림")
+                .build();
+    }
+
+    public CellStyle personBodyStyle() {
+        return style()
+                .alignCenter()
+                .borderThin()
+                .fontBold(15, "굴림")
+                .build();
+    }
+
+    public CellStyle DateStyle() {
+        return style()
+                .alignCenter()
+                .borderThin()
+                .fontBold(15, "굴림")
+                .dateFormat()
+                .build();
+    }
+
     private CellStyleBuilder style() {
         return new CellStyleBuilder(workbook);
     }
@@ -41,10 +77,12 @@ public class CellStyler {
     private static class CellStyleBuilder {
         private final CellStyle style;
         private final Font font;
+        private final DataFormat format;
 
         CellStyleBuilder(Workbook workbook) {
             this.style = workbook.createCellStyle();
             this.font = workbook.createFont();
+            this.format = workbook.createDataFormat();
         }
 
         CellStyleBuilder background(IndexedColors color) {
@@ -56,6 +94,11 @@ public class CellStyler {
         CellStyleBuilder alignCenter() {
             style.setAlignment(HorizontalAlignment.CENTER);
             style.setVerticalAlignment(VerticalAlignment.CENTER);
+            return this;
+        }
+
+        CellStyleBuilder dateFormat() {
+            style.setDataFormat(format.getFormat("yy-MM-dd"));
             return this;
         }
 

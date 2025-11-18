@@ -97,7 +97,7 @@ public class DutyOrderWriter {
         int rowIndex = 1;
         for (Person person : persons.getPersons()) {
             Row row = sheet.createRow(rowIndex++);
-            row.createCell(0).setCellValue(person.position());
+            row.createCell(0).setCellValue(person.order());
             row.createCell(1).setCellValue(person.rank());
             row.createCell(2).setCellValue(person.name());
             row.createCell(3).setCellValue(person.getMoveInDateByMilitaryFormat());

@@ -1,6 +1,7 @@
 package repository.writer;
 
 import static repository.writer.sampleData.Sample.*;
+import static repository.writer.util.CellSizeSetter.*;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,6 +18,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import repository.writer.util.CellSizeSetter;
 import repository.writer.util.CellStyler;
 import service.model.day.Day;
 
@@ -60,36 +62,24 @@ public class HolidayWriter implements ExcelFileWriter {
     }
 
     private void writeHeader(Workbook workbook, CellStyle headerStyle) {
-        Sheet sheet = workbook.createSheet(SAMPLE_SHEET_NAME);
+        Sheet sheet = workbook.createSheet(HOLIDAY_SAMPLE_SHEET);
         Row headerRow = sheet.createRow(0);
-        for (int i = 0; i < HOLIDAY_CATEGORY.size(); i++) {
-            Cell cell = headerRow.createCell(i);
-            cell.setCellValue(HOLIDAY_CATEGORY.get(i));
+        for (int categoryIndex = 0; categoryIndex < HOLIDAY_CATEGORY.size(); categoryIndex++) {
+            Cell cell = headerRow.createCell(categoryIndex);
+            cell.setCellValue(HOLIDAY_CATEGORY.get(categoryIndex));
             cell.setCellStyle(headerStyle);
-            applyBasicColumWidth(sheet, i);
+            applyBasicColumWidth(sheet, categoryIndex);
         }
         applyBasicRowHeight(sheet);
     }
 
     private void writeBasicBody(Workbook workbook) {
-        Sheet sheet = workbook.getSheet(SAMPLE_SHEET_NAME);
+        Sheet sheet = workbook.getSheet(HOLIDAY_SAMPLE_SHEET);
         addDayToFile(SAMPLE_HOLIDAY, sheet, workbook);
-        for (int i = 0; i < HOLIDAY_CATEGORY.size(); i++) {
-            applyBasicColumWidth(sheet, i);
+        for (int categoryIndex = 0; categoryIndex < HOLIDAY_CATEGORY.size(); categoryIndex++) {
+            applyBasicColumWidth(sheet, categoryIndex);
         }
         applyBasicRowHeight(sheet);
-    }
-
-    private void applyBasicColumWidth(Sheet sheet, int columIndex) {
-        sheet.autoSizeColumn(columIndex);
-        int currentWidth = sheet.getColumnWidth(columIndex);
-        sheet.setColumnWidth(columIndex, (int) (currentWidth * CORRECTION_VALUE));
-    }
-
-    private void applyBasicRowHeight(Sheet sheet) {
-        for (Row row : sheet) {
-            row.setHeightInPoints(ROW_HEIGHT);
-        }
     }
 
     private void addDayToFile(Day day, Sheet sheet, Workbook workbook) {
@@ -106,8 +96,8 @@ public class HolidayWriter implements ExcelFileWriter {
 
     private void removeDayFromFile(Day day, Sheet sheet) {
         LocalDate targetDate = day.getLocalDate();
-        for (int i = FIRST_DATA_ROW_INDEX; i <= sheet.getLastRowNum(); i++) {
-            Row row = sheet.getRow(i);
+        for (int dataRowIndex = FIRST_DATA_ROW_INDEX; dataRowIndex <= sheet.getLastRowNum(); dataRowIndex++) {
+            Row row = sheet.getRow(dataRowIndex);
             if (isBlankRow(row)) {
                 continue;
             }
@@ -117,7 +107,7 @@ public class HolidayWriter implements ExcelFileWriter {
             }
             if (targetDate.equals(parseCellDate(cell))) {
                 sheet.removeRow(row);
-                shiftRowsUp(sheet, i);
+                shiftRowsUp(sheet, dataRowIndex);
                 break;
             }
         }
