@@ -21,14 +21,14 @@ public class CellStyler {
 
     public CellStyle holidayHeaderStyle() {
         return style()
-                .background(IndexedColors.LIGHT_CORNFLOWER_BLUE)
+                .background(IndexedColors.LIGHT_BLUE)
                 .alignCenter()
                 .borderThin()
                 .fontBold(16, "굴림")
                 .build();
     }
 
-    public CellStyle holidayBodyStyle() {
+    public CellStyle holidaysBodyStyle() {
         return style()
                 .alignCenter()
                 .borderThin()
@@ -62,7 +62,7 @@ public class CellStyler {
                 .build();
     }
 
-    public CellStyle DateStyle() {
+    public CellStyle dateStyle() {
         return style()
                 .alignCenter()
                 .borderThin()
@@ -71,9 +71,18 @@ public class CellStyler {
                 .build();
     }
 
+    public CellStyle holidayStyleInDutyTable() {
+        return style()
+                .background(IndexedColors.ROSE)
+                .alignCenter()
+                .borderThin()
+                .fontBold(15, "굴림")
+                .build();
+    }
+
     public CellStyle getHeaderStyleByDayType(DayType dayType) {
         if (dayType == DayType.HOLIDAY) {
-            return holidayHeaderStyle();
+            return holidayPersonHeaderStyle();
         }
         return weekdayPersonHeaderStyle();
     }

@@ -37,7 +37,7 @@ public class DutyOrderWriter {
         CellStyler cellStyler = new CellStyler(workbook);
 
         writeHeader(sheet, cellStyler.getHeaderStyleByDayType(dayType));
-        writeBody(sheet, persons, cellStyler.personBodyStyle(), cellStyler.DateStyle());
+        writeBody(sheet, persons, cellStyler.personBodyStyle(), cellStyler.dateStyle());
         adjustLayout(sheet);
     }
 

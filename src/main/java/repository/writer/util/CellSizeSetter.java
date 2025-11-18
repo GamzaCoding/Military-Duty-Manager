@@ -18,4 +18,10 @@ public class CellSizeSetter {
             row.setHeightInPoints(ROW_HEIGHT);
         }
     }
+
+    public static void applyDutyTableHeight(Sheet sheet) {
+        for (Row row : sheet) {
+            row.setHeightInPoints(40);
+        }
+    }
 }

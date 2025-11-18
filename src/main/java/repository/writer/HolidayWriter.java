@@ -84,7 +84,7 @@ public class HolidayWriter implements ExcelFileWriter {
         row.createCell(LOCAL_DATE_INDEX).setCellValue(day.getLocalDate().format(FORMATTER));
         row.createCell(WEEK_TYPE_INDEX).setCellValue(day.getDayOfWeekName());
         row.createCell(DAY_DESCRIPTION_INDEX).setCellValue(day.getDescription());
-        CellStyle cellStyle = new CellStyler(workbook).holidayBodyStyle();
+        CellStyle cellStyle = new CellStyler(workbook).holidaysBodyStyle();
         for (Cell cell : row) {
             cell.setCellStyle(cellStyle);
         }
@@ -145,9 +145,7 @@ public class HolidayWriter implements ExcelFileWriter {
     private void handleExcelOperation(File outFile, Day day, BiConsumer<Sheet, Workbook> operation) {
         try (Workbook workbook = getWorkbook(outFile)) {
             Sheet sheet = workbook.getSheet(day.getYear() + "년");
-
             operation.accept(sheet, workbook);
-
             writeResult(outFile, workbook);
         } catch (IOException e) {
             throw new IllegalStateException("공휴일 데이터 처리 중 오류 발생: " + e.getMessage(), e);
