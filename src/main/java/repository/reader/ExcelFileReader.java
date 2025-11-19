@@ -7,8 +7,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DateUtil;
@@ -38,23 +36,20 @@ public class ExcelFileReader {
     private static final String HOLIDAY_SHEET_NAME = "당직자 순서(휴일)";
     private static final String RESULT_SHEET_NAME = "당직표 결과";
 
-    // 엑셀에서 평일 당직 시트를 읽어오는 메서드
     public Persons readWeekdayPersons(File inputFile) {
         return handleIOExceptionDuringRead(inputFile, file -> readPersonsFromExcel(inputFile, WEEKDAY_SHEET_NAME));
     }
 
-    // 엑셀에서 휴일 당직 시트를 읽어오는 메서드
     public Persons readHolidayPersons(File inputFile) {
         return handleIOExceptionDuringRead(inputFile, file -> readPersonsFromExcel(inputFile, HOLIDAY_SHEET_NAME));
     }
-    // 당직표 결과에서 당직을 읽어오는 메서드
+
     public Duties readReulstDuties(File inputFile) {
         return handleIOExceptionDuringRead(inputFile, file -> readDutiesFromExcel(inputFile));
     }
 
     private Duties readDutiesFromExcel(File inputFile) throws IOException {
         List<Duty> duties = new ArrayList<>();
-
         try (FileInputStream fis = new FileInputStream(inputFile)) {
             Workbook workbook = new XSSFWorkbook(fis);
             for (Sheet sheet : workbook) {

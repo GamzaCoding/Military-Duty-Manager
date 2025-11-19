@@ -93,20 +93,30 @@ public class HolidayWriter implements ExcelFileWriter {
     private void removeDayFromFile(Day day, Sheet sheet) {
         LocalDate targetDate = day.getLocalDate();
         for (int dataRowIndex = FIRST_DATA_ROW_INDEX; dataRowIndex <= sheet.getLastRowNum(); dataRowIndex++) {
-            Row row = sheet.getRow(dataRowIndex);
-            if (isBlankRow(row)) {
-                continue;
-            }
-            Cell cell = row.getCell(DAY_DATA_INDEX);
-            if (isCellBlank(cell)) {
-                continue;
-            }
-            if (targetDate.equals(parseCellDate(cell))) {
-                sheet.removeRow(row);
-                shiftRowsUp(sheet, dataRowIndex);
+            if (isTargetRow(sheet, dataRowIndex, targetDate)) {
+                deleteRowAndShift(sheet, dataRowIndex);
                 break;
             }
         }
+    }
+
+    private boolean isTargetRow(Sheet sheet, int dataRowIndex, LocalDate targetDate) {
+        Row row = sheet.getRow(dataRowIndex);
+        if (isBlankRow(row)) {
+            return false;
+        }
+        Cell cell = row.getCell(DAY_DATA_INDEX);
+        if (isCellBlank(cell)) {
+            return false;
+        }
+        LocalDate dateInCell = parseCellDate(cell);
+        return targetDate.equals(dateInCell);
+    }
+
+    private void deleteRowAndShift(Sheet sheet, int rowIndex) {
+        Row row = sheet.getRow(rowIndex);
+        sheet.removeRow(row);
+        shiftRowsUp(sheet, rowIndex);
     }
 
     private boolean isCellBlank(Cell cell) {
