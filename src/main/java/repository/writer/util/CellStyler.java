@@ -12,7 +12,6 @@ import org.apache.poi.ss.usermodel.Workbook;
 import service.model.day.DayType;
 
 public class CellStyler {
-
     private final Workbook workbook;
 
     public CellStyler(Workbook workbook) {

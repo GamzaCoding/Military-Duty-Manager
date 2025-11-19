@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class Day implements Comparable<Day> {
-
     public static final String DEFAULT_DESCRIPTION = "설명 없음(기본값)";
 
     private final LocalDate localDate;

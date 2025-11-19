@@ -4,8 +4,8 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
 public class CellSizeSetter {
-    public static final double CORRECTION_VALUE = 1.3;
-    public static final int ROW_HEIGHT = 24;
+    private static final double CORRECTION_VALUE = 1.3;
+    private static final int ROW_HEIGHT = 24;
 
     public static void applyBasicColumWidth(Sheet sheet, int columIndex) {
         sheet.autoSizeColumn(columIndex);

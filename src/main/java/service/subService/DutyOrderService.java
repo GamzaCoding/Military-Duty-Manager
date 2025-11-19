@@ -2,7 +2,6 @@ package service.subService;
 
 import java.util.ArrayList;
 import java.util.List;
-import repository.reader.ExcelFileReader;
 import service.model.day.Day;
 import service.model.day.Days;
 import service.model.duty.Duties;
@@ -11,10 +10,6 @@ import service.model.person.Person;
 import service.model.person.Persons;
 
 public class DutyOrderService {
-
-    public DutyOrderService() {
-
-    }
 
     public Duties makeResultDuty(Days days, Persons weekPersons, Persons holidayPersons) {
         validatePersonsIsEmpty(weekPersons, holidayPersons);

@@ -19,12 +19,12 @@ import service.model.person.Person;
 import service.model.person.Persons;
 
 public class DutyOrderWriter {
-    public static final int ORDER_INDEX = 0;
-    public static final int RANK_INDEX = 1;
-    public static final int NAME_INDEX = 2;
-    public static final int MOVE_IN_DATE_INDEX = 3;
-    public static final int MOVE_OUT_DATE_INDEX = 4;
-    public static final int HEADER_ROW_INDEX = 0;
+    private static final int ORDER_INDEX = 0;
+    private static final int RANK_INDEX = 1;
+    private static final int NAME_INDEX = 2;
+    private static final int MOVE_IN_DATE_INDEX = 3;
+    private static final int MOVE_OUT_DATE_INDEX = 4;
+    private static final int HEADER_ROW_INDEX = 0;
 
     private final Workbook workbook;
 

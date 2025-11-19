@@ -26,10 +26,10 @@ import service.model.day.Day;
 public class HolidayWriter implements ExcelFileWriter {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final int FIRST_DATA_ROW_INDEX = 1;
-    public static final int DAY_DATA_INDEX = 0;
-    public static final int LOCAL_DATE_INDEX = 0;
-    public static final int WEEK_TYPE_INDEX = 1;
-    public static final int DAY_DESCRIPTION_INDEX = 2;
+    private static final int DAY_DATA_INDEX = 0;
+    private static final int LOCAL_DATE_INDEX = 0;
+    private static final int WEEK_TYPE_INDEX = 1;
+    private static final int DAY_DESCRIPTION_INDEX = 2;
 
     @Override
     public void write(File outFile) {

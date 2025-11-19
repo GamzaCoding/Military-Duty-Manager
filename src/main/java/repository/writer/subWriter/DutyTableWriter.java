@@ -16,7 +16,7 @@ import service.model.duty.Duty;
 import service.model.person.Person;
 
 public class DutyTableWriter {
-    public static final int WEEK_SIZE = 7;
+    private static final int WEEK_SIZE = 7;
 
     private final Workbook workbook;
 

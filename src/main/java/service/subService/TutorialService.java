@@ -12,9 +12,6 @@ import service.model.person.Persons;
 
 public class TutorialService {
 
-    public TutorialService() {
-    }
-
     public void generateTutorialFiles() throws IOException {
         Persons weekdayPersons = createWeekdayPersons();
         Persons holidayPersons = createHolidayPersons();

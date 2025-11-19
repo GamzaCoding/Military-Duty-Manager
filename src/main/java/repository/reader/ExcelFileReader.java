@@ -25,16 +25,14 @@ import service.model.person.Person;
 import service.model.person.Persons;
 
 public class ExcelFileReader {
-
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
     private static final int FIRST_DATA_ROW_INDEX = 1;
     private static final int ORDER_INDEX = 0;
     private static final int RANK_INDEX = 1;
     private static final int NAME_INDEX = 2;
     private static final int MOVE_IN_INDEX = 3;
     private static final int MOVE_OUT_INDEX = 4;
-    public static final int WEEK_SIZE = 7;
+    private static final int WEEK_SIZE = 7;
 
     public Duties readReulstDuties(File inputFile) {
         return handleIOExceptionDuringRead(inputFile, file -> readDutiesFromExcel(inputFile));
