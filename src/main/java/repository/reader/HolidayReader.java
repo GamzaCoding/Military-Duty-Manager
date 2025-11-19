@@ -30,36 +30,53 @@ public class HolidayReader {
 
     private Days readHolidaysFromExcel(File excelFile, String sheetName) throws IOException {
         List<Day> holidays = new ArrayList<>();
-
         try (FileInputStream fis = new FileInputStream(excelFile);
              Workbook workbook = new XSSFWorkbook(fis)) {
-
-            for (Sheet sheet : workbook) {
-                if (sheet.getSheetName().contains(sheetName + "년")) {
-                    readSheetData(sheet, holidays);
-                }
-            }
+            readHolidays(sheetName, workbook, holidays);
         }
         return Days.of(holidays);
     }
 
-    // List<Day> holidays 이부분을 리팩터링 해야 할거 같음
+    private void readHolidays(String sheetName, Workbook workbook, List<Day> holidays) {
+        for (Sheet sheet : workbook) {
+            if (sheet.getSheetName().contains(sheetName + "년")) {
+                readSheetData(sheet, holidays);
+            }
+        }
+    }
+
     private void readSheetData(Sheet sheet, List<Day> holidays) {
         for (int rowIndex = FIRST_DATA_ROW_INDEX; rowIndex <= sheet.getLastRowNum(); rowIndex++) {
             Row row = sheet.getRow(rowIndex);
-
-            if (isBlankRow(row)) {
+            if (isNullRow(row)) {
                 continue;
             }
-            if (isBlankCell(row.getCell(LOCAL_DATE_INDEX))) {
+            LocalDate date = parseDateFromRow(row);
+            if (isNullDate(date)) {
                 continue;
             }
-            LocalDate localDate = getLocalDate(row.getCell(LOCAL_DATE_INDEX));
-            if (isBlankLocalDate(localDate)) {
-                continue;
-            }
-            holidays.add(Day.of(localDate, DayType.HOLIDAY));
+            holidays.add(Day.of(date, DayType.HOLIDAY));
         }
+    }
+
+    private boolean isNullDate(LocalDate date) {
+        return date == null;
+    }
+
+    private boolean isNullRow(Row row) {
+        return row == null;
+    }
+
+    private LocalDate parseDateFromRow(Row row) {
+        Cell cell = row.getCell(LOCAL_DATE_INDEX);
+        if (isBlankCell(cell)) {
+            return null;
+        }
+        LocalDate date = getLocalDate(cell);
+        if (isBlankLocalDate(date)) {
+            return null;
+        }
+        return date;
     }
 
     private boolean isBlankCell(Cell cell) {
@@ -88,12 +105,8 @@ public class HolidayReader {
         return cell.getCellType() == CellType.NUMERIC && DateUtil.isCellDateFormatted(cell);
     }
 
-    private boolean isBlankRow(Row row) {
-        return row == null;
-    }
-
     private boolean isBlankLocalDate(LocalDate localDate) {
-        return localDate == null;
+        return isNullDate(localDate);
     }
 
     private <T, R> R handleIOExceptionDuringRead(T input, IOFunctionForRead<T, R> ioFunction) {
