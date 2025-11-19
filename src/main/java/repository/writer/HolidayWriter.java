@@ -1,6 +1,8 @@
 package repository.writer;
 
-import static repository.writer.sampleData.Sample.*;
+import static repository.sampleData.Sample.HOLIDAY_CATEGORY;
+import static repository.sampleData.Sample.HOLIDAY_SAMPLE_SHEET;
+import static repository.sampleData.Sample.SAMPLE_HOLIDAY;
 import static repository.writer.util.CellSizeSetter.*;
 
 import java.io.File;

@@ -1,6 +1,7 @@
 package repository.writer;
 
-import static repository.writer.sampleData.Sample.*;
+import static repository.sampleData.Sample.HOLIDAY_DUTY_ORDER_SHEET;
+import static repository.sampleData.Sample.WEEKDAY_DUTY_ORDER_SHEET;
 
 import java.io.File;
 import java.io.FileOutputStream;

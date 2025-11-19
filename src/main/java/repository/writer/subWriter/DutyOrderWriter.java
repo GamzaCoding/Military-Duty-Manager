@@ -1,6 +1,6 @@
 package repository.writer.subWriter;
 
-import static repository.writer.sampleData.Sample.*;
+import static repository.sampleData.Sample.DUTY_ORDER_CATEGORY;
 import static repository.writer.util.CellSizeSetter.*;
 
 import java.time.LocalDate;

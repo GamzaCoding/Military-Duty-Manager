@@ -1,4 +1,4 @@
-package repository.writer.sampleData;
+package repository.sampleData;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -13,6 +13,7 @@ public final class Sample {
     public static final String HOLIDAY_SAMPLE_SHEET = "2025년";
     public static final String WEEKDAY_DUTY_ORDER_SHEET = "당직자 순서(평일)";
     public static final String HOLIDAY_DUTY_ORDER_SHEET = "당직자 순서(휴일)";
+    public static final String RESULT_SHEET = "당직표 결과";
 
     private Sample() {
     }

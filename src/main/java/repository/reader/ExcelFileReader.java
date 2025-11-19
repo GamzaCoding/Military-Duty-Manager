@@ -1,5 +1,7 @@
 package repository.reader;
 
+import static repository.sampleData.Sample.*;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -27,78 +29,72 @@ public class ExcelFileReader {
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     private static final int FIRST_DATA_ROW_INDEX = 1;
-    private static final int POSITION_INDEX = 0;
+    private static final int ORDER_INDEX = 0;
     private static final int RANK_INDEX = 1;
     private static final int NAME_INDEX = 2;
     private static final int MOVE_IN_INDEX = 3;
     private static final int MOVE_OUT_INDEX = 4;
-    private static final String WEEKDAY_SHEET_NAME = "당직자 순서(평일)";
-    private static final String HOLIDAY_SHEET_NAME = "당직자 순서(휴일)";
-    private static final String RESULT_SHEET_NAME = "당직표 결과";
-
-    public Persons readWeekdayPersons(File inputFile) {
-        return handleIOExceptionDuringRead(inputFile, file -> readPersonsFromExcel(inputFile, WEEKDAY_SHEET_NAME));
-    }
-
-    public Persons readHolidayPersons(File inputFile) {
-        return handleIOExceptionDuringRead(inputFile, file -> readPersonsFromExcel(inputFile, HOLIDAY_SHEET_NAME));
-    }
+    public static final int WEEK_SIZE = 7;
 
     public Duties readReulstDuties(File inputFile) {
         return handleIOExceptionDuringRead(inputFile, file -> readDutiesFromExcel(inputFile));
+    }
+
+    public Persons readWeekdayPersons(File inputFile) {
+        return handleIOExceptionDuringRead(inputFile,
+                file -> readPersonsFromExcel(inputFile, WEEKDAY_DUTY_ORDER_SHEET));
+    }
+
+    public Persons readHolidayPersons(File inputFile) {
+        return handleIOExceptionDuringRead(inputFile,
+                file -> readPersonsFromExcel(inputFile, HOLIDAY_DUTY_ORDER_SHEET));
     }
 
     private Duties readDutiesFromExcel(File inputFile) throws IOException {
         List<Duty> duties = new ArrayList<>();
         try (FileInputStream fis = new FileInputStream(inputFile)) {
             Workbook workbook = new XSSFWorkbook(fis);
-            for (Sheet sheet : workbook) {
-                if (sheet.getSheetName().contains(ExcelFileReader.RESULT_SHEET_NAME)) {
-                    readDutiesData(sheet, duties);
-                }
-            }
+            readDuties(workbook, duties);
         }
         return Duties.of(duties);
     }
 
-    private Persons readPersonsFromExcel(File excelFile, String sheetName) throws IOException {
-        List<Person> people = new ArrayList<>();
-
-        try (FileInputStream fis = new FileInputStream(excelFile);
-             Workbook workbook = new XSSFWorkbook(fis)) {
-
-            for (Sheet sheet : workbook) {
-                if (sheet.getSheetName().contains(sheetName)) {
-                    readSheetData(sheet, people);
-                }
+    private void readDuties(Workbook workbook, List<Duty> duties) {
+        for (Sheet sheet : workbook) {
+            if (sheet.getSheetName().contains(RESULT_SHEET)) {
+                readRowFromSheet(sheet, duties);
             }
         }
-        return Persons.of(people);
     }
 
-    private void readDutiesData(Sheet sheet, List<Duty> duties) {
-        for (int i = 0; i <= sheet.getPhysicalNumberOfRows(); i = i + 2) {
-            Row DateRow = sheet.getRow(i);
+    private void readRowFromSheet(Sheet sheet, List<Duty> duties) {
+        for (int localDateRowIndex = 0; localDateRowIndex <= sheet.getPhysicalNumberOfRows();
+             localDateRowIndex = localDateRowIndex + 2) {
+            Row DateRow = sheet.getRow(localDateRowIndex);
             if (DateRow == null) {
                 continue;
             }
-            for (int cellIndex = 0; cellIndex < 7; cellIndex++) {
-                Duty duty = getDuty(sheet, DateRow, cellIndex, i);
-                if (duty == null) {
-                    continue;
-                }
-                duties.add(duty);
-            }
+            addDutyFormRow(sheet, duties, DateRow, localDateRowIndex);
         }
     }
 
-    private static Duty getDuty(Sheet sheet, Row DateRow, int cellIndex, int i) {
+    private void addDutyFormRow(Sheet sheet, List<Duty> duties, Row DateRow, int localDateRowIndex) {
+        for (int cellIndex = 0; cellIndex < WEEK_SIZE; cellIndex++) {
+            Duty duty = getDuty(sheet, DateRow, cellIndex, localDateRowIndex);
+            if (duty == null) {
+                continue;
+            }
+            duties.add(duty);
+        }
+    }
+
+    private Duty getDuty(Sheet sheet, Row DateRow, int cellIndex, int localDateRowIndex) {
         Cell dateCell = DateRow.getCell(cellIndex);
         if (dateCell == null) {
             return null;
         }
         Day day = getDay(dateCell);
-        Row personRow = sheet.getRow(i + 1);
+        Row personRow = sheet.getRow(getPersonRowIndex(localDateRowIndex));
         Person person = getPerson(personRow, cellIndex);
         if (person == null) {
             return null;
@@ -106,7 +102,53 @@ public class ExcelFileReader {
         return Duty.of(day, person);
     }
 
-    private static Person getPerson(Row personRow, int cellIndex) {
+    private int getPersonRowIndex(int localDateRowIndex) {
+        return localDateRowIndex + 1;
+    }
+
+    private Persons readPersonsFromExcel(File excelFile, String sheetName) throws IOException {
+        List<Person> people = new ArrayList<>();
+
+        try (FileInputStream fis = new FileInputStream(excelFile);
+             Workbook workbook = new XSSFWorkbook(fis)) {
+            readPersons(sheetName, workbook, people);
+        }
+        return Persons.of(people);
+    }
+
+    private void readPersons(String sheetName, Workbook workbook, List<Person> people) {
+        for (Sheet sheet : workbook) {
+            if (sheet.getSheetName().contains(sheetName)) {
+                readSheetData(sheet, people);
+            }
+        }
+    }
+
+    private void readSheetData(Sheet sheet, List<Person> people) {
+        for (int rowIndex = FIRST_DATA_ROW_INDEX; rowIndex <= sheet.getPhysicalNumberOfRows(); rowIndex++) {
+            Row row = sheet.getRow(rowIndex);
+            if (isUnValidRow(row)) {
+                continue;
+            }
+            Person person = parsePersonFromRow(row);
+            people.add(person);
+        }
+    }
+
+    private boolean isUnValidRow(Row row) {
+        return row == null || getNumber(row.getCell(ORDER_INDEX)) == 0;
+    }
+
+    private Person parsePersonFromRow(Row row) {
+        Integer order = getNumber(row.getCell(ORDER_INDEX));
+        String rank = getStringValue(row.getCell(RANK_INDEX));
+        String name = getStringValue(row.getCell(NAME_INDEX));
+        LocalDate moveInDate = parseDate(row.getCell(MOVE_IN_INDEX));
+        LocalDate moveOutDate = parseDate(row.getCell(MOVE_OUT_INDEX));
+        return Person.from(order, rank, name, moveInDate, moveOutDate);
+    }
+
+    private Person getPerson(Row personRow, int cellIndex) {
         if (personRow == null) {
             return null;
         }
@@ -115,7 +157,7 @@ public class ExcelFileReader {
         return Person.from(null, split[0], split[1], null, null);
     }
 
-    private static Day getDay(Cell dateCell) {
+    private Day getDay(Cell dateCell) {
         String dutyDayString = dateCell.toString().trim();
         String[] split1 = dutyDayString.split("\\.");
         int year = Integer.parseInt("20" + split1[0].replace("'", ""));
@@ -130,27 +172,6 @@ public class ExcelFileReader {
             sampleDay = Day.of(localDate, DayType.WEEKDAY);
         }
         return sampleDay;
-    }
-
-    private void readSheetData(Sheet sheet, List<Person> people) {
-        for (int i = FIRST_DATA_ROW_INDEX; i <= sheet.getPhysicalNumberOfRows(); i++) {
-            Row row = sheet.getRow(i);
-
-            if (row == null) {
-                continue; // 빈 행은 건너뛰기
-            }
-
-            Integer position = getNumber(row.getCell(POSITION_INDEX));
-            if (position == 0) { // 엑셀 행에 아무 데이터 없는데 그냥 셀이 존재할 경우 걸러내는 조건
-                continue;
-            }
-            String rank = getStringValue(row.getCell(RANK_INDEX));
-            String name = getStringValue(row.getCell(NAME_INDEX));
-            LocalDate moveInDate = parseDate(row.getCell(MOVE_IN_INDEX));
-            LocalDate moveOutDate = parseDate(row.getCell(MOVE_OUT_INDEX));
-
-            people.add(Person.from(position, rank, name, moveInDate, moveOutDate));
-        }
     }
 
     private LocalDate parseDate(Cell cell) {
