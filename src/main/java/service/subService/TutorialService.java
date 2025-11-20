@@ -1,6 +1,5 @@
 package service.subService;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import repository.FileLocation.HolidayFileLocation;
@@ -12,7 +11,7 @@ import service.model.person.Persons;
 
 public class TutorialService {
 
-    public void generateTutorialFiles() throws IOException {
+    public void generateTutorialFiles() {
         Persons weekdayPersons = createWeekdayPersons();
         Persons holidayPersons = createHolidayPersons();
 

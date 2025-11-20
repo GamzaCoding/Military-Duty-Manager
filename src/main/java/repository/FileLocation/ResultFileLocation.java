@@ -16,13 +16,21 @@ public class ResultFileLocation {
     public ResultFileLocation() {
     }
 
-    public File getFile() throws IOException {
+    public File getFile() {
         LocalDate now = LocalDate.now();
         String home = System.getProperty("user.home");
         String subFolder = home + BASIC_FILE_PATH + FOLDER_FORMATTER.format(now);
         File directory = new File(subFolder);
-        Files.createDirectories(directory.toPath());
+        accessFile(directory);
         String fileName = DUTY_TABLE_HEADER + FILE_FORMATTER.format(java.time.LocalDateTime.now()) + FILE_EXTENSION;
         return new File(directory, fileName);
+    }
+
+    private void accessFile(File directory) {
+        try {
+            Files.createDirectories(directory.toPath());
+        } catch (IOException e) {
+            System.out.println("holidays.xlsx 파일에 접근하는 과정에서 오류가 발생했습니다 : " + e.getMessage());
+        }
     }
 }

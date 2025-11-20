@@ -14,11 +14,19 @@ public class TutorialFileLocation {
     public TutorialFileLocation() {
     }
 
-    public File getFile() throws IOException {
+    public File getFile() {
         String home = System.getProperty("user.home");
         File directory = new File( home + TUTORIAL_FILE_PATH);
-        Files.createDirectories(directory.toPath());
+        accessFile(directory);
         String fileName = TUTORIAL_HEADER + FILE_FORMATTER.format(java.time.LocalDateTime.now()) + FILE_EXTENSION;
         return new File(directory, fileName);
+    }
+
+    private void accessFile(File directory) {
+        try {
+            Files.createDirectories(directory.toPath());
+        } catch (IOException e) {
+            System.out.println("holidays.xlsx 파일에 접근하는 과정에서 오류가 발생했습니다 : " + e.getMessage());
+        }
     }
 }

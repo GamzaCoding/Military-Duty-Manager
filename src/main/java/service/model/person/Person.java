@@ -42,22 +42,6 @@ public class Person {
         return moveOutDate;
     }
 
-    public String getMoveInDateByNavyFormat() {
-        int year = moveInDate.getYear() % 100;
-        int month = moveInDate.getMonthValue();
-        int day = moveInDate.getDayOfMonth();
-
-        return String.format("'" + "%02d.%2d.%2d.", year, month, day);
-    }
-
-    public String getMoveOutDateByNavyFormat() {
-        int year = moveOutDate.getYear() % 100;
-        int month = moveOutDate.getMonthValue();
-        int day = moveOutDate.getDayOfMonth();
-
-        return String.format("'" + "%02d.%2d.%2d.", year, month, day);
-    }
-
     public String getRankAndName() {
         return String.format("%s %s", rank, name);
     }

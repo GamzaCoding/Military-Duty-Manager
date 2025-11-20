@@ -1,6 +1,5 @@
 package service.subService;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Stream;
@@ -18,7 +17,7 @@ public class DutyDayService {
         this.location = new HolidayFileLocation();
     }
 
-    public Days makeDutyDays(LocalDate startDate, LocalDate endDate) throws IOException {
+    public Days makeDutyDays(LocalDate startDate, LocalDate endDate) {
         Days holidays = findHolidayFromTo(startDate, endDate);
         List<Day> dutyDays = Stream.iterate(startDate, date -> !date.isAfter(endDate), date -> date.plusDays(1))
                 .map(localDate -> createDaysWithHolidayStatus(localDate, holidays))
@@ -34,7 +33,7 @@ public class DutyDayService {
         return day;
     }
 
-    private Days findHolidayFromTo(LocalDate startDate, LocalDate endDate) throws IOException {
+    private Days findHolidayFromTo(LocalDate startDate, LocalDate endDate) {
         if (isTwoYears(startDate, endDate)) {
             return mergeHolidays(startDate, endDate);
         }
@@ -45,7 +44,7 @@ public class DutyDayService {
         return startDate.getYear() != endDate.getYear();
     }
 
-    private Days mergeHolidays(LocalDate startDate, LocalDate endDate) throws IOException {
+    private Days mergeHolidays(LocalDate startDate, LocalDate endDate) {
         Days StartDateYearHolidays = holidayReader.readHolidays(location.getFile(),
                 String.valueOf(startDate.getYear()));
         Days endDateYearHolidays = holidayReader.readHolidays(location.getFile(),

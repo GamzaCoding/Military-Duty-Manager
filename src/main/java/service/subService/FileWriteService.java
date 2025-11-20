@@ -1,6 +1,5 @@
 package service.subService;
 
-import java.io.IOException;
 import repository.FileLocation.ResultFileLocation;
 import repository.writer.DutyResultWriter;
 import service.model.duty.Duties;
@@ -13,7 +12,7 @@ public class FileWriteService {
         this.dutyResultWriter = new DutyResultWriter(weekPersons, holidayPersons, duties);
     }
 
-    public void write() throws IOException {
+    public void write() {
         dutyResultWriter.write(new ResultFileLocation().getFile());
     }
 }

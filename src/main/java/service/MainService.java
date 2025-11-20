@@ -1,8 +1,8 @@
 package service;
 
 import java.io.File;
-import java.io.IOException;
 import java.time.LocalDate;
+import service.model.day.Day;
 import service.model.day.Days;
 import service.model.duty.Duties;
 import service.model.duty.Duty;
@@ -34,11 +34,11 @@ public class MainService {
         this.fileReadService = new FileReadService();
     }
 
-    public void startTutorial() throws IOException {
+    public void startTutorial() {
         tutorialService.generateTutorialFiles();
     }
 
-    public void calculateResult(LocalDate startDate, LocalDate endDate, File inputFile) throws IOException {
+    public void calculateResult(LocalDate startDate, LocalDate endDate, File inputFile) {
         Days dutyDays = dutyDayService.makeDutyDays(startDate, endDate);
         Persons weekdayPersons = fileReadService.readWeekPersons(inputFile);
         Persons holidayPersons = fileReadService.readHoliPersons(inputFile);
@@ -62,5 +62,13 @@ public class MainService {
         if (tempDuties != null) {
             tempDuties = dutyChangeService.changeDutyOneSide(tempDuties, duty, person);
         }
+    }
+
+    public void changeWeekdayToHoliday(Day day, String description) {
+        holidayService.makeDayAsHoliday(day, description);
+    }
+
+    public void changeHolidayToWeekday(Day day) {
+        holidayService.makeDayAsWeekday(day);
     }
 }
