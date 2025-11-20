@@ -2,21 +2,50 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 
 <StackPane xmlns="http://javafx.com/javafx/17.0.12"
            xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="org.example.dutymanager.controller.StartController">
+           fx:controller="org.example.dutymanager.controller.StartController"
+           style="-fx-background-image: url('/images/background1.JPG');
+                  -fx-background-size: 100%;
+                  -fx-background-position: center 80px;">
 
-    <VBox alignment="CENTER" spacing="15">
-        <Button prefWidth="150" prefHeight="35" text="시작하기" onAction="#onStartButtonClick" />
-        <Button prefWidth="150" prefHeight="35" text="당직자 순서(양식) 다운"
-                onAction="#onTutorialButtonClick">
-            <font>
-                <Font size="10" />
-            </font>
-        </Button>
-        <Label fx:id="tutorialSuccessText" text="" style="-fx-text-fill: green;" />
+    <VBox alignment="CENTER" spacing="25"
+          prefWidth="450"
+          prefHeight="300"
+          style="-fx-background-color: rgba(0,0,0,0.45);
+                 -fx-padding: 40 60;
+                 -fx-background-radius: 20px;">
+
+        <Label text="당직 관리 시스템"
+               style="-fx-font-size: 45px;
+                      -fx-font-weight: bold;
+                      -fx-text-fill: white;"
+               translateY="-130"/>
+
+        <Button prefWidth="260" prefHeight="45" text="시작하기"
+                style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 30px;"
+                translateY="-40"
+                onAction="#onStartButtonClick" />
+
+        <Label fx:id="tutorialSuccessText"
+               style="-fx-text-fill: #00FF90; -fx-font-size: 16px;"
+               translateY="-40"/>
     </VBox>
+
+    <AnchorPane pickOnBounds="false">
+        <VBox spacing="10"
+              AnchorPane.topAnchor="20"
+              AnchorPane.rightAnchor="20">
+
+            <Button prefWidth="180" prefHeight="35" text="당직자 순서(양식) 다운"
+                    style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 16px;"
+                    onAction="#onTutorialButtonClick" />
+
+            <Button prefWidth="180" prefHeight="35" text="공휴일 데이터베이스 생성"
+                    style="-fx-background-color: #FF9800; -fx-text-fill: white; -fx-font-size: 16px;"
+                    onAction="#onHolidayDBCreateButtonClick" />
+        </VBox>
+    </AnchorPane>
 
 </StackPane>

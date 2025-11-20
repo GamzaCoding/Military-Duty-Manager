@@ -44,7 +44,7 @@ public class StartController {
     protected void onTutorialButtonClick() {
         mainService.startTutorial();
         openExcelFile(mainService.getTutorialFile());
-        tutorialSuccessText.setText("당직결과 폴더 안데 당직자 순서(양식).xlsx 파일 생성 완료");
+        tutorialSuccessText.setText("당직결과 폴더 안에 당직자 순서(양식).xlsx 파일 생성 완료");
     }
 
     private void openExcelFile(File file) {
