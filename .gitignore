@@ -1,9 +1,24 @@
-.gradle
-build/
-!gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+
+### Gradle ###
+# 빌드 결과물은 무시
+/build/
+/.gradle/
+
+# Gradle Wrapper는 포함
+!gradle/
+!gradlew
+!gradlew.bat
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
+!build.gradle
+!settings.gradle
+!gradle.properties
+
+### Kotlin, Class 파일 ###
 .kotlin
+.class
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
