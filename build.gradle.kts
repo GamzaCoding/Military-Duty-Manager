@@ -22,13 +22,13 @@ val platform = when {
 
 dependencies {
     implementation("org.openjfx:javafx-base:21:$platform")
-    implementation("org.openjfx:javafx-graphics:21:$platform")
+    implementation("org.openjfx:javafx-graphics:21.0.2:$platform")
     implementation("org.openjfx:javafx-controls:21:$platform")
     implementation("org.openjfx:javafx-fxml:21:$platform")
 
     implementation("org.controlsfx:controlsfx:11.2.0")
 
-    implementation("org.apache.poi:poi-ooxml:5.4.1")
+    implementation("org.apache.poi:poi-ooxml:5.5.0")
     implementation("org.apache.logging.log4j:log4j-core:2.24.1")
 }
 
