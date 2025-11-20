@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<StackPane xmlns="http://javafx.com/javafx/17.0.12"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="org.example.dutymanager.controller.StartController">
+
+    <VBox alignment="CENTER" spacing="15">
+        <Button prefWidth="150" prefHeight="35" text="시작하기" onAction="#onStartButtonClick" />
+        <Button prefWidth="150" prefHeight="35" text="당직자 순서(양식) 다운"
+                onAction="#onTutorialButtonClick">
+            <font>
+                <Font size="10" />
+            </font>
+        </Button>
+        <Label fx:id="tutorialSuccessText" text="" style="-fx-text-fill: green;" />
+    </VBox>
+
+</StackPane>
