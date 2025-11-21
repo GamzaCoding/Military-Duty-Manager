@@ -53,14 +53,21 @@ jlink {
     }
 
     jpackage {
-        installerType = "dmg"
         appVersion = "1.0.0"
 
-        installerOptions = listOf(
-            "--mac-package-identifier", "org.example.dutymanager.demo",
-            "--mac-package-name", "DutyManager"
-        )
-
+        if (System.getProperty("os.name").lowercase().contains("mac")) {
+            installerType = "dmg"
+            installerOptions = listOf(
+                "--mac-package-identifier", "org.example.dutymanager",
+                "--mac-package-name", "DutyManager"
+            )
+        } else if (System.getProperty("os.name").lowercase().contains("win")) {
+            installerType = "exe"
+            installerOptions = listOf(
+                "--win-menu",
+                "--win-shortcut"
+            )
+        }
         jvmArgs.add("--enable-native-access=ALL-UNNAMED")
     }
     forceMerge("poi-ooxml")

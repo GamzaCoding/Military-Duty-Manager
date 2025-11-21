@@ -20,7 +20,7 @@ public class StartController {
     private final MainService mainService = new MainService();
 
     @FXML
-    protected void onStartButtonClick() {
+    private void onStartButtonClick() {
         try {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("/org/example/dutymanager/view/dutyCreate-view.fxml"));
@@ -36,7 +36,7 @@ public class StartController {
     }
 
     @FXML
-    protected void onHolidayDBManagerButtonClick() {
+    private void onHolidayDBManagerButtonClick() {
         try {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("/org/example/dutymanager/view/HolidayDBManager-view.fxml"));
@@ -52,7 +52,7 @@ public class StartController {
     }
 
     @FXML
-    protected void onHolidayDBCreateButtonClick() {
+    private void onHolidayDBCreateButtonClick() {
         if (mainService.alreadyHolidayDBExist()) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("공휴일 DB 생성");
@@ -78,7 +78,7 @@ public class StartController {
     }
 
     @FXML
-    protected void onTutorialButtonClick() {
+    private void onTutorialButtonClick() {
         mainService.startTutorial();
         openExcelFile(mainService.getTutorialFile());
         successText.setText("당직자 순서(양식).xlsx 생성 완료");

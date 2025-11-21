@@ -23,7 +23,7 @@ public class HolidayDBManagerController {
     private final MainService mainService = new MainService();
 
     @FXML
-    protected void onDBOpenButtonClick() {
+    private void onDBOpenButtonClick() {
         try {
             File holidaysDB = mainService.getHolidaysDB();
             openExcelFile(holidaysDB);
