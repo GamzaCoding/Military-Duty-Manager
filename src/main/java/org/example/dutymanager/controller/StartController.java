@@ -6,6 +6,9 @@ import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import org.example.dutymanager.service.MainService;
@@ -50,10 +53,28 @@ public class StartController {
 
     @FXML
     protected void onHolidayDBCreateButtonClick() {
-        // holidayDB 생성 로직, 기존에 DB가 있다면 경고 메시지를 띄우자!(기존 DB가 이미 존재합니다. 새로 생성하시겠습니까?)
-        // 이렇게 메시지를 띄우고 기존 DB 파일의 이름을 변경하자.
-        mainService.createHolidayDB();
-        successText.setText("holidays.xlsx 생성 성공");
+        if (mainService.alreadyHolidayDBExist()) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("공휴일 DB 생성");
+            alert.setHeaderText("기존 공휴일 DB가 이미 존재합니다.");
+            alert.setContentText("새로 생성하면 기존 데이터는 삭제됩니다.\n정말 새로 만드시겠습니까?");
+
+            ButtonType yesButton = new ButtonType("예", ButtonBar.ButtonData.OK_DONE);
+            ButtonType noButton = new ButtonType("아니오", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+            alert.getButtonTypes().setAll(yesButton, noButton);
+            alert.showAndWait().ifPresent(response -> {
+                if (response == yesButton) {
+                    mainService.createHolidayDB();
+                    successText.setText("기존 DB를 덮어쓰고 재생성했습니다.");
+                } else {
+                    successText.setText("DB 생성이 취소되었습니다.");
+                }
+            });
+        } else {
+            mainService.createHolidayDB();
+            successText.setText("holidays.xlsx 생성 성공");
+        }
     }
 
     @FXML

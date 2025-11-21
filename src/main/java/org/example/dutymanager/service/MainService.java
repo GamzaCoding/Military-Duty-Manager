@@ -87,4 +87,9 @@ public class MainService {
     public File getHolidaysDB() {
         return holidayService.getDB();
     }
+
+    public boolean alreadyHolidayDBExist() {
+        File db = holidayService.getDB();
+        return db.exists();
+    }
 }

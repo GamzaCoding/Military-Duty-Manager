@@ -22,7 +22,6 @@ import org.example.dutymanager.repository.sampleData.SampleHolidays;
 import org.example.dutymanager.repository.writer.util.CellStyler;
 import org.example.dutymanager.service.model.day.Day;
 
-
 public class HolidayWriter implements ExcelFileWriter {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final int FIRST_DATA_ROW_INDEX = 1;
@@ -36,7 +35,6 @@ public class HolidayWriter implements ExcelFileWriter {
         handleIOExceptionDuringWrite(outFile, this::writeTutorialHolidayForm);
     }
 
-    // 추가시 dm에 이미 있으면 이미 공휴일로 지정된 날짜입니다. 라는 메시지 띄우기
     public void add(File outFile, Day day) {
         handleExcelOperation(outFile, day, (sheet, workbook) -> addDayToFile(day, sheet, workbook));
     }
