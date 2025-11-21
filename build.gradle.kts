@@ -73,7 +73,7 @@ jlink {
     }
     forceMerge("poi-ooxml")
     forceMerge("log4j-core")
-    forceMerge("commons-io")
+    forceMerge("org.apache.commons-io")
 
     options.set(listOf(
         "--strip-debug",
