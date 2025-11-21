@@ -6,6 +6,7 @@ module org.example.dutymanager {
     requires org.apache.poi.poi;
     requires org.apache.poi.ooxml;
     requires java.desktop;
+    requires javafx.graphics;
 
     opens org.example.dutymanager to javafx.fxml;
     exports org.example.dutymanager;

@@ -25,8 +25,8 @@
                 translateY="-100"
                 onAction="#onStartButtonClick" />
 
-        <Label fx:id="tutorialSuccessText"
-               style="-fx-text-fill: #00FF90; -fx-font-size: 16px;"
+        <Label fx:id="successText"
+               style="-fx-text-fill: #00FF90; -fx-font-size: 16px; -fx-font-weight: bold;"
                translateY="-120"/>
     </VBox>
 
@@ -36,12 +36,17 @@
               AnchorPane.rightAnchor="20">
 
             <Button prefWidth="180" prefHeight="35" text="당직자 순서(양식) 다운"
-                    style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 16px;"
+                    style="-fx-background-color: #2196F3; -fx-text-fill: black; -fx-font-size: 16px;"
                     onAction="#onTutorialButtonClick" />
 
             <Button prefWidth="180" prefHeight="35" text="공휴일 데이터베이스 생성"
-                    style="-fx-background-color: #FF9800; -fx-text-fill: white; -fx-font-size: 16px;"
+                    style="-fx-background-color: #FF9800; -fx-text-fill: black; -fx-font-size: 16px;"
                     onAction="#onHolidayDBCreateButtonClick" />
+
+            <Button prefWidth="180" prefHeight="35" text="공휴일 데이터베이스 관리"
+                    style="-fx-background-color: #4FE3C1; -fx-text-fill: black; -fx-font-size: 16px;"
+                    onAction="#onHolidayDBManagerButtonClick" />
+
         </VBox>
     </AnchorPane>
 

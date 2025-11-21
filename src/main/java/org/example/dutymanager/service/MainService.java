@@ -2,7 +2,6 @@ package org.example.dutymanager.service;
 
 import java.io.File;
 import java.time.LocalDate;
-import org.example.dutymanager.service.model.day.Day;
 import org.example.dutymanager.service.model.day.Days;
 import org.example.dutymanager.service.model.duty.Duties;
 import org.example.dutymanager.service.model.duty.Duty;
@@ -73,15 +72,19 @@ public class MainService {
         }
     }
 
-    public void changeWeekdayToHoliday(Day day, String description) {
-        holidayService.makeDayAsHoliday(day, description);
+    public void changeWeekdayToHoliday(LocalDate targetDate, String description) {
+        holidayService.makeDayAsHoliday(targetDate, description);
     }
 
-    public void changeHolidayToWeekday(Day day) {
-        holidayService.makeDayAsWeekday(day);
+    public void changeHolidayToWeekday(LocalDate targetDate) {
+        holidayService.makeDayAsWeekday(targetDate);
     }
 
     public File getTutorialFile() {
         return tutorialService.getFile();
+    }
+
+    public File getHolidaysDB() {
+        return holidayService.getDB();
     }
 }

@@ -1,55 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="org.example.dutymanager.controller.DutyCreateController"
-            prefHeight="400.0" prefWidth="600.0">
+            prefWidth="700" prefHeight="520">
 
-    <children>
-        <VBox alignment="CENTER" spacing="20"
-              AnchorPane.topAnchor="20"
-              AnchorPane.bottomAnchor="20"
-              AnchorPane.leftAnchor="20"
-              AnchorPane.rightAnchor="20">
+    <!-- 🔙 홈으로 버튼 (최상단 고정) -->
+    <Button text="홈으로"
+            onAction="#onGoHomeClick"
+            AnchorPane.topAnchor="10"
+            AnchorPane.rightAnchor="10"
+            style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8px;"
+            prefWidth="80" />
 
-            <Button text="홈으로"
-                    onAction="#onGoHomeClick"
-                    AnchorPane.topAnchor="10"
-                    AnchorPane.rightAnchor="10"
-                    style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 14px;"
-                    prefWidth="80" />
+    <!-- 중앙 컨텐츠 -->
+    <VBox alignment="TOP_CENTER" spacing="25"
+          AnchorPane.topAnchor="60"
+          AnchorPane.rightAnchor="30"
+          AnchorPane.leftAnchor="30">
 
-            <Label text="당직 기간 선택" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+        <!-- 제목 -->
+        <Label text="당직 기간 선택"
+               style="-fx-font-size: 26px; -fx-font-weight: bold;" />
 
-            <HBox spacing="20" alignment="CENTER">
-                <Label text="당직 시작일자" prefWidth="100" alignment="CENTER_RIGHT" />
-                <TextField fx:id="startYearField" promptText="년" prefWidth="70" />
-                <TextField fx:id="startMonthField" promptText="월" prefWidth="50" />
-                <TextField fx:id="startDayField" promptText="일" prefWidth="50" />
-            </HBox>
+        <!-- 시작일 -->
+        <HBox spacing="15" alignment="CENTER">
+            <Label text="당직 시작일자"
+                   prefWidth="110"
+                   alignment="CENTER_RIGHT" />
 
-            <HBox spacing="20" alignment="CENTER">
-                <Label text="당직 종료일자" prefWidth="100" alignment="CENTER_RIGHT" />
-                <TextField fx:id="endYearField" promptText="년" prefWidth="70" />
-                <TextField fx:id="endMonthField" promptText="월" prefWidth="50" />
-                <TextField fx:id="endDayField" promptText="일" prefWidth="50" />
-            </HBox>
+            <TextField fx:id="startYearField" promptText="yyyy" prefWidth="80" />
+            <TextField fx:id="startMonthField" promptText="mm" prefWidth="60" />
+            <TextField fx:id="startDayField" promptText="dd" prefWidth="60" />
+        </HBox>
 
-            <VBox spacing="20" alignment="CENTER_LEFT">
-                <Button text="당직자 순서 엑셀파일 선택" onAction="#onSelectExcelFileClick" prefWidth="200" />
-                <Label fx:id="selectedFilePathLabel" text="선택된 파일 없음" />
-            </VBox>
+        <!-- 종료일 -->
+        <HBox spacing="15" alignment="CENTER">
+            <Label text="당직 종료일자"
+                   prefWidth="110"
+                   alignment="CENTER_RIGHT" />
 
-            <Button text="당직 결과 계산"
-                    prefWidth="200"
-                    prefHeight="35"
-                    onAction="#onCalculateDutyResultClick" />
+            <TextField fx:id="endYearField" promptText="yyyy" prefWidth="80" />
+            <TextField fx:id="endMonthField" promptText="mm" prefWidth="60" />
+            <TextField fx:id="endDayField" promptText="dd" prefWidth="60" />
+        </HBox>
 
-            <Label fx:id="resultMessage" text="" style="-fx-text-fill: green;" />
+        <!-- 엑셀 파일 선택 영역 -->
+        <VBox spacing="10" alignment="CENTER">
+            <Button text="당직자 순서 엑셀파일 선택"
+                    onAction="#onSelectExcelFileClick"
+                    prefWidth="240"
+                    style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 15px; -fx-background-radius: 10px;" />
+
+            <Label fx:id="selectedFilePathLabel"
+                   text="선택된 파일 없음"
+                   style="-fx-font-size: 14px;" />
         </VBox>
-    </children>
+
+        <!-- 계산 버튼 -->
+        <Button text="당직 결과 계산"
+                prefWidth="220"
+                prefHeight="38"
+                onAction="#onCalculateDutyResultClick"
+                style="-fx-background-color: #FF9800; -fx-text-fill: white; -fx-font-size: 17px; -fx-background-radius: 10px;" />
+
+        <!-- 메시지 -->
+        <Label fx:id="resultMessage"
+               text=""
+               style="-fx-text-fill: #00C853; -fx-font-size: 16px; -fx-font-weight: bold;" />
+    </VBox>
 
 </AnchorPane>
