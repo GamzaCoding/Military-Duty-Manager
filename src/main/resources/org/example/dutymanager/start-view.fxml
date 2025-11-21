@@ -4,11 +4,8 @@
 <?import javafx.scene.layout.*?>
 
 <StackPane xmlns="http://javafx.com/javafx/17.0.12"
-           xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="org.example.dutymanager.controller.StartController"
-           style="-fx-background-image: url('/images/background1.JPG');
-                  -fx-background-size: 100%;
-                  -fx-background-position: center 80px;">
+           xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.dutymanager.controller.StartController"
+           stylesheets="@/css/start.css">
 
     <VBox alignment="CENTER" spacing="25"
           prefWidth="450"
@@ -17,7 +14,7 @@
                  -fx-padding: 40 60;
                  -fx-background-radius: 20px;">
 
-        <Label text="당직 관리 시스템"
+        <Label text="당직 관리 프로그램"
                style="-fx-font-size: 45px;
                       -fx-font-weight: bold;
                       -fx-text-fill: white;"
@@ -25,12 +22,12 @@
 
         <Button prefWidth="260" prefHeight="45" text="시작하기"
                 style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 30px;"
-                translateY="-40"
+                translateY="-100"
                 onAction="#onStartButtonClick" />
 
         <Label fx:id="tutorialSuccessText"
                style="-fx-text-fill: #00FF90; -fx-font-size: 16px;"
-               translateY="-40"/>
+               translateY="-120"/>
     </VBox>
 
     <AnchorPane pickOnBounds="false">

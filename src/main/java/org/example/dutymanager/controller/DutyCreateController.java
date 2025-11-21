@@ -5,9 +5,13 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import org.example.dutymanager.service.MainService;
 
 public class DutyCreateController {
@@ -45,6 +49,17 @@ public class DutyCreateController {
             resultMessage.setText("날짜 입력 또는 당직순서 파일 선택이 잘못되었습니다.");
             resultMessage.setStyle("-fx-text-fill: red;");
         }
+    }
+
+    @FXML
+    private void onGoHomeClick() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/dutymanager/start-view.fxml"));
+        Parent root = loader.load();
+
+        Stage stage = (Stage) startYearField.getScene().getWindow();
+
+        Scene newScene = new Scene(root, 800, 500);
+        stage.setScene(newScene);
     }
 
     @FXML
