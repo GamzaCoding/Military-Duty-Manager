@@ -12,7 +12,7 @@
             onAction="#onGoHomeClick"
             AnchorPane.topAnchor="10"
             AnchorPane.rightAnchor="10"
-            style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8px;"
+            style="-fx-background-color: #2196F3; -fx-text-fill: Black; -fx-font-size: 14px; -fx-background-radius: 8px;"
             prefWidth="80" />
 
     <VBox alignment="TOP_CENTER" spacing="25"
@@ -47,7 +47,7 @@
             <Button text="당직자 순서 엑셀파일 선택"
                     onAction="#onSelectExcelFileClick"
                     prefWidth="240"
-                    style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 15px; -fx-background-radius: 10px;" />
+                    style="-fx-background-color: #4CAF50; -fx-text-fill: Black; -fx-font-size: 15px; -fx-background-radius: 10px;" />
 
             <Label fx:id="selectedFilePathLabel"
                    text="선택된 파일 없음"
@@ -58,7 +58,7 @@
                 prefWidth="220"
                 prefHeight="38"
                 onAction="#onCalculateDutyResultClick"
-                style="-fx-background-color: #FF9800; -fx-text-fill: white; -fx-font-size: 17px; -fx-background-radius: 10px;" />
+                style="-fx-background-color: #FF9800; -fx-text-fill: Black; -fx-font-size: 17px; -fx-background-radius: 10px;" />
 
         <Label fx:id="resultMessage"
                text=""

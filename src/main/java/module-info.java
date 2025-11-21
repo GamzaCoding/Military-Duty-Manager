@@ -9,5 +9,8 @@ module org.example.dutymanager {
     requires javafx.graphics;
 
     opens org.example.dutymanager to javafx.fxml;
+    opens org.example.dutymanager.controller to javafx.fxml;
+
     exports org.example.dutymanager;
+    exports org.example.dutymanager.controller;
 }

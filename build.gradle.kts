@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 plugins {
     id("java")
     id("application")
@@ -20,14 +22,15 @@ val platform = when {
     else -> "linux"
 }
 
+val javafxVersion = "21.0.2"
+
 dependencies {
-    implementation("org.openjfx:javafx-base:21:$platform")
-    implementation("org.openjfx:javafx-graphics:21.0.2:$platform")
-    implementation("org.openjfx:javafx-controls:21:$platform")
-    implementation("org.openjfx:javafx-fxml:21:$platform")
+    implementation("org.openjfx:javafx-base:$javafxVersion:$platform")
+    implementation("org.openjfx:javafx-graphics:$javafxVersion:$platform")
+    implementation("org.openjfx:javafx-controls:$javafxVersion:$platform")
+    implementation("org.openjfx:javafx-fxml:$javafxVersion:$platform")
 
     implementation("org.controlsfx:controlsfx:11.2.0")
-
     implementation("org.apache.poi:poi-ooxml:5.5.0")
     implementation("org.apache.logging.log4j:log4j-core:2.24.1")
 
@@ -38,8 +41,8 @@ dependencies {
 }
 
 application {
-    mainModule.set("org.example.dutymanger_demo_first")
-    mainClass.set("org.example.dutymanger_demo_first.Launcher")
+    mainModule.set("org.example.dutymanager")
+    mainClass.set("org.example.dutymanager.Launcher")
 }
 
 jlink {
@@ -60,12 +63,17 @@ jlink {
 
         jvmArgs.add("--enable-native-access=ALL-UNNAMED")
     }
+    forceMerge("poi-ooxml")
+    forceMerge("log4j-core")
 
     options.set(listOf(
         "--strip-debug",
-        "--compress", "2",
         "--no-header-files",
         "--no-man-pages"
     ))
     addOptions("--bind-services")
+}
+
+tasks.processResources {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }

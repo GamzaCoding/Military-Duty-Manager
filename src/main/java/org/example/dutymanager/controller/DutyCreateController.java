@@ -4,6 +4,7 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Objects;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -59,6 +60,12 @@ public class DutyCreateController {
         Stage stage = (Stage) startYearField.getScene().getWindow();
 
         Scene newScene = new Scene(root, 800, 500);
+
+        newScene.getStylesheets().add(
+                Objects.requireNonNull(
+                        getClass().getResource("/css/start.css")
+                ).toExternalForm()
+        );
         stage.setScene(newScene);
     }
 
