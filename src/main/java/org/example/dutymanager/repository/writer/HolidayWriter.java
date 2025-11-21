@@ -18,6 +18,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.example.dutymanager.repository.sampleData.SampleHolidays;
 import org.example.dutymanager.repository.writer.util.CellStyler;
 import org.example.dutymanager.service.model.day.Day;
 
@@ -46,10 +47,31 @@ public class HolidayWriter implements ExcelFileWriter {
     private void writeTutorialHolidayForm(File file) throws IOException {
         try (Workbook workbook = new XSSFWorkbook()) {
             CellStyler cellStyler = new CellStyler(workbook);
+            SampleHolidays sampleHolidays = new SampleHolidays();
+            createSheets(workbook, sampleHolidays);
             writeHeader(workbook, cellStyler.holidayHeaderStyle());
-            writeBasicBody(workbook);
+            writeBasicBody(workbook, sampleHolidays);
+            applyWidthAnsHeight(workbook);
             writeResult(file, workbook);
         }
+    }
+
+    private void applyWidthAnsHeight(Workbook workbook) {
+        int numberOfSheets = workbook.getNumberOfSheets();
+        for (int i = 0; i < numberOfSheets; i++) {
+            Sheet sheet = workbook.getSheetAt(i);
+            for (int categoryIndex = 0; categoryIndex < HOLIDAY_CATEGORY.size(); categoryIndex++) {
+                applyBasicColumWidth(sheet, categoryIndex);
+            }
+            applyBasicRowHeight(sheet);
+        }
+    }
+
+    private void createSheets(Workbook workbook, SampleHolidays sampleHolidays) {
+        for (String sampleYear : sampleHolidays.getSampleYears()) {
+            workbook.createSheet(sampleYear + "년");
+        }
+
     }
 
     private void writeResult(File file, Workbook workbook) throws IOException {
@@ -59,24 +81,24 @@ public class HolidayWriter implements ExcelFileWriter {
     }
 
     private void writeHeader(Workbook workbook, CellStyle headerStyle) {
-        Sheet sheet = workbook.createSheet(HOLIDAY_SAMPLE_SHEET);
-        Row headerRow = sheet.createRow(0);
-        for (int categoryIndex = 0; categoryIndex < HOLIDAY_CATEGORY.size(); categoryIndex++) {
-            Cell cell = headerRow.createCell(categoryIndex);
-            cell.setCellValue(HOLIDAY_CATEGORY.get(categoryIndex));
-            cell.setCellStyle(headerStyle);
-            applyBasicColumWidth(sheet, categoryIndex);
+        int numberOfSheets = workbook.getNumberOfSheets();
+        for (int sheetIndex = 0; sheetIndex < numberOfSheets; sheetIndex++) {
+            Sheet sheet = workbook.getSheetAt(sheetIndex);
+
+            Row headerRow = sheet.createRow(0);
+            for (int categoryIndex = 0; categoryIndex < HOLIDAY_CATEGORY.size(); categoryIndex++) {
+                Cell cell = headerRow.createCell(categoryIndex);
+                cell.setCellValue(HOLIDAY_CATEGORY.get(categoryIndex));
+                cell.setCellStyle(headerStyle);
+            }
         }
-        applyBasicRowHeight(sheet);
     }
 
-    private void writeBasicBody(Workbook workbook) {
-        Sheet sheet = workbook.getSheet(HOLIDAY_SAMPLE_SHEET);
-        addDayToFile(SAMPLE_HOLIDAY, sheet, workbook);
-        for (int categoryIndex = 0; categoryIndex < HOLIDAY_CATEGORY.size(); categoryIndex++) {
-            applyBasicColumWidth(sheet, categoryIndex);
+    private void writeBasicBody(Workbook workbook, SampleHolidays sampleHolidays) {
+        for (Day sampleHoliday : sampleHolidays.getSampleHolidays()) {
+            Sheet sheet = workbook.getSheet(sampleHoliday.getYear() + "년");
+            addDayToFile(sampleHoliday, sheet, workbook);
         }
-        applyBasicRowHeight(sheet);
     }
 
     private void addDayToFile(Day day, Sheet sheet, Workbook workbook) {
