@@ -37,11 +37,10 @@ public class HolidayWriter implements ExcelFileWriter {
     }
 
     // 추가시 dm에 이미 있으면 이미 공휴일로 지정된 날짜입니다. 라는 메시지 띄우기
-    // 추가하려는 day 년도의 sheet가 없다면 sheet를 추가해서 저장하기
     public void add(File outFile, Day day) {
         handleExcelOperation(outFile, day, (sheet, workbook) -> addDayToFile(day, sheet, workbook));
     }
-    // 삭제시 동일한 날짜 다 지우기
+
     public void remove(File outFile, Day day) {
         handleExcelOperation(outFile, day, (sheet, workbook) -> removeDayFromFile(day, sheet));
     }
@@ -120,7 +119,6 @@ public class HolidayWriter implements ExcelFileWriter {
         for (int dataRowIndex = FIRST_DATA_ROW_INDEX; dataRowIndex <= sheet.getLastRowNum(); dataRowIndex++) {
             if (isTargetRow(sheet, dataRowIndex, targetDate)) {
                 deleteRowAndShift(sheet, dataRowIndex);
-                break;
             }
         }
     }

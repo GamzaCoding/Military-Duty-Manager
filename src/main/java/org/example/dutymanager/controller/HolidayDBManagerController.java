@@ -50,7 +50,7 @@ public class HolidayDBManagerController {
         LocalDate targetDate = LocalDate.of(year, month, day);
 
         mainService.changeHolidayToWeekday(targetDate);
-        successText.setText(String.format("휴일DB에 %d-%d-%d를 삭제 완료!",year,month,day));
+        successText.setText(String.format("휴일DB에서 %d-%d-%d를 삭제 완료!",year,month,day));
     }
 
     @FXML
