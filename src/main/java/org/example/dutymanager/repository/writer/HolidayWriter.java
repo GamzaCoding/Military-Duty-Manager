@@ -36,10 +36,12 @@ public class HolidayWriter implements ExcelFileWriter {
         handleIOExceptionDuringWrite(outFile, this::writeTutorialHolidayForm);
     }
 
+    // 추가시 dm에 이미 있으면 이미 공휴일로 지정된 날짜입니다. 라는 메시지 띄우기
+    // 추가하려는 day 년도의 sheet가 없다면 sheet를 추가해서 저장하기
     public void add(File outFile, Day day) {
         handleExcelOperation(outFile, day, (sheet, workbook) -> addDayToFile(day, sheet, workbook));
     }
-
+    // 삭제시 동일한 날짜 다 지우기
     public void remove(File outFile, Day day) {
         handleExcelOperation(outFile, day, (sheet, workbook) -> removeDayFromFile(day, sheet));
     }
@@ -177,12 +179,25 @@ public class HolidayWriter implements ExcelFileWriter {
 
     private void handleExcelOperation(File outFile, Day day, BiConsumer<Sheet, Workbook> operation) {
         try (Workbook workbook = getWorkbook(outFile)) {
-            Sheet sheet = workbook.getSheet(day.getYear() + "년");
-            operation.accept(sheet, workbook);
-            writeResult(outFile, workbook);
+            if (isSheetExist(workbook, day.getYear() + "년")) {
+                Sheet sheet = workbook.getSheet(day.getYear() + "년");
+                operation.accept(sheet, workbook);
+                writeResult(outFile, workbook);
+            } else {
+                Sheet sheet = workbook.createSheet(day.getYear() + "년");
+                CellStyler cellStyler = new CellStyler(workbook);
+                writeHeader(workbook, cellStyler.holidayHeaderStyle());
+                operation.accept(sheet, workbook);
+                applyWidthAnsHeight(workbook);
+                writeResult(outFile, workbook);
+            }
         } catch (IOException e) {
             throw new IllegalStateException("공휴일 데이터 처리 중 오류 발생: " + e.getMessage(), e);
         }
+    }
+
+    private boolean isSheetExist(Workbook workbook, String sheetName) {
+        return workbook.getSheet(sheetName) != null;
     }
 
     private Workbook getWorkbook(File file) throws IOException {
