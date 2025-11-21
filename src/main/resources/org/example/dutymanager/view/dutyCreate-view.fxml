@@ -58,7 +58,7 @@
 
             <Label fx:id="selectedFilePathLabel"
                    text="선택된 파일 없음"
-                   style="-fx-font-size: 14px;" />
+                   style="-fx-font-family: 'Apple SD Gothic Neo'; -fx-font-size: 14px;" />
         </VBox>
 
         <!-- 계산 버튼 -->
