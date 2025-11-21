@@ -1,20 +1,17 @@
 package repository.writer;
 
-
-import static service.model.day.DayType.*;
-
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.example.dutymanager.repository.FileLocation.ResultFileLocation;
+import org.example.dutymanager.repository.writer.subWriter.DutyTableWriter;
+import org.example.dutymanager.service.model.day.Day;
+import org.example.dutymanager.service.model.duty.Duties;
+import org.example.dutymanager.service.model.duty.Duty;
+import org.example.dutymanager.service.model.person.Person;
 import org.junit.jupiter.api.Test;
-import repository.FileLocation.ResultFileLocation;
-import repository.writer.subWriter.DutyTableWriter;
-import service.model.duty.Duties;
-import service.model.duty.Duty;
-import service.model.person.Person;
-import service.model.day.Day;
 
 class DutyTableWriterTest {
 
@@ -29,13 +26,13 @@ class DutyTableWriterTest {
         Person person5 = Person.from(null, "소령", "최소령", null, null);
         Person person6 = Person.from(null, "준위", "최준위", null, null);
 
-        Day day0 = Day.of(LocalDate.of(2025, 11, 1), WEEKDAY);
-        Day day1 = Day.of(LocalDate.of(2025, 11, 2), WEEKDAY);
-        Day day2 = Day.of(LocalDate.of(2025, 3, 3), WEEKDAY);
-        Day day3 = Day.of(LocalDate.of(2025, 11, 4), WEEKDAY);
-        Day day4 = Day.of(LocalDate.of(2025, 11, 30), WEEKDAY);
-        Day day5 = Day.of(LocalDate.of(2025, 7, 31), HOLIDAY);
-        Day day6 = Day.of(LocalDate.of(2025, 11, 11), HOLIDAY);
+        Day day0 = Day.from(LocalDate.of(2025, 11, 1));
+        Day day1 = Day.from(LocalDate.of(2025, 11, 2));
+        Day day2 = Day.from(LocalDate.of(2025, 3, 3));
+        Day day3 = Day.from(LocalDate.of(2025, 11, 4));
+        Day day4 = Day.from(LocalDate.of(2025, 11, 30));
+        Day day5 = Day.from(LocalDate.of(2025, 7, 31));
+        Day day6 = Day.from(LocalDate.of(2025, 11, 11));
 
         List<Duty> duties = List.of(
                 Duty.of(day0, person0),
@@ -89,7 +86,6 @@ class DutyTableWriterTest {
             ResultFileLocation resultFileLocation = new ResultFileLocation();
 
             dutyTableWriter.writeDutyTable("당직표", dutiesReal);
-            dutyTableWriter.saveWorkbook(resultFileLocation.getFile());
         }
     }
 

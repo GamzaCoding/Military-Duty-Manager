@@ -1,8 +1,9 @@
 package repository.reader;
 
 import java.io.File;
+import org.example.dutymanager.repository.reader.ExcelFileReader;
+import org.example.dutymanager.service.model.duty.Duties;
 import org.junit.jupiter.api.Test;
-import service.model.duty.Duties;
 
 class ExcelFileReaderTest {
 

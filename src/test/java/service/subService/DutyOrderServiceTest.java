@@ -3,12 +3,14 @@ package service.subService;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+import org.example.dutymanager.service.model.day.Days;
+import org.example.dutymanager.service.model.duty.Duties;
+import org.example.dutymanager.service.model.duty.Duty;
+import org.example.dutymanager.service.model.person.Person;
+import org.example.dutymanager.service.model.person.Persons;
+import org.example.dutymanager.service.subService.DutyDayService;
+import org.example.dutymanager.service.subService.DutyOrderService;
 import org.junit.jupiter.api.Test;
-import service.model.day.Days;
-import service.model.duty.Duties;
-import service.model.duty.Duty;
-import service.model.person.Person;
-import service.model.person.Persons;
 
 class DutyOrderServiceTest {
 

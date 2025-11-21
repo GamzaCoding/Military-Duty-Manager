@@ -1,6 +1,7 @@
 package service.subService;
 
 import java.io.IOException;
+import org.example.dutymanager.service.subService.TutorialService;
 import org.junit.jupiter.api.Test;
 
 class TutorialServiceTest {

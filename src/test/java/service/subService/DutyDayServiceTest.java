@@ -2,9 +2,10 @@ package service.subService;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import org.example.dutymanager.service.model.day.Day;
+import org.example.dutymanager.service.model.day.Days;
+import org.example.dutymanager.service.subService.DutyDayService;
 import org.junit.jupiter.api.Test;
-import service.model.day.Day;
-import service.model.day.Days;
 
 class DutyDayServiceTest {
 
@@ -19,7 +20,6 @@ class DutyDayServiceTest {
         Days days = dutyDayService.makeDutyDays(startDate, endDate);
 
         // then
-
         days.getDays()
                 .stream().filter(Day::isHoliday)
                 .forEach(System.out::println);

@@ -3,10 +3,12 @@ package repository.writer;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
+import org.example.dutymanager.repository.FileLocation.HolidayFileLocation;
+import org.example.dutymanager.repository.writer.HolidayWriter;
+import org.example.dutymanager.service.model.day.Day;
+import org.example.dutymanager.service.model.day.DayType;
 import org.junit.jupiter.api.Test;
-import repository.FileLocation.HolidayFileLocation;
-import service.model.day.Day;
-import service.model.day.DayType;
+
 
 class HolidayWriterTest {
 

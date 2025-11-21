@@ -1,10 +1,11 @@
 package repository.reader;
 
 import java.io.IOException;
+import org.example.dutymanager.repository.FileLocation.HolidayFileLocation;
+import org.example.dutymanager.repository.reader.HolidayReader;
+import org.example.dutymanager.service.model.day.Day;
+import org.example.dutymanager.service.model.day.Days;
 import org.junit.jupiter.api.Test;
-import repository.FileLocation.HolidayFileLocation;
-import service.model.day.Day;
-import service.model.day.Days;
 
 class LegalHolidayReaderTest {
 
