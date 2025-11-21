@@ -46,7 +46,6 @@
             <Button prefWidth="180" prefHeight="35" text="공휴일 데이터베이스 관리"
                     style="-fx-background-color: #4FE3C1; -fx-text-fill: black; -fx-font-size: 16px;"
                     onAction="#onHolidayDBManagerButtonClick" />
-
         </VBox>
     </AnchorPane>
 
