@@ -11,6 +11,7 @@ import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import org.example.dutymanager.StartApplication;
 import org.example.dutymanager.service.MainService;
 
 public class StartController {
@@ -23,10 +24,10 @@ public class StartController {
     private void onStartButtonClick() {
         try {
             FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/org/example/dutymanager/view/dutyCreate-view.fxml"));
+                    StartApplication.class.getResource("/org/example/dutymanager/view/dutyCreate-view.fxml"));
             Scene newScene = new Scene(loader.load());
 
-            Stage stage = (Stage) successText.getScene().getWindow(); // 이 로직 설명이 필요한데
+            Stage stage = (Stage) successText.getScene().getWindow();
             stage.setScene(newScene);
             stage.show();
 
@@ -39,7 +40,7 @@ public class StartController {
     private void onHolidayDBManagerButtonClick() {
         try {
             FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/org/example/dutymanager/view/HolidayDBManager-view.fxml"));
+                    StartApplication.class.getResource("view/HolidayDBManager-view.fxml"));
             Scene newScene = new Scene(loader.load());
 
             Stage stage = (Stage) successText.getScene().getWindow();

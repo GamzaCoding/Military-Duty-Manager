@@ -33,7 +33,8 @@ dependencies {
     implementation("org.controlsfx:controlsfx:11.2.0")
     implementation("org.apache.poi:poi-ooxml:5.5.0")
     implementation("org.apache.logging.log4j:log4j-core:2.24.1")
-    implementation("commons-io:commons-io:2.15.0")
+    implementation("org.apache.commons:commons-compress:1.26.1")
+    implementation("commons-io:commons-io:2.21.0")
 
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
@@ -42,7 +43,7 @@ dependencies {
 }
 
 application {
-    mainModule.set("org.example.dutymanager")
+//    mainModule.set("org.example.dutymanager")
     mainClass.set("org.example.dutymanager.Launcher")
 }
 
@@ -52,6 +53,10 @@ jlink {
     launcher {
         name = "dutymanager"
     }
+
+    addExtraDependencies("commons-io")
+    addExtraDependencies("commons-compress")
+    addExtraDependencies("poi-ooxml")
 
     jpackage {
         appVersion = "1.0.0"
@@ -73,7 +78,10 @@ jlink {
     }
     forceMerge("poi-ooxml")
     forceMerge("log4j-core")
-    forceMerge("org.apache.commons-io")
+    forceMerge("org.apache.commons.io")
+    forceMerge("org.apache.commons.compress")
+    forceMerge("commons-io")
+    forceMerge("commons-compress")
 
     options.set(listOf(
         "--strip-debug",
@@ -81,6 +89,10 @@ jlink {
         "--no-man-pages"
     ))
     addOptions("--bind-services")
+}
+
+tasks.withType<JavaExec> {
+    classpath = sourceSets.main.get().runtimeClasspath
 }
 
 tasks.processResources {

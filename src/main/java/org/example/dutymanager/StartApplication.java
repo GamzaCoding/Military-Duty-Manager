@@ -9,12 +9,12 @@ import javafx.stage.Stage;
 public class StartApplication extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader(StartApplication.class.getResource("start-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(StartApplication.class.getResource("/org/example/dutymanager/start-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 800, 500);
 
         scene.getStylesheets().add(
                 Objects.requireNonNull(
-                        getClass().getResource("/css/start.css")
+                        StartApplication.class.getResource("/css/start.css")
                 ).toExternalForm()
         );
 
