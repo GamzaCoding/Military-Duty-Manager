@@ -59,6 +59,10 @@
         <Label fx:id="successText"
                text=""
                style="-fx-text-fill: #00C853; -fx-font-size: 16px; -fx-font-weight: bold;" />
+
+        <Label fx:id="failureText"
+               text=""
+               style="-fx-text-fill: #FF5722; -fx-font-size: 16px; -fx-font-weight: bold;" />
     </VBox>
 
 </AnchorPane>

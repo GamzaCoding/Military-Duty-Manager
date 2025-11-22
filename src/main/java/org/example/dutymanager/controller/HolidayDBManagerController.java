@@ -3,8 +3,10 @@ package org.example.dutymanager.controller;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.function.Consumer;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -20,6 +22,7 @@ public class HolidayDBManagerController {
     @FXML private TextField dayField;
     @FXML private TextField descriptionField;
     @FXML private Label successText;
+    @FXML private Label failureText;
     private final MainService mainService = new MainService();
 
     @FXML
@@ -34,24 +37,14 @@ public class HolidayDBManagerController {
 
     @FXML
     private void onAddHolidayButtonClick() {
-        int year = Integer.parseInt(yearField.getText());
-        int month = Integer.parseInt(monthField.getText());
-        int day = Integer.parseInt(dayField.getText());
-        LocalDate targetDate = LocalDate.of(year, month, day);
-
-        mainService.changeWeekdayToHoliday(targetDate, descriptionField.getText());
-        successText.setText(String.format("휴일DB에 %d-%d-%d를 추가 완료!", year, month, day));
+        handleHolidayAction(
+                localDate -> mainService.changeWeekdayToHoliday(localDate, descriptionField.getText()),
+                "휴일DB에 %d-%d-%d를 추가 완료!");
     }
 
     @FXML
     private void onRemoveHolidayButtonClick() {
-        int year = Integer.parseInt(yearField.getText());
-        int month = Integer.parseInt(monthField.getText());
-        int day = Integer.parseInt(dayField.getText());
-        LocalDate targetDate = LocalDate.of(year, month, day);
-
-        mainService.changeHolidayToWeekday(targetDate);
-        successText.setText(String.format("휴일DB에서 %d-%d-%d를 삭제 완료!", year, month, day));
+        handleHolidayAction(mainService::changeHolidayToWeekday, "휴일DB에서 %d-%d-%d를 삭제 완료!");
     }
 
     @FXML
@@ -75,5 +68,61 @@ public class HolidayDBManagerController {
             return;
         }
         Desktop.getDesktop().open(file);
+    }
+
+    private void handleHolidayAction(Consumer<LocalDate> action, String successFormat) {
+        initMessage();
+
+        String yearText = yearField.getText();
+        String monthText = monthField.getText();
+        String dayText = dayField.getText();
+
+        if (isTextBlank(yearText, monthText, dayText)) {
+            failureText.setText("년/월/일을 모두 입력해 주세요.");
+            return;
+        }
+
+        try {
+            validateFormat(yearText, monthText, dayText);
+            int year = Integer.parseInt(yearText);
+            int month = Integer.parseInt(monthText);
+            int day = Integer.parseInt(dayText);
+            validateDate(year, month, day);
+            LocalDate targetDate = LocalDate.of(year, month, day);
+
+            action.accept(targetDate);
+
+            successText.setText(String.format(successFormat, year, month, day));
+        } catch (NumberFormatException | DateTimeException e) {
+            failureText.setText("유효한 날짜(숫자)를 입력해 주세요.");
+        }
+    }
+
+    private boolean isTextBlank(String yearText, String monthText, String dayText) {
+        return yearText.isBlank() || monthText.isBlank() || dayText.isBlank();
+    }
+
+    private void initMessage() {
+        successText.setText("");
+        failureText.setText("");
+    }
+
+    private void validateDate(int year, int month, int day) {
+        if (year <= 0 || month <= 0 || day <= 0) {
+            throw new NumberFormatException();
+        }
+
+        if (month>= 13 || day >= 32) {
+            throw new NumberFormatException();
+        }
+    }
+
+    private void validateFormat(String yearText, String monthText, String dayText) {
+        if (yearText.matches("\\d{4}") &&
+                monthText.matches("\\d{1,2}") &&
+                dayText.matches("\\d{1,2}")) {
+            return;
+        }
+        throw new NumberFormatException();
     }
 }

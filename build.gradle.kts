@@ -43,7 +43,6 @@ dependencies {
 }
 
 application {
-//    mainModule.set("org.example.dutymanager")
     mainClass.set("org.example.dutymanager.Launcher")
 }
 
