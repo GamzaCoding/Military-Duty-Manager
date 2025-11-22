@@ -23,7 +23,8 @@ public class DutyCreateController {
     @FXML private TextField endYearField;
     @FXML private TextField endMonthField;
     @FXML private TextField endDayField;
-    @FXML private Label resultMessage;
+    @FXML private Label successText;
+    @FXML private Label failureText;
     @FXML private Label selectedFilePathLabel;
 
     private File dutyOrderFile;
@@ -31,24 +32,60 @@ public class DutyCreateController {
 
     @FXML
     private void onCalculateDutyResultClick() {
+        initMessage();
         try {
-            int startYear = Integer.parseInt(startYearField.getText());
-            int startMonth = Integer.parseInt(startMonthField.getText());
-            int startDay = Integer.parseInt(startDayField.getText());
-            int endYear = Integer.parseInt(endYearField.getText());
-            int endMonth = Integer.parseInt(endMonthField.getText());
-            int endDay = Integer.parseInt(endDayField.getText());
+            String startYearText = startYearField.getText();
+            String startMonthText = startMonthField.getText();
+            String startDayText = startDayField.getText();
+            String endYearText = endYearField.getText();
+            String endMonthText = endMonthField.getText();
+            String endDayText = endDayField.getText();
+
+            if (isTextBlank(startYearText, startMonthText, startDayText) ||
+                    isTextBlank(endYearText, endMonthText, endDayText)) {
+                failureText.setText("년/월/일을 모두 입력해 주세요.");
+                return;
+            }
+            validateFormat(startYearText, startMonthText, startDayText);
+            validateFormat(endYearText, endMonthText, endDayText);
+
+            int startYear = Integer.parseInt(startYearText);
+            int startMonth = Integer.parseInt(startMonthText);
+            int startDay = Integer.parseInt(startDayText);
+            int endYear = Integer.parseInt(endYearText);
+            int endMonth = Integer.parseInt(endMonthText);
+            int endDay = Integer.parseInt(endDayText);
+            validateDate(startYear, startMonth, startDay);
+            validateDate(endYear, endMonth, endDay);
 
             LocalDate startDate = LocalDate.of(startYear, startMonth, startDay);
             LocalDate endDate = LocalDate.of(endYear, endMonth, endDay);
 
             File result = mainService.calculateResult(startDate, endDate, dutyOrderFile);
-            resultMessage.setText("당직 결과 계산 완료!");
+            successText.setText("당직 결과 계산 완료!");
             openExcelFile(result);
 
-        } catch (Exception e) {
-            resultMessage.setText("날짜 입력 또는 당직순서 파일 선택이 잘못되었습니다.");
-            resultMessage.setStyle("-fx-text-fill: red;");
+        } catch (NumberFormatException | IOException e) {
+            failureText.setText("날짜 입력 또는 당직순서 파일 선택이 잘못되었습니다.");
+        }
+    }
+
+    private void validateFormat(String yearText, String monthText, String dayText) {
+        if (yearText.matches("\\d{4}") &&
+                monthText.matches("\\d{1,2}") &&
+                dayText.matches("\\d{1,2}")) {
+            return;
+        }
+        throw new NumberFormatException();
+    }
+
+    private void validateDate(int year, int month, int day) {
+        if (year <= 0 || month <= 0 || day <= 0) {
+            throw new NumberFormatException();
+        }
+
+        if (month >= 13 || day >= 32) {
+            throw new NumberFormatException();
         }
     }
 
@@ -94,5 +131,14 @@ public class DutyCreateController {
             return;
         }
         Desktop.getDesktop().open(file);
+    }
+
+    private void initMessage() {
+        successText.setText("");
+        failureText.setText("");
+    }
+
+    private boolean isTextBlank(String yearText, String monthText, String dayText) {
+        return yearText.isBlank() || monthText.isBlank() || dayText.isBlank();
     }
 }

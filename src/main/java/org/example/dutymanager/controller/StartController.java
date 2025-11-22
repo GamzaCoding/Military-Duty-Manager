@@ -16,8 +16,7 @@ import org.example.dutymanager.service.MainService;
 
 public class StartController {
 
-    @FXML
-    private Label successText;
+    @FXML private Label successText;
     private final MainService mainService = new MainService();
 
     @FXML

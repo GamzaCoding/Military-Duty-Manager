@@ -112,7 +112,7 @@ public class HolidayDBManagerController {
             throw new NumberFormatException();
         }
 
-        if (month>= 13 || day >= 32) {
+        if (month >= 13 || day >= 32) {
             throw new NumberFormatException();
         }
     }

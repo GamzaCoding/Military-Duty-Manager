@@ -7,6 +7,7 @@ module org.example.dutymanager {
     requires org.apache.poi.ooxml;
     requires java.desktop;
     requires javafx.graphics;
+    requires org.apache.logging.log4j;
 
     opens org.example.dutymanager to javafx.fxml;
     opens org.example.dutymanager.controller to javafx.fxml;

@@ -60,8 +60,12 @@
                 onAction="#onCalculateDutyResultClick"
                 style="-fx-background-color: #FF9800; -fx-text-fill: Black; -fx-font-size: 17px; -fx-background-radius: 10px;" />
 
-        <Label fx:id="resultMessage"
+        <Label fx:id="successText"
                text=""
                style="-fx-text-fill: #00C853; -fx-font-size: 16px; -fx-font-weight: bold;" />
+
+        <Label fx:id="failureText"
+               text=""
+               style="-fx-text-fill: #FF5722; -fx-font-size: 16px; -fx-font-weight: bold;" />
     </VBox>
 </AnchorPane>
