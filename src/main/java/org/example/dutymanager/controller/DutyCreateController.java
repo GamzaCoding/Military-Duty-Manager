@@ -32,7 +32,7 @@ public class DutyCreateController {
 
     @FXML
     private void onCalculateDutyResultClick() {
-        initMessage();
+        initText();
         try {
             String startYearText = startYearField.getText();
             String startMonthText = startMonthField.getText();
@@ -65,7 +65,10 @@ public class DutyCreateController {
             successText.setText("당직 결과 계산 완료!");
             openExcelFile(result);
 
-        } catch (NumberFormatException | IOException e) {
+        } catch (IllegalStateException | IOException e) {
+            failureText.setText("당직순서 파일에 이상이 있습니다, 파일을 확인해주세요.");
+        }
+        catch (NumberFormatException e) {
             failureText.setText("날짜 입력 또는 당직순서 파일 선택이 잘못되었습니다.");
         }
     }
@@ -133,7 +136,7 @@ public class DutyCreateController {
         Desktop.getDesktop().open(file);
     }
 
-    private void initMessage() {
+    private void initText() {
         successText.setText("");
         failureText.setText("");
     }

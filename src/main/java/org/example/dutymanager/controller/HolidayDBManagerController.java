@@ -27,11 +27,13 @@ public class HolidayDBManagerController {
 
     @FXML
     private void onDBOpenButtonClick() {
+        initText();
         try {
             File holidaysDB = mainService.getHolidaysDB();
             openExcelFile(holidaysDB);
-        } catch (IOException e) {
-            System.out.println("공휴일 DB 파일을 여는 과정에서 에러가 발생했습니다. : " + e.getMessage());
+            successText.setText("DB를 열기 성공!");
+        } catch (IOException | IllegalArgumentException e) {
+            failureText.setText("DB 열기 중 ERROR 발생! DB를 새로 생성하거나, DB의 위치를 확인해주세요");
         }
     }
 
@@ -71,7 +73,7 @@ public class HolidayDBManagerController {
     }
 
     private void handleHolidayAction(Consumer<LocalDate> action, String successFormat) {
-        initMessage();
+        initText();
 
         String yearText = yearField.getText();
         String monthText = monthField.getText();
@@ -93,7 +95,11 @@ public class HolidayDBManagerController {
             action.accept(targetDate);
 
             successText.setText(String.format(successFormat, year, month, day));
-        } catch (NumberFormatException | DateTimeException e) {
+        } catch (IllegalStateException e) {
+            failureText.setText("DB 열기 중 ERROR 발생! DB를 새로 생성하거나, DB의 위치를 확인해주세요");
+        }
+
+        catch (NumberFormatException | DateTimeException e) {
             failureText.setText("유효한 날짜(숫자)를 입력해 주세요.");
         }
     }
@@ -102,7 +108,7 @@ public class HolidayDBManagerController {
         return yearText.isBlank() || monthText.isBlank() || dayText.isBlank();
     }
 
-    private void initMessage() {
+    private void initText() {
         successText.setText("");
         failureText.setText("");
     }

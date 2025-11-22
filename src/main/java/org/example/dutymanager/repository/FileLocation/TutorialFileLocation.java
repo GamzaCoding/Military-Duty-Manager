@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter;
 
 public class TutorialFileLocation {
     private static final DateTimeFormatter FILE_FORMATTER = DateTimeFormatter.ofPattern("yyyy년_MM월_dd일_HH시_mm분");
-    private static final String TUTORIAL_FILE_PATH = "/Desktop/당직결과/";
+    private static final String TUTORIAL_FILE_PATH = "/Desktop/당직 관리 프로그램/";
     private static final String TUTORIAL_HEADER = "당직자 순서(양식)_";
     private static final String FILE_EXTENSION = ".xlsx";
 

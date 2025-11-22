@@ -1,6 +1,5 @@
 package org.example.dutymanager.repository.writer.subWriter;
 
-
 import static org.example.dutymanager.repository.writer.util.CellSizeSetter.*;
 
 import java.util.ArrayList;
@@ -14,7 +13,6 @@ import org.example.dutymanager.service.model.day.Day;
 import org.example.dutymanager.service.model.duty.Duties;
 import org.example.dutymanager.service.model.duty.Duty;
 import org.example.dutymanager.service.model.person.Person;
-
 
 public class DutyTableWriter {
     private static final int WEEK_SIZE = 7;

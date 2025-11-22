@@ -4,7 +4,6 @@ import java.util.Objects;
 import org.example.dutymanager.service.model.day.Day;
 import org.example.dutymanager.service.model.person.Person;
 
-
 public class Duty {
     private final Day day;
     private final Person person;

@@ -36,6 +36,13 @@ public class StartController {
     }
 
     @FXML
+    private void onTutorialButtonClick() {
+        mainService.startTutorial();
+        openExcelFile(mainService.getTutorialFile());
+        successText.setText("당직자 순서(양식).xlsx 생성 완료");
+    }
+
+    @FXML
     private void onHolidayDBManagerButtonClick() {
         try {
             FXMLLoader loader = new FXMLLoader(
@@ -75,13 +82,6 @@ public class StartController {
             mainService.createHolidayDB();
             successText.setText("holidays.xlsx 생성 성공");
         }
-    }
-
-    @FXML
-    private void onTutorialButtonClick() {
-        mainService.startTutorial();
-        openExcelFile(mainService.getTutorialFile());
-        successText.setText("당직자 순서(양식).xlsx 생성 완료");
     }
 
     private void openExcelFile(File file) {

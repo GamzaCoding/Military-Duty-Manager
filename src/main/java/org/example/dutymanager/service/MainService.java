@@ -15,7 +15,6 @@ import org.example.dutymanager.service.subService.FileWriteService;
 import org.example.dutymanager.service.subService.HolidayService;
 import org.example.dutymanager.service.subService.TutorialService;
 
-
 public class MainService {
     private final DutyOrderService dutyOrderService;
     private final DutyDayService dutyDayService;

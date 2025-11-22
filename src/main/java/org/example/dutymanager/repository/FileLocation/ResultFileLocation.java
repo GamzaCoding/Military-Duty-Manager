@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 public class ResultFileLocation {
     private static final DateTimeFormatter FOLDER_FORMATTER = DateTimeFormatter.ofPattern("yyyy년/MM월");
     private static final DateTimeFormatter FILE_FORMATTER = DateTimeFormatter.ofPattern("yyyy년_MM월_dd일_HH시_mm분");
-    private static final String BASIC_FILE_PATH = "/Desktop/당직결과/";
+    private static final String BASIC_FILE_PATH = "/Desktop/당직 관리 프로그램/";
     private static final String FILE_EXTENSION = ".xlsx";
     private static final String DUTY_TABLE_HEADER = "당직표_";
 

@@ -1,6 +1,5 @@
 package org.example.dutymanager.repository.writer.subWriter;
 
-
 import static org.example.dutymanager.repository.sampleData.Sample.*;
 import static org.example.dutymanager.repository.writer.util.CellSizeSetter.*;
 

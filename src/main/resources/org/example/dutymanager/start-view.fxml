@@ -20,12 +20,12 @@
                translateY="-130"/>
 
         <Button prefWidth="260" prefHeight="45" text="시작하기"
-                style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 30px;"
+                style="-fx-background-color: #404fdb; -fx-text-fill: white; -fx-font-size: 30px;"
                 translateY="-100"
                 onAction="#onStartButtonClick" />
 
         <Label fx:id="successText"
-               style="-fx-text-fill: #00FF90; -fx-font-size: 16px; -fx-font-weight: bold;"
+               style="-fx-text-fill: #68e3df; -fx-font-size: 16px; -fx-font-weight: bold;"
                translateY="-120"/>
     </VBox>
 
@@ -35,17 +35,16 @@
               AnchorPane.rightAnchor="20">
 
             <Button prefWidth="180" prefHeight="35" text="당직자 순서(양식) 다운"
-                    style="-fx-background-color: #2196F3; -fx-text-fill: black; -fx-font-size: 16px;"
+                    style="-fx-background-color: #fc8c03; -fx-text-fill: black; -fx-font-size: 16px;"
                     onAction="#onTutorialButtonClick" />
 
-            <Button prefWidth="180" prefHeight="35" text="공휴일 데이터베이스 생성"
-                    style="-fx-background-color: #FF9800; -fx-text-fill: black; -fx-font-size: 16px;"
+            <Button prefWidth="180" prefHeight="35" text="공휴일 DB생성"
+                    style="-fx-background-color: #fcd703; -fx-text-fill: black; -fx-font-size: 16px;"
                     onAction="#onHolidayDBCreateButtonClick" />
 
-            <Button prefWidth="180" prefHeight="35" text="공휴일 데이터베이스 관리"
-                    style="-fx-background-color: #4FE3C1; -fx-text-fill: black; -fx-font-size: 16px;"
+            <Button prefWidth="180" prefHeight="35" text="공휴일 DB관리"
+                    style="-fx-background-color: #c3e807; -fx-text-fill: black; -fx-font-size: 16px;"
                     onAction="#onHolidayDBManagerButtonClick" />
         </VBox>
     </AnchorPane>
-
 </StackPane>
