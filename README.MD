@@ -18,7 +18,7 @@
 
 ### 화면소개
 #### 시작화면
-
+![Image](https://github.com/user-attachments/assets/d94e6ea1-769c-4be6-834a-5a6341631a2d)
 ---
 
 
