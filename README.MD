@@ -33,15 +33,34 @@
 ![Image](https://github.com/user-attachments/assets/3f77e2c9-0a2e-4378-aa91-8c1dea58855e)
 
 ---
+## ✅실행방법
+1. 터미널 이용 git clone
+```angular2html
+git clone https://github.com/GamzaCoding/oponMission-Military-Duty-Management-System.git
+```
+2. 디렉터리로 이동
+```angular2html
+cd oponMission-Military-Duty-Management-System
+```
+3-1. 빌드 및 실행(Mac)
+```angular2html
+./gradlew clean build
+./gradlew run
+```
+3-2. 빌드 및 실행(Window)
+```angular2html
+gradlew.bat clean build
+gradlew.bat run
+```
 
-
-## 사용 라이브러리
+## 🛠️사용 기술
 * Java21
 * JavaFx 21.0.2
 * Apache POI 5.5.0
 * Gradle 8.14
 ---
-## 실행환경 : window, mac
+
+## 🌁실행환경 : window, mac
 
 ---
 ## 주요 기능
