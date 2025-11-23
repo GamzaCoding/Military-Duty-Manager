@@ -36,11 +36,11 @@
 ## ✅실행방법
 1. 터미널 이용 git clone
 ```angular2html
-git clone https://github.com/GamzaCoding/oponMission-Military-Duty-Management-System.git
+git clone https://github.com/GamzaCoding/Military-Duty-Manager.git
 ```
 2. 디렉터리로 이동
 ```angular2html
-cd oponMission-Military-Duty-Management-System
+cd Military-Duty-Manager
 ```
 3-1. 빌드 및 실행(Mac)
 ```angular2html
@@ -76,8 +76,8 @@ gradlew.bat run
 ### 입력 기능
 * [x] 엑셀 파일을 입력 받을 수 있어야 한다.
 * [x] 원하는 당직표 기간을 입력 받을 수 있다.
-* [x] [error] 잘못된 년,월,일 입력에 에러 메시지를 화면에 전시할 수 있다.
-* [x] [error] 잘못된 파일을 입력받을 시 에러 메시지를 화면에 전시할 수 있다.
+* [x] [ERROR] 잘못된 년,월,일 입력에 에러 메시지를 화면에 전시할 수 있다.
+* [x] [ERROR] 잘못된 파일을 입력받을 시 에러 메시지를 화면에 전시할 수 있다.
 
 ### 출력 관련 기능
 * [x] 튜토리얼 관련 기능을 충족할 수 있어야 한다.
