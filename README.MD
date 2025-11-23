@@ -30,9 +30,7 @@
 ![Image](https://github.com/user-attachments/assets/7b11e409-2395-48a4-b2b5-e0b5e5b74ad7)
 
 #### 🪖공휴일 DB에 휴일 추가/삭제
-
-
-
+![Image](https://github.com/user-attachments/assets/3f77e2c9-0a2e-4378-aa91-8c1dea58855e)
 
 ---
 
