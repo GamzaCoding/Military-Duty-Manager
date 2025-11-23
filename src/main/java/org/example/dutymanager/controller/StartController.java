@@ -80,7 +80,7 @@ public class StartController {
             });
         } else {
             mainService.createHolidayDB();
-            successText.setText("holidays.xlsx 생성 성공");
+            successText.setText("holidaysDB.xlsx 생성 성공");
         }
     }
 

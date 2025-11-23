@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 
 public class HolidayFileLocation {
-    private static final String FILE_NAME = "holidays";
+    private static final String FILE_NAME = "holidaysDB";
     private static final String FILE_EXTENSION = ".xlsx";
     private static final String HOLIDAY_FILE_PATH = "/Desktop/당직 관리 프로그램/holidays";
 
