@@ -12,6 +12,10 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.example.dutymanager.service.model.day.DayType;
 
 public class CellStyler {
+    public static final String BASIC_FONT = "굴림";
+    public static final int BASIC_HEADER_POINT = 16;
+    public static final int BASIC_BODY_POINT = 15;
+
     private final Workbook workbook;
 
     public CellStyler(Workbook workbook) {
@@ -23,7 +27,7 @@ public class CellStyler {
                 .background(IndexedColors.LIGHT_BLUE)
                 .alignCenter()
                 .borderThin()
-                .fontBold(16, "굴림")
+                .fontBold(BASIC_HEADER_POINT, BASIC_FONT)
                 .build();
     }
 
@@ -31,7 +35,7 @@ public class CellStyler {
         return style()
                 .alignCenter()
                 .borderThin()
-                .fontBold(15, "굴림")
+                .fontBold(BASIC_BODY_POINT, BASIC_FONT)
                 .build();
     }
 
@@ -40,7 +44,7 @@ public class CellStyler {
                 .background(IndexedColors.LIGHT_CORNFLOWER_BLUE)
                 .alignCenter()
                 .borderThin()
-                .fontBold(16, "굴림")
+                .fontBold(BASIC_HEADER_POINT, BASIC_FONT)
                 .build();
     }
 
@@ -49,7 +53,7 @@ public class CellStyler {
                 .background(IndexedColors.LIGHT_GREEN)
                 .alignCenter()
                 .borderThin()
-                .fontBold(16, "굴림")
+                .fontBold(BASIC_HEADER_POINT, BASIC_FONT)
                 .build();
     }
 
@@ -57,7 +61,7 @@ public class CellStyler {
         return style()
                 .alignCenter()
                 .borderThin()
-                .fontBold(15, "굴림")
+                .fontBold(BASIC_BODY_POINT, BASIC_FONT)
                 .build();
     }
 
@@ -65,7 +69,7 @@ public class CellStyler {
         return style()
                 .alignCenter()
                 .borderThin()
-                .fontBold(15, "굴림")
+                .fontBold(BASIC_BODY_POINT, BASIC_FONT)
                 .dateFormat()
                 .build();
     }
@@ -75,7 +79,7 @@ public class CellStyler {
                 .background(IndexedColors.ROSE)
                 .alignCenter()
                 .borderThin()
-                .fontBold(15, "굴림")
+                .fontBold(BASIC_BODY_POINT, BASIC_FONT)
                 .build();
     }
 
@@ -84,7 +88,7 @@ public class CellStyler {
                 .background(IndexedColors.WHITE)
                 .alignCenter()
                 .borderThin()
-                .fontBold(15, "굴림")
+                .fontBold(BASIC_BODY_POINT, BASIC_FONT)
                 .build();
     }
 
